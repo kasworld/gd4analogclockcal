@@ -9,7 +9,8 @@ func setfontshadow(o, fontcolor,offset):
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	setfontshadow($LabelDate, Color.BLACK, 8)
+	setfontshadow($LabelDate, Color.BLACK, 4)
+	_on_timer_timeout()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
