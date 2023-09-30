@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3 uid="uid://b1m11n5rm2gh7"]
+
+[ext_resource type="Script" path="res://calendar.gd" id="1_2udk5"]
+
+[sub_resource type="Theme" id="Theme_7ts8o"]
+default_font_size = 90
+
+[node name="Calendar" type="Node2D"]
+script = ExtResource("1_2udk5")
+
+[node name="GridCalendar" type="GridContainer" parent="."]
+offset_right = 840.0
+offset_bottom = 840.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = SubResource("Theme_7ts8o")
+columns = 7
+
+[node name="Timer" type="Timer" parent="."]
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
