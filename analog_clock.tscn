@@ -15,6 +15,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="HourHand" type="ColorRect" parent="Panel"]
+layout_mode = 0
 offset_left = 530.0
 offset_top = 240.0
 offset_right = 550.0
@@ -23,6 +24,7 @@ pivot_offset = Vector2(10, 300)
 color = Color(0, 0, 1, 1)
 
 [node name="MinuteHand" type="ColorRect" parent="Panel"]
+layout_mode = 0
 offset_left = 535.0
 offset_top = 140.0
 offset_right = 545.0

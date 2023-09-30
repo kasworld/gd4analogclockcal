@@ -1,9 +1,34 @@
 extends Node2D
 
+func new_hour_clock_face(rad :float)->ColorRect:
+	var w = 4
+	var cr = ColorRect.new()
+	cr.size = Vector2(w, 50)
+	cr.position = Vector2(540-w/2, 0)
+	cr.rotation = rad
+	cr.pivot_offset = Vector2(w/2,540)
+	return cr
+
+func new_minute_clock_face(rad :float)->ColorRect:
+	var w = 2
+	var cr = ColorRect.new()
+	cr.size = Vector2(w, 20)
+	cr.position = Vector2(540-w/2, 0)
+	cr.rotation = rad
+	cr.pivot_offset = Vector2(w/2,540)
+	return cr
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass # Replace with function body.
+	for i in range(0,12):
+		var cr = new_hour_clock_face(hour2degree(i))
+		$Panel.add_child(cr)
+
+	for i in range(0,60):
+		var cr = new_minute_clock_face(minute2degree(i))
+		$Panel.add_child(cr)
+
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
