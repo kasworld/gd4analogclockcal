@@ -10,7 +10,7 @@
 script = ExtResource("1_q4spd")
 
 [node name="TimeLabel" parent="." instance=ExtResource("4_7h3nq")]
-position = Vector2(540, 270)
+position = Vector2(540, 540)
 
 [node name="AnalogClock" parent="." instance=ExtResource("1_eyl4w")]
 position = Vector2(540, 540)

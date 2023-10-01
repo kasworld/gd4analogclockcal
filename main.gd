@@ -7,9 +7,17 @@ func _ready() -> void:
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
+var oldvt = Vector2(0,-100)
 func _process(delta: float) -> void:
-	if Input.get_accelerometer() != Vector3.ZERO :
-		pass
+	var vt = Input.get_accelerometer()
+	if  vt != Vector3.ZERO :
+		oldvt = (Vector2(vt.x,vt.y) + oldvt).normalized() *100
+		var rad = oldvt.angle_to(Vector2(0,-1))
+#		oldrad = (rad + oldrad) /2
+		$AnalogClock.rotation = rad
+		$TimeLabel.rotation = rad
+
+
 #	var ms = Time.get_unix_time_from_system()
 #	ms = ms - int(ms)
 #	var timeNowDict = Time.get_datetime_dict_from_system()
