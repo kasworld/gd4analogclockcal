@@ -1,39 +1,11 @@
-[gd_scene load_steps=3 format=3 uid="uid://66uu15vflcpu"]
+[gd_scene load_steps=2 format=3 uid="uid://66uu15vflcpu"]
 
 [ext_resource type="Script" path="res://analog_clock.gd" id="1_a26px"]
-
-[sub_resource type="Theme" id="Theme_qjoby"]
-default_font_size = 120
 
 [node name="AnalogClock" type="Node2D"]
 script = ExtResource("1_a26px")
 
-[node name="LabelTime" type="Label" parent="."]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 540.0
-offset_top = 270.0
-offset_right = 541.0
-offset_bottom = 407.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 3
-size_flags_vertical = 6
-theme = SubResource("Theme_qjoby")
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Panel" type="Panel" parent="."]
-offset_right = 1080.0
-offset_bottom = 1080.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="HourHand" type="ColorRect" parent="Panel"]
-layout_mode = 0
+[node name="HourHand" type="ColorRect" parent="."]
 offset_left = 530.0
 offset_top = 240.0
 offset_right = 550.0
@@ -41,8 +13,7 @@ offset_bottom = 570.0
 pivot_offset = Vector2(10, 300)
 color = Color(0, 0, 1, 1)
 
-[node name="MinuteHand" type="ColorRect" parent="Panel"]
-layout_mode = 0
+[node name="MinuteHand" type="ColorRect" parent="."]
 offset_left = 535.0
 offset_top = 140.0
 offset_right = 545.0
@@ -50,8 +21,7 @@ offset_bottom = 580.0
 pivot_offset = Vector2(5, 400)
 color = Color(0, 1, 0, 1)
 
-[node name="SecondHand" type="ColorRect" parent="Panel"]
-layout_mode = 0
+[node name="SecondHand" type="ColorRect" parent="."]
 offset_left = 537.0
 offset_right = 543.0
 offset_bottom = 600.0

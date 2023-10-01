@@ -1,10 +1,14 @@
-[gd_scene load_steps=4 format=3 uid="uid://btxtva4j47rfm"]
+[gd_scene load_steps=5 format=3 uid="uid://btxtva4j47rfm"]
 
 [ext_resource type="PackedScene" uid="uid://66uu15vflcpu" path="res://analog_clock.tscn" id="1_eyl4w"]
 [ext_resource type="PackedScene" uid="uid://b1m11n5rm2gh7" path="res://calendar.tscn" id="2_4ure6"]
 [ext_resource type="PackedScene" uid="uid://b50xiuiysska8" path="res://date_label.tscn" id="2_4yof7"]
+[ext_resource type="PackedScene" uid="uid://cwmx6m8hhfxdx" path="res://time_label.tscn" id="4_7h3nq"]
 
 [node name="Main" type="Node2D"]
+
+[node name="TimeLabel" parent="." instance=ExtResource("4_7h3nq")]
+position = Vector2(540, 270)
 
 [node name="AnalogClock" parent="." instance=ExtResource("1_eyl4w")]
 
