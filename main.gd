@@ -4,7 +4,10 @@ extends Node2D
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	var calw = 1920-1080
-	$Calendar.position = Vector2(1080+calw/2, 1080 - calw/2 )
+	$Calendar.position = Vector2(1080+calw/2, 1080 /2 )
+
+	$DateLabel.position = Vector2(1080 /2, 1080/2 )
+	$TimeLabel.position = Vector2(1080 /2, 1080/2 )
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -17,6 +20,7 @@ func _process(delta: float) -> void:
 #		oldrad = (rad + oldrad) /2
 		$AnalogClock.rotation = rad
 		$TimeLabel.rotation = rad
+		$DateLabel.rotation = rad
 		$Calendar.rotation = rad
 
 
