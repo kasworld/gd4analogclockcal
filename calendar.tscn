@@ -3,14 +3,23 @@
 [ext_resource type="Script" path="res://calendar.gd" id="1_2udk5"]
 
 [sub_resource type="Theme" id="Theme_7ts8o"]
-default_font_size = 90
+default_font_size = 80
 
 [node name="Calendar" type="Node2D"]
 script = ExtResource("1_2udk5")
 
 [node name="GridCalendar" type="GridContainer" parent="."]
-offset_right = 840.0
-offset_bottom = 840.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -420.0
+offset_top = -420.0
+offset_right = 420.0
+offset_bottom = 420.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = SubResource("Theme_7ts8o")
