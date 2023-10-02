@@ -1,15 +1,18 @@
 extends Node
 
 const weekdaystring = ["일","월","화","수","목","금","토"]
-const weekdayColorList = [
-	Color.RED,  # sunday
-	Color.WHITE,  # monday
-	Color.WHITE,
-	Color.WHITE,
-	Color.WHITE,
-	Color.WHITE,
-	Color.BLUE,  # saturday
+var weekdayColorInfo = [
+	[Color.MAGENTA, Color.MAGENTA.darkened(0.5), 3],  # sunday
+	[Color.WHITE, Color.WHITE.darkened(0.5), 3],  # monday
+	[Color.WHITE, Color.WHITE.darkened(0.5), 3],
+	[Color.WHITE, Color.WHITE.darkened(0.5), 3],
+	[Color.WHITE, Color.WHITE.darkened(0.5), 3],
+	[Color.WHITE, Color.WHITE.darkened(0.5), 3],
+	[Color.CYAN, Color.CYAN.darkened(0.5), 3],  # saturday
 ]
+
+var timelabelColor = [Color.WHITE,Color.WHITE.darkened(0.5),4]
+var datelabelColor = [Color.WHITE,Color.WHITE.darkened(0.5),4]
 
 const HandDict = {
 	"hour" : {
@@ -29,8 +32,8 @@ const HandDict = {
 	}
 }
 
-func set_font_shadow_darken(o, fontcolor :Color,offset):
-	o.add_theme_color_override("font_color", fontcolor )
-	o.add_theme_color_override("font_shadow_color", fontcolor.darkened(0.5) )
-	o.add_theme_constant_override("shadow_offset_x",offset)
-	o.add_theme_constant_override("shadow_offset_y",offset)
+func set_font_shadow_darken(o, fontinfo ):
+	o.add_theme_color_override("font_color", fontinfo[0] )
+	o.add_theme_color_override("font_shadow_color", fontinfo[1] )
+	o.add_theme_constant_override("shadow_offset_x",fontinfo[2])
+	o.add_theme_constant_override("shadow_offset_y",fontinfo[2])

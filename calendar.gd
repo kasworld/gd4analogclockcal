@@ -20,7 +20,7 @@ func init_calendar_labels():
 			lb.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 			lb.horizontal_alignment = HorizontalAlignment.HORIZONTAL_ALIGNMENT_CENTER
 			lb.vertical_alignment = VerticalAlignment.VERTICAL_ALIGNMENT_CENTER
-			Global.set_font_shadow_darken(lb, Global.weekdayColorList[j], 3)
+			Global.set_font_shadow_darken(lb, Global.weekdayColorInfo[j])
 			$GridCalendar.add_child(lb)
 			ln.append(lb)
 		calendar_labels.append(ln)
@@ -36,11 +36,11 @@ func updateCalendar():
 			var dayIndexDict = Time.get_date_dict_from_unix_time(dayIndex)
 			var curLabel = calendar_labels[week+1][wd]
 			curLabel.text = "%d" % dayIndexDict["day"]
-			var co = Global.weekdayColorList[wd]
+			var co = Global.weekdayColorInfo[wd][0]
 			if dayIndexDict["month"] != todayDict["month"]:
-				co = co.darkened(0.5)
+				co = Global.weekdayColorInfo[wd][1]
 			elif dayIndexDict["day"] == todayDict["day"]:
-				co = Color.GREEN
+				co = Color.YELLOW
 			curLabel.add_theme_color_override("font_color",  co )
 			curLabel.add_theme_color_override("font_shadow_color",  co.darkened(0.5) )
 			dayIndex += 24*60*60
