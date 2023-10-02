@@ -9,35 +9,18 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	pass
 
-const weekdaystring = ["일","월","화","수","목","금","토"]
-const weekdayColorList = [
-	Color.RED,  # sunday
-	Color.BLACK,  # monday
-	Color.BLACK,
-	Color.BLACK,
-	Color.BLACK,
-	Color.BLACK,
-	Color.BLUE,  # saturday
-]
-
-func setfontshadow(o, fontcolor,offset):
-	o.add_theme_color_override("font_color", fontcolor )
-	o.add_theme_color_override("font_shadow_color", fontcolor.lightened(0.5) )
-	o.add_theme_constant_override("shadow_offset_x",offset)
-	o.add_theme_constant_override("shadow_offset_y",offset)
-
 var calendar_labels = []
 func init_calendar_labels():
 	# prepare calendar
 	for _i in range(7): # week title + 6 week
 		var ln = []
-		for j in weekdaystring.size():
+		for j in Global.weekdaystring.size():
 			var lb = Label.new()
-			lb.text = weekdaystring[j]
+			lb.text = Global.weekdaystring[j]
 			lb.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 			lb.horizontal_alignment = HorizontalAlignment.HORIZONTAL_ALIGNMENT_CENTER
 			lb.vertical_alignment = VerticalAlignment.VERTICAL_ALIGNMENT_CENTER
-			setfontshadow(lb, weekdayColorList[j], 3)
+			Global.set_font_shadow_darken(lb, Global.weekdayColorList[j], 3)
 			$GridCalendar.add_child(lb)
 			ln.append(lb)
 		calendar_labels.append(ln)
@@ -53,13 +36,13 @@ func updateCalendar():
 			var dayIndexDict = Time.get_date_dict_from_unix_time(dayIndex)
 			var curLabel = calendar_labels[week+1][wd]
 			curLabel.text = "%d" % dayIndexDict["day"]
-			var co = weekdayColorList[wd]
+			var co = Global.weekdayColorList[wd]
 			if dayIndexDict["month"] != todayDict["month"]:
-				co = co.lightened(0.5)
+				co = co.darkened(0.5)
 			elif dayIndexDict["day"] == todayDict["day"]:
 				co = Color.GREEN
 			curLabel.add_theme_color_override("font_color",  co )
-			curLabel.add_theme_color_override("font_shadow_color",  co.lightened(0.5) )
+			curLabel.add_theme_color_override("font_shadow_color",  co.darkened(0.5) )
 			dayIndex += 24*60*60
 
 var oldDateUpdate = {"day":0} # datetime dict

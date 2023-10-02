@@ -1,14 +1,8 @@
 extends Node2D
 
-func setfontshadow(o, fontcolor,offset):
-	o.add_theme_color_override("font_color", fontcolor )
-	o.add_theme_color_override("font_shadow_color", fontcolor.lightened(0.5) )
-	o.add_theme_constant_override("shadow_offset_x",offset)
-	o.add_theme_constant_override("shadow_offset_y",offset)
-
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	setfontshadow($LabelTime, Color.BLACK, 4)
+	Global.set_font_shadow_darken($LabelTime, Color.WHITE, 4)
 	_on_timer_timeout()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
