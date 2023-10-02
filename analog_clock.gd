@@ -30,6 +30,7 @@ func new_clock_center(co :Color, rad :float, r )->ColorRect:
 
 
 var HourHand :ColorRect
+var HourHand2 :ColorRect
 var MinuteHand :ColorRect
 var SecondHand :ColorRect
 
@@ -50,6 +51,8 @@ func _ready() -> void:
 
 	HourHand = clock_hand(Global.HandDict.hour)
 	add_child(HourHand)
+	HourHand2 = clock_hand(Global.HandDict.hour2)
+	add_child(HourHand2)
 	MinuteHand = clock_hand(Global.HandDict.minute)
 	add_child(MinuteHand)
 	SecondHand = clock_hand(Global.HandDict.second)
@@ -69,6 +72,7 @@ func update_clock():
 	SecondHand.rotation = PI + second2rad(timeNowDict["second"]) + ms2rad(ms)
 	MinuteHand.rotation = PI + minute2rad(timeNowDict["minute"]) + second2rad(timeNowDict["second"]) / 60
 	HourHand.rotation = PI + hour2rad(timeNowDict["hour"]) + minute2rad(timeNowDict["minute"]) /12
+	HourHand2.rotation = HourHand.rotation
 
 func ms2rad(ms)->float:
 	return 2.0*PI/60*ms

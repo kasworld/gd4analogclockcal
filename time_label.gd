@@ -2,7 +2,7 @@ extends Node2D
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	Global.set_font_shadow_darken($LabelTime, Global.timelabelColor)
+	Global.set_font_shadow_offset($LabelTime, Global.timelabelColor)
 	_on_timer_timeout()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

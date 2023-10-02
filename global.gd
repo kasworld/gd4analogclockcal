@@ -14,11 +14,16 @@ var weekdayColorInfo = [
 var timelabelColor = [Color.WHITE,Color.WHITE.darkened(0.5),4]
 var datelabelColor = [Color.WHITE,Color.WHITE.darkened(0.5),4]
 
-const HandDict = {
+var HandDict = {
 	"hour" : {
 		"color" :Color.CYAN,
 		"width" : 20,
 		"height" : 330,
+	},
+	"hour2" : {
+		"color" :Color.CYAN.darkened(0.5),
+		"width" : 6,
+		"height" : 300,
 	},
 	"minute" : {
 		"color" :Color.YELLOW,
@@ -32,8 +37,12 @@ const HandDict = {
 	}
 }
 
-func set_font_shadow_darken(o, fontinfo ):
+func set_font_shadow_offset(o, fontinfo ):
 	o.add_theme_color_override("font_color", fontinfo[0] )
 	o.add_theme_color_override("font_shadow_color", fontinfo[1] )
 	o.add_theme_constant_override("shadow_offset_x",fontinfo[2])
 	o.add_theme_constant_override("shadow_offset_y",fontinfo[2])
+
+func set_font_color_shasow(o, co, shco):
+	o.add_theme_color_override("font_color", co )
+	o.add_theme_color_override("font_shadow_color", shco )

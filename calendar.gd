@@ -20,7 +20,7 @@ func init_calendar_labels():
 			lb.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 			lb.horizontal_alignment = HorizontalAlignment.HORIZONTAL_ALIGNMENT_CENTER
 			lb.vertical_alignment = VerticalAlignment.VERTICAL_ALIGNMENT_CENTER
-			Global.set_font_shadow_darken(lb, Global.weekdayColorInfo[j])
+			Global.set_font_shadow_offset(lb, Global.weekdayColorInfo[j])
 			$GridCalendar.add_child(lb)
 			ln.append(lb)
 		calendar_labels.append(ln)
@@ -41,8 +41,7 @@ func updateCalendar():
 				co = Global.weekdayColorInfo[wd][1]
 			elif dayIndexDict["day"] == todayDict["day"]:
 				co = Color.YELLOW
-			curLabel.add_theme_color_override("font_color",  co )
-			curLabel.add_theme_color_override("font_shadow_color",  co.darkened(0.5) )
+			Global.set_font_color_shasow(curLabel, co, co.darkened(0.5) )
 			dayIndex += 24*60*60
 
 var oldDateUpdate = {"day":0} # datetime dict

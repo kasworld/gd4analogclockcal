@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://time_label.gd" id="1_0oe0p"]
 
 [sub_resource type="Theme" id="Theme_7tur1"]
-default_font_size = 120
+default_font_size = 180
 
 [node name="TimeLabel" type="Node2D"]
 script = ExtResource("1_0oe0p")
