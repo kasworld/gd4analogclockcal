@@ -5,3 +5,5 @@ accelerometer 가 지원 되는 플랫폼(android) 에서는 analog clock이 돌
 ![screenshot](screenshot.png)
 
 ![rotated](Screenshot_rot.png)
+
+https://www.youtube.com/watch?v=9apaioMHX4c

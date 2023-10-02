@@ -1,8 +1,11 @@
 extends Node2D
 
+var vp_size :Vector2
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	vp_size = get_viewport_rect().size
+
 	var calw = 1920-1080
 	$Calendar.position = Vector2(1080+calw/2, 1080 /2 )
 
