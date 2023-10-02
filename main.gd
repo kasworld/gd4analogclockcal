@@ -6,11 +6,11 @@ var vp_size :Vector2
 func _ready() -> void:
 	vp_size = get_viewport_rect().size
 
-	var calw = 1920-1080
-	$Calendar.position = Vector2(1080+calw/2, 1080 /2 )
+	var calw = vp_size.x-vp_size.y
+	$Calendar.position = Vector2(vp_size.y+calw/2, vp_size.y /2 )
 
-	$DateLabel.position = Vector2(1080 /2, 1080/2 )
-	$TimeLabel.position = Vector2(1080 /2, 1080/2 )
+	$DateLabel.position = Vector2(vp_size.y /2, vp_size.y/2 )
+	$TimeLabel.position = Vector2(vp_size.y /2, vp_size.y/2 )
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -25,15 +25,3 @@ func _process(delta: float) -> void:
 		$TimeLabel.rotation = rad
 		$DateLabel.rotation = rad
 		$Calendar.rotation = rad
-
-
-#	var ms = Time.get_unix_time_from_system()
-#	ms = ms - int(ms)
-#	var timeNowDict = Time.get_datetime_dict_from_system()
-#	$AnalogClock.rotation = -( second2rad(timeNowDict["second"]) + ms2rad(ms) )
-
-func ms2rad(ms)->float:
-	return 2.0*PI/60*ms
-
-func second2rad(sec)->float:
-	return 2.0*PI/60.0*sec
