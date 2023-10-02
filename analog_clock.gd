@@ -8,15 +8,16 @@ func new_clock_face(rad :float, w , l )->ColorRect:
 	cr.pivot_offset = Vector2(w/2,540) #- Vector2(540,540)
 	return cr
 
-func clock_hand(w,l,co)->ColorRect:
+func clock_hand(dict :Dictionary)->ColorRect:
 	var cr = ColorRect.new()
-	cr.color = co
+	cr.color = dict.color
 	cr.anchors_preset = Control.PRESET_CENTER_BOTTOM
-	cr.size = Vector2(w, l)
-	cr.position = Vector2(-w/2, -l/10)
+	cr.size = Vector2(dict.width, dict.height)
+	cr.position = Vector2(-dict.width/2, -dict.height/10)
 	cr.rotation = 0
-	cr.pivot_offset = Vector2(w/2,l/10) #- Vector2(540,540)
+	cr.pivot_offset = Vector2(dict.width/2,dict.height/10) #- Vector2(540,540)
 	return cr
+
 
 var HourHand :ColorRect
 var MinuteHand :ColorRect
@@ -39,11 +40,11 @@ func _ready() -> void:
 			var cr = new_clock_face(minute2rad(i), 2, 20)
 			add_child(cr)
 
-	HourHand = clock_hand(20,330, Color.BLUE)
+	HourHand = clock_hand(Global.HandDict.hour)
 	add_child(HourHand)
-	MinuteHand = clock_hand(10,440, Color.GREEN)
+	MinuteHand = clock_hand(Global.HandDict.minute)
 	add_child(MinuteHand)
-	SecondHand = clock_hand(6,600, Color.RED)
+	SecondHand = clock_hand(Global.HandDict.second)
 	add_child(SecondHand)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
