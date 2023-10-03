@@ -58,8 +58,8 @@ func _ready() -> void:
 	SecondHand = clock_hand(Global.HandDict.second)
 	add_child(SecondHand)
 
-	add_child(new_clock_center(Color.WHITE, PI/4, 30))
-	add_child(new_clock_center(Color.BLACK, PI/4, 20))
+	add_child(new_clock_center(Color.GRAY, PI/4, 30))
+	add_child(new_clock_center(Color.DIM_GRAY, PI/4, 20))
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:

@@ -40,7 +40,7 @@ func updateCalendar():
 			if dayIndexDict["month"] != todayDict["month"]:
 				co = Global.weekdayColorInfo[wd][1]
 			elif dayIndexDict["day"] == todayDict["day"]:
-				co = Color.YELLOW
+				co = Global.todayColor
 			Global.set_font_color_shasow(curLabel, co, co.darkened(0.5) )
 			dayIndex += 24*60*60
 

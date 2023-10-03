@@ -2,36 +2,37 @@ extends Node
 
 const weekdaystring = ["일","월","화","수","목","금","토"]
 var weekdayColorInfo = [
-	[Color.MAGENTA, Color.MAGENTA.darkened(0.5), 3],  # sunday
-	[Color.WHITE, Color.WHITE.darkened(0.5), 3],  # monday
-	[Color.WHITE, Color.WHITE.darkened(0.5), 3],
-	[Color.WHITE, Color.WHITE.darkened(0.5), 3],
-	[Color.WHITE, Color.WHITE.darkened(0.5), 3],
-	[Color.WHITE, Color.WHITE.darkened(0.5), 3],
-	[Color.CYAN, Color.CYAN.darkened(0.5), 3],  # saturday
+	[Color.LIGHT_CORAL, Color.LIGHT_CORAL.darkened(0.5), 3],  # sunday
+	[Color.WHITE_SMOKE, Color.WHITE_SMOKE.darkened(0.5), 3],  # monday
+	[Color.WHITE_SMOKE, Color.WHITE_SMOKE.darkened(0.5), 3],
+	[Color.WHITE_SMOKE, Color.WHITE_SMOKE.darkened(0.5), 3],
+	[Color.WHITE_SMOKE, Color.WHITE_SMOKE.darkened(0.5), 3],
+	[Color.WHITE_SMOKE, Color.WHITE_SMOKE.darkened(0.5), 3],
+	[Color.SKY_BLUE, Color.SKY_BLUE.darkened(0.5), 3],  # saturday
 ]
 
-var timelabelColor = [Color.WHITE,Color.WHITE.darkened(0.5),4]
-var datelabelColor = [Color.WHITE,Color.WHITE.darkened(0.5),4]
+var timelabelColor = [Color.WHITE_SMOKE,Color.WHITE_SMOKE.darkened(0.5),4]
+var datelabelColor = [Color.WHITE_SMOKE,Color.WHITE_SMOKE.darkened(0.5),4]
+var todayColor = Color.GOLD
 
 var HandDict = {
 	"hour" : {
-		"color" :Color.CYAN,
+		"color" :Color.SKY_BLUE,
 		"width" : 20,
 		"height" : 330,
 	},
 	"hour2" : {
-		"color" :Color.CYAN.darkened(0.5),
+		"color" :Color.SKY_BLUE.darkened(0.5),
 		"width" : 6,
 		"height" : 300,
 	},
 	"minute" : {
-		"color" :Color.YELLOW,
+		"color" :Color.PALE_GREEN,
 		"width" : 10,
 		"height" : 440,
 	},
 	"second" : {
-		"color" :Color.MAGENTA,
+		"color" :Color.LIGHT_CORAL,
 		"width" : 6,
 		"height" : 600,
 	}
