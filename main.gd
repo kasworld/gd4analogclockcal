@@ -15,7 +15,7 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 var oldvt = Vector2(0,-100)
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	var vt = Input.get_accelerometer()
 	if  vt != Vector3.ZERO :
 		oldvt = (Vector2(vt.x,vt.y) + oldvt).normalized() *100

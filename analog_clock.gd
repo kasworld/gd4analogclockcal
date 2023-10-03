@@ -62,7 +62,7 @@ func _ready() -> void:
 	add_child(new_clock_center(Color.DIM_GRAY, PI/4, 20))
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	update_clock()
 
 func update_clock():
@@ -80,8 +80,8 @@ func ms2rad(ms)->float:
 func second2rad(sec)->float:
 	return 2.0*PI/60.0*sec
 
-func minute2rad(min)->float:
-	return 2.0*PI/60.0*min
+func minute2rad(m)->float:
+	return 2.0*PI/60.0*m
 
 func hour2rad(hour)->float:
 	return 2.0*PI/12.0*hour

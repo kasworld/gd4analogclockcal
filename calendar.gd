@@ -5,10 +5,6 @@ func _ready() -> void:
 	init_calendar_labels()
 	updateCalendar()
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
-
 var calendar_labels = []
 func init_calendar_labels():
 	# prepare calendar
