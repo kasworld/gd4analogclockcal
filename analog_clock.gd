@@ -14,9 +14,9 @@ func clock_hand(dict :Dictionary)->ColorRect:
 	cr.color = dict.color
 	cr.anchors_preset = Control.PRESET_CENTER_BOTTOM
 	cr.size = Vector2(dict.width, dict.height)
-	cr.position = Vector2(-dict.width/2, -dict.height/10)
+	cr.position = Vector2(-dict.width/2, -dict.height/8)
 	cr.rotation = 0
-	cr.pivot_offset = Vector2(dict.width/2,dict.height/10)
+	cr.pivot_offset = Vector2(dict.width/2,dict.height/8)
 	return cr
 
 func new_clock_center(co :Color, rad :float, r )->ColorRect:
@@ -39,15 +39,15 @@ func _ready() -> void:
 
 	for i in range(0,60):
 		if i == 0:
-			add_child(new_clock_face(Color.WHITE, minute2rad(i), 10, 50))
-			add_child(new_clock_face(Color.RED, minute2rad(i), 4, 48))
+			add_child(new_clock_face(Color.WHITE, minute2rad(i), 14, 50))
+			add_child(new_clock_face(Color.RED, minute2rad(i), 4, 50))
 		elif i % 15 ==0:
-			add_child(new_clock_face(Color.WHITE, minute2rad(i), 6, 50))
-			add_child(new_clock_face(Color.MAGENTA, minute2rad(i), 2, 48))
+			add_child(new_clock_face(Color.WHITE, minute2rad(i), 10, 50))
+			add_child(new_clock_face(Color.MAGENTA, minute2rad(i), 2, 50))
 		elif i % 5 == 0 :
-			add_child(new_clock_face(Color.WHITE, minute2rad(i), 4, 50))
+			add_child(new_clock_face(Color.WHITE, minute2rad(i), 6, 50))
 		else :
-			add_child(new_clock_face(Color.WHITE, minute2rad(i), 2, 20))
+			add_child(new_clock_face(Color.WHITE, minute2rad(i), 4, 20))
 
 	HourHand = clock_hand(Global.HandDict.hour)
 	add_child(HourHand)
