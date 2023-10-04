@@ -49,10 +49,10 @@ func clock_hand(dict :Dictionary)->ColorRect:
 	var cr = ColorRect.new()
 	cr.color = dict.color
 	cr.anchors_preset = Control.PRESET_CENTER_BOTTOM
-	cr.size = Vector2(dict.width, dict.height)
-	cr.position = Vector2(-dict.width/2, -dict.height/8)
+	cr.size = Vector2(dict.width*clock_R, dict.height*clock_R)
+	cr.position = Vector2(-dict.width*clock_R/2, -dict.height*clock_R/8)
 	cr.rotation = 0
-	cr.pivot_offset = Vector2(dict.width/2,dict.height/8)
+	cr.pivot_offset = Vector2(dict.width*clock_R/2,dict.height*clock_R/8)
 	return cr
 
 func new_clock_center(co :Color, rad :float, r )->ColorRect:

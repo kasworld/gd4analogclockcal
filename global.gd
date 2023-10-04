@@ -18,23 +18,23 @@ var todayColor = Color.GOLD
 var HandDict = {
 	"hour" : {
 		"color" :Color.SKY_BLUE,
-		"width" : 20,
-		"height" : 400,
+		"width" : 1.0/25,
+		"height" : 0.7,
 	},
 	"hour2" : {
 		"color" :Color.SKY_BLUE.darkened(0.5),
-		"width" : 6,
-		"height" : 400,
+		"width" : 1.0/100,
+		"height" : 0.7,
 	},
 	"minute" : {
 		"color" :Color.PALE_GREEN,
-		"width" : 10,
-		"height" : 500,
+		"width" : 1.0/50,
+		"height" : 0.9,
 	},
 	"second" : {
 		"color" :Color.LIGHT_CORAL,
-		"width" : 6,
-		"height" : 620,
+		"width" : 1.0/100,
+		"height" : 1.15,
 	}
 }
 
