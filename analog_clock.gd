@@ -23,6 +23,7 @@ func _ready() -> void:
 			add_child(new_clock_face(Color.WHITE, minute2rad(i), clock_R/150, clock_R/10))
 		else :
 			add_child(new_clock_face(Color.WHITE, minute2rad(i), clock_R/200, clock_R/20))
+		add_child(new_clock_face(Color.DIM_GRAY, minute2rad(i), clock_R/10, clock_R/200))
 
 	HourHand = clock_hand(Global.HandDict.hour)
 	add_child(HourHand)
@@ -36,10 +37,10 @@ func _ready() -> void:
 	add_child(new_clock_center(Color.GRAY, PI/4, clock_R/15))
 	add_child(new_clock_center(Color.DIM_GRAY, PI/4, clock_R/20))
 
-func new_clock_face(co :Color, rad :float, w , l )->ColorRect:
+func new_clock_face(co :Color, rad :float, w , h )->ColorRect:
 	var cr = ColorRect.new()
 	cr.color = co
-	cr.size = Vector2(w, l)
+	cr.size = Vector2(w, h)
 	cr.position = Vector2(clock_R-w/2, 0) - Vector2(clock_R,clock_R)
 	cr.rotation = rad
 	cr.pivot_offset = Vector2(w/2,clock_R)

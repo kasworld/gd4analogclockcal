@@ -34,7 +34,7 @@ var HandDict = {
 	"second" : {
 		"color" :Color.LIGHT_CORAL,
 		"width" : 1.0/100,
-		"height" : 1.15,
+		"height" : 1.14,
 	}
 }
 
