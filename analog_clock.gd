@@ -52,10 +52,18 @@ func new_clock_face(co :Color, rad :float, w , h, y ) -> Line2D:
 
 func clock_hand(dict :Dictionary) -> Line2D:
 	var cr = Line2D.new()
-	cr.default_color = dict.color
+	var pca : PackedColorArray
+	pca.append(dict.color)
+	pca.append(dict.color.darkened(0.5))
+	var gr = Gradient.new()
+	gr.colors = pca
+	cr.gradient = gr
+#	cr.default_color = dict.color
 	cr.width = dict.width*clock_R
 	cr.add_point(Vector2(0,-dict.height*clock_R))
 	cr.add_point(Vector2(0,dict.height*clock_R/8))
+	cr.begin_cap_mode = Line2D.LINE_CAP_ROUND
+	cr.end_cap_mode = Line2D.LINE_CAP_ROUND
 	return cr
 
 func new_circle_fill(r,co) -> Polygon2D :
