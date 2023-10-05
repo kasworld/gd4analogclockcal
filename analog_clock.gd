@@ -2,10 +2,10 @@ extends Node2D
 
 #var vp_size :Vector2
 var clock_R : float
-var HourHand :ColorRect
-var HourHand2 :ColorRect
-var MinuteHand :ColorRect
-var SecondHand :ColorRect
+var HourHand :Line2D
+var HourHand2 :Line2D
+var MinuteHand :Line2D
+var SecondHand :Line2D
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -57,33 +57,21 @@ func new_circle(r,co, w) -> Line2D :
 	rtn.width = w
 	return rtn
 
-
-func new_clock_face2(co :Color, rad :float, w , h, y ) -> ColorRect:
-	var cr = ColorRect.new()
-	cr.color = co
-	cr.size = Vector2(w, h)
-	cr.position = Vector2(clock_R-w/2, y) - Vector2(clock_R,clock_R)
+func new_clock_face(co :Color, rad :float, w , h ) -> Line2D:
+	var cr = Line2D.new()
+	cr.default_color = co
+	cr.width = w
+	cr.add_point(Vector2(0,clock_R))
+	cr.add_point(Vector2(0,clock_R-h))
 	cr.rotation = rad
-	cr.pivot_offset = Vector2(w/2,clock_R-y)
 	return cr
 
-func new_clock_face(co :Color, rad :float, w , h ) -> ColorRect:
-	var cr = ColorRect.new()
-	cr.color = co
-	cr.size = Vector2(w, h)
-	cr.position = Vector2(clock_R-w/2, 0) - Vector2(clock_R,clock_R)
-	cr.rotation = rad
-	cr.pivot_offset = Vector2(w/2,clock_R)
-	return cr
-
-func clock_hand(dict :Dictionary) -> ColorRect:
-	var cr = ColorRect.new()
-	cr.color = dict.color
-	cr.anchors_preset = Control.PRESET_CENTER_BOTTOM
-	cr.size = Vector2(dict.width*clock_R, dict.height*clock_R)
-	cr.position = Vector2(-dict.width*clock_R/2, -dict.height*clock_R/8)
-	cr.rotation = 0
-	cr.pivot_offset = Vector2(dict.width*clock_R/2,dict.height*clock_R/8)
+func clock_hand(dict :Dictionary) -> Line2D:
+	var cr = Line2D.new()
+	cr.default_color = dict.color
+	cr.width = dict.width*clock_R
+	cr.add_point(Vector2(0,dict.height*clock_R))
+	cr.add_point(Vector2(0,-dict.height*clock_R/10))
 	return cr
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

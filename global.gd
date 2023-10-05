@@ -24,17 +24,17 @@ var HandDict = {
 	"hour2" : {
 		"color" :Color.SKY_BLUE.darkened(0.5),
 		"width" : 1.0/100,
-		"height" : 0.7,
+		"height" : 0.65,
 	},
 	"minute" : {
 		"color" :Color.PALE_GREEN,
 		"width" : 1.0/50,
-		"height" : 0.9,
+		"height" : 0.85,
 	},
 	"second" : {
 		"color" :Color.LIGHT_CORAL,
 		"width" : 1.0/100,
-		"height" : 1.14,
+		"height" : 1.0,
 	}
 }
 
