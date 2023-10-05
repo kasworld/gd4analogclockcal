@@ -61,8 +61,8 @@ func new_clock_face(co :Color, rad :float, w , h ) -> Line2D:
 	var cr = Line2D.new()
 	cr.default_color = co
 	cr.width = w
-	cr.add_point(Vector2(0,clock_R))
-	cr.add_point(Vector2(0,clock_R-h))
+	cr.add_point(Vector2(0,-clock_R))
+	cr.add_point(Vector2(0,-clock_R+h))
 	cr.rotation = rad
 	return cr
 
@@ -70,8 +70,8 @@ func clock_hand(dict :Dictionary) -> Line2D:
 	var cr = Line2D.new()
 	cr.default_color = dict.color
 	cr.width = dict.width*clock_R
-	cr.add_point(Vector2(0,dict.height*clock_R))
-	cr.add_point(Vector2(0,-dict.height*clock_R/10))
+	cr.add_point(Vector2(0,-dict.height*clock_R))
+	cr.add_point(Vector2(0,dict.height*clock_R/8))
 	return cr
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -82,9 +82,9 @@ func update_clock():
 	var ms = Time.get_unix_time_from_system()
 	ms = ms - int(ms)
 	var timeNowDict = Time.get_datetime_dict_from_system()
-	SecondHand.rotation = PI + second2rad(timeNowDict["second"]) + ms2rad(ms)
-	MinuteHand.rotation = PI + minute2rad(timeNowDict["minute"]) + second2rad(timeNowDict["second"]) / 60
-	HourHand.rotation = PI + hour2rad(timeNowDict["hour"]) + minute2rad(timeNowDict["minute"]) /12
+	SecondHand.rotation = second2rad(timeNowDict["second"]) + ms2rad(ms)
+	MinuteHand.rotation = minute2rad(timeNowDict["minute"]) + second2rad(timeNowDict["second"]) / 60
+	HourHand.rotation = hour2rad(timeNowDict["hour"]) + minute2rad(timeNowDict["minute"]) /12
 	HourHand2.rotation = HourHand.rotation
 
 func ms2rad(ms) -> float:
