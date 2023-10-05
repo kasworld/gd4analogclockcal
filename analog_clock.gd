@@ -12,8 +12,7 @@ func _ready() -> void:
 	var vp_size = get_viewport_rect().size
 	clock_R = vp_size.y / 2
 
-	add_child(new_circle(clock_R, Color.DIM_GRAY))
-	add_child(new_circle(clock_R-2, Color.BLACK))
+	add_child(new_circle(clock_R, Color.DIM_GRAY, clock_R/200))
 
 	for i in range(0,60):
 		if i == 0:
@@ -36,10 +35,10 @@ func _ready() -> void:
 	SecondHand = clock_hand(Global.HandDict.second)
 	add_child(SecondHand)
 
-	add_child(new_circle(clock_R/25, Color.DIM_GRAY))
-	add_child(new_circle(clock_R/27, Color.BLACK))
+	add_child(new_circle_fill(clock_R/25, Color.GOLD))
+	add_child(new_circle_fill(clock_R/30, Color.DARK_GOLDENROD))
 
-func new_circle(r,co)->Polygon2D :
+func new_circle_fill(r,co) -> Polygon2D :
 	var rtn = Polygon2D.new()
 	var pv2a : PackedVector2Array = []
 	for i in 360 :
@@ -49,7 +48,17 @@ func new_circle(r,co)->Polygon2D :
 	rtn.color = co
 	return rtn
 
-func new_clock_face2(co :Color, rad :float, w , h, y )->ColorRect:
+func new_circle(r,co, w) -> Line2D :
+	var rtn = Line2D.new()
+	for i in 360 :
+		var v2 = Vector2(sin(i*2*PI/360)*r, cos(i*2*PI/360)*r)
+		rtn.add_point(v2)
+	rtn.default_color = co
+	rtn.width = w
+	return rtn
+
+
+func new_clock_face2(co :Color, rad :float, w , h, y ) -> ColorRect:
 	var cr = ColorRect.new()
 	cr.color = co
 	cr.size = Vector2(w, h)
@@ -58,7 +67,7 @@ func new_clock_face2(co :Color, rad :float, w , h, y )->ColorRect:
 	cr.pivot_offset = Vector2(w/2,clock_R-y)
 	return cr
 
-func new_clock_face(co :Color, rad :float, w , h )->ColorRect:
+func new_clock_face(co :Color, rad :float, w , h ) -> ColorRect:
 	var cr = ColorRect.new()
 	cr.color = co
 	cr.size = Vector2(w, h)
@@ -67,7 +76,7 @@ func new_clock_face(co :Color, rad :float, w , h )->ColorRect:
 	cr.pivot_offset = Vector2(w/2,clock_R)
 	return cr
 
-func clock_hand(dict :Dictionary)->ColorRect:
+func clock_hand(dict :Dictionary) -> ColorRect:
 	var cr = ColorRect.new()
 	cr.color = dict.color
 	cr.anchors_preset = Control.PRESET_CENTER_BOTTOM
@@ -90,14 +99,14 @@ func update_clock():
 	HourHand.rotation = PI + hour2rad(timeNowDict["hour"]) + minute2rad(timeNowDict["minute"]) /12
 	HourHand2.rotation = HourHand.rotation
 
-func ms2rad(ms)->float:
+func ms2rad(ms) -> float:
 	return 2.0*PI/60*ms
 
-func second2rad(sec)->float:
+func second2rad(sec) -> float:
 	return 2.0*PI/60.0*sec
 
-func minute2rad(m)->float:
+func minute2rad(m) -> float:
 	return 2.0*PI/60.0*m
 
-func hour2rad(hour)->float:
+func hour2rad(hour) -> float:
 	return 2.0*PI/12.0*hour
