@@ -12,17 +12,17 @@ func _ready() -> void:
 	var vp_size = get_viewport_rect().size
 	clock_R = vp_size.y / 2
 
-	add_child(new_circle(clock_R, Color.LIGHT_CORAL, clock_R/200))
-	add_child(new_circle(clock_R-clock_R/20, Color.PALE_GREEN, clock_R/200))
-	add_child(new_circle(clock_R-clock_R/10, Color.SKY_BLUE, clock_R/200))
+	add_child(new_circle(clock_R, Color.DIM_GRAY, clock_R/200))
+	add_child(new_circle(clock_R-clock_R/20, Color.DIM_GRAY, clock_R/200))
+	add_child(new_circle(clock_R-clock_R/10, Color.DIM_GRAY, clock_R/200))
 
 	for i in range(0,60):
 		if i == 0:
 			add_child( new_clock_face( Color.WHITE, minute2rad(i), clock_R/40, clock_R/10, 0  ) )
-			add_child( new_clock_face( Color.RED, minute2rad(i), clock_R/100, clock_R/10, 0  ) )
+			add_child( new_clock_face( Color.RED, minute2rad(i), clock_R/200, clock_R/10, 0  ) )
 		elif i % 15 ==0:
 			add_child( new_clock_face( Color.WHITE, minute2rad(i), clock_R/50, clock_R/10, 0  ) )
-			add_child( new_clock_face( Color.MAGENTA, minute2rad(i), clock_R/200, clock_R/10, 0  ) )
+			add_child( new_clock_face( Color.RED, minute2rad(i), clock_R/200, clock_R/10, 0  ) )
 		elif i % 5 == 0 :
 			add_child( new_clock_face( Color.WHITE, minute2rad(i), clock_R/150, clock_R/10, 0  ) )
 		else :
@@ -70,7 +70,7 @@ func new_circle_fill(r,co) -> Polygon2D :
 
 func new_circle(r,co, w) -> Line2D :
 	var rtn = Line2D.new()
-	for i in 360 :
+	for i in 361 :
 		var v2 = Vector2(sin(i*2*PI/360)*r, cos(i*2*PI/360)*r)
 		rtn.add_point(v2)
 	rtn.default_color = co
