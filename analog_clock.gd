@@ -12,18 +12,20 @@ func _ready() -> void:
 	var vp_size = get_viewport_rect().size
 	clock_R = vp_size.y / 2
 
+	add_child(new_circle(clock_R, Color.DIM_GRAY))
+	add_child(new_circle(clock_R-2, Color.BLACK))
+
 	for i in range(0,60):
 		if i == 0:
-			add_child(new_clock_face(Color.WHITE, minute2rad(i), clock_R/40, clock_R/10))
-			add_child(new_clock_face(Color.RED, minute2rad(i), clock_R/100, clock_R/10))
+			add_child( new_clock_face( Color.WHITE, minute2rad(i), clock_R/40, clock_R/10 ) )
+			add_child( new_clock_face( Color.RED, minute2rad(i), clock_R/100, clock_R/10 ) )
 		elif i % 15 ==0:
-			add_child(new_clock_face(Color.WHITE, minute2rad(i), clock_R/50, clock_R/10))
-			add_child(new_clock_face(Color.MAGENTA, minute2rad(i), clock_R/200, clock_R/10))
+			add_child( new_clock_face( Color.WHITE, minute2rad(i), clock_R/50, clock_R/10 ) )
+			add_child( new_clock_face( Color.MAGENTA, minute2rad(i), clock_R/200, clock_R/10 ) )
 		elif i % 5 == 0 :
-			add_child(new_clock_face(Color.WHITE, minute2rad(i), clock_R/150, clock_R/10))
+			add_child( new_clock_face( Color.WHITE, minute2rad(i), clock_R/150, clock_R/10 ) )
 		else :
-			add_child(new_clock_face(Color.WHITE, minute2rad(i), clock_R/200, clock_R/20))
-		add_child(new_clock_face(Color.DIM_GRAY, minute2rad(i), clock_R/10, clock_R/200))
+			add_child( new_clock_face( Color.WHITE, minute2rad(i), clock_R/200, clock_R/20 ) )
 
 	HourHand = clock_hand(Global.HandDict.hour)
 	add_child(HourHand)
@@ -34,8 +36,27 @@ func _ready() -> void:
 	SecondHand = clock_hand(Global.HandDict.second)
 	add_child(SecondHand)
 
-	add_child(new_clock_center(Color.GRAY, PI/4, clock_R/15))
-	add_child(new_clock_center(Color.DIM_GRAY, PI/4, clock_R/20))
+	add_child(new_circle(clock_R/25, Color.DIM_GRAY))
+	add_child(new_circle(clock_R/27, Color.BLACK))
+
+func new_circle(r,co)->Polygon2D :
+	var rtn = Polygon2D.new()
+	var pv2a : PackedVector2Array = []
+	for i in 360 :
+		var v2 = Vector2(sin(i*2*PI/360)*r, cos(i*2*PI/360)*r)
+		pv2a.append(v2)
+	rtn.polygon = pv2a
+	rtn.color = co
+	return rtn
+
+func new_clock_face2(co :Color, rad :float, w , h, y )->ColorRect:
+	var cr = ColorRect.new()
+	cr.color = co
+	cr.size = Vector2(w, h)
+	cr.position = Vector2(clock_R-w/2, y) - Vector2(clock_R,clock_R)
+	cr.rotation = rad
+	cr.pivot_offset = Vector2(w/2,clock_R-y)
+	return cr
 
 func new_clock_face(co :Color, rad :float, w , h )->ColorRect:
 	var cr = ColorRect.new()
@@ -54,15 +75,6 @@ func clock_hand(dict :Dictionary)->ColorRect:
 	cr.position = Vector2(-dict.width*clock_R/2, -dict.height*clock_R/8)
 	cr.rotation = 0
 	cr.pivot_offset = Vector2(dict.width*clock_R/2,dict.height*clock_R/8)
-	return cr
-
-func new_clock_center(co :Color, rad :float, r )->ColorRect:
-	var cr = ColorRect.new()
-	cr.color = co
-	cr.size = Vector2(r, r)
-	cr.position = Vector2(0, 0) - Vector2(r/2,r/2)
-	cr.rotation = rad
-	cr.pivot_offset = Vector2(r/2,r/2)
 	return cr
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
