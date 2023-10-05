@@ -12,19 +12,21 @@ func _ready() -> void:
 	var vp_size = get_viewport_rect().size
 	clock_R = vp_size.y / 2
 
-	add_child(new_circle(clock_R, Color.DIM_GRAY, clock_R/200))
+	add_child(new_circle(clock_R, Color.LIGHT_CORAL, clock_R/200))
+	add_child(new_circle(clock_R-clock_R/20, Color.PALE_GREEN, clock_R/200))
+	add_child(new_circle(clock_R-clock_R/10, Color.SKY_BLUE, clock_R/200))
 
 	for i in range(0,60):
 		if i == 0:
-			add_child( new_clock_face( Color.WHITE, minute2rad(i), clock_R/40, clock_R/10 ) )
-			add_child( new_clock_face( Color.RED, minute2rad(i), clock_R/100, clock_R/10 ) )
+			add_child( new_clock_face( Color.WHITE, minute2rad(i), clock_R/40, clock_R/10, 0  ) )
+			add_child( new_clock_face( Color.RED, minute2rad(i), clock_R/100, clock_R/10, 0  ) )
 		elif i % 15 ==0:
-			add_child( new_clock_face( Color.WHITE, minute2rad(i), clock_R/50, clock_R/10 ) )
-			add_child( new_clock_face( Color.MAGENTA, minute2rad(i), clock_R/200, clock_R/10 ) )
+			add_child( new_clock_face( Color.WHITE, minute2rad(i), clock_R/50, clock_R/10, 0  ) )
+			add_child( new_clock_face( Color.MAGENTA, minute2rad(i), clock_R/200, clock_R/10, 0  ) )
 		elif i % 5 == 0 :
-			add_child( new_clock_face( Color.WHITE, minute2rad(i), clock_R/150, clock_R/10 ) )
+			add_child( new_clock_face( Color.WHITE, minute2rad(i), clock_R/150, clock_R/10, 0  ) )
 		else :
-			add_child( new_clock_face( Color.WHITE, minute2rad(i), clock_R/200, clock_R/20 ) )
+			add_child( new_clock_face( Color.WHITE, minute2rad(i), clock_R/200, clock_R/20, 0  ) )
 
 	HourHand = clock_hand(Global.HandDict.hour)
 	add_child(HourHand)
@@ -37,6 +39,24 @@ func _ready() -> void:
 
 	add_child(new_circle_fill(clock_R/25, Color.GOLD))
 	add_child(new_circle_fill(clock_R/30, Color.DARK_GOLDENROD))
+
+
+func new_clock_face(co :Color, rad :float, w , h, y ) -> Line2D:
+	var cr = Line2D.new()
+	cr.default_color = co
+	cr.width = w
+	cr.add_point(Vector2(0,y-clock_R))
+	cr.add_point(Vector2(0,y-clock_R+h))
+	cr.rotation = rad
+	return cr
+
+func clock_hand(dict :Dictionary) -> Line2D:
+	var cr = Line2D.new()
+	cr.default_color = dict.color
+	cr.width = dict.width*clock_R
+	cr.add_point(Vector2(0,-dict.height*clock_R))
+	cr.add_point(Vector2(0,dict.height*clock_R/8))
+	return cr
 
 func new_circle_fill(r,co) -> Polygon2D :
 	var rtn = Polygon2D.new()
@@ -56,23 +76,6 @@ func new_circle(r,co, w) -> Line2D :
 	rtn.default_color = co
 	rtn.width = w
 	return rtn
-
-func new_clock_face(co :Color, rad :float, w , h ) -> Line2D:
-	var cr = Line2D.new()
-	cr.default_color = co
-	cr.width = w
-	cr.add_point(Vector2(0,-clock_R))
-	cr.add_point(Vector2(0,-clock_R+h))
-	cr.rotation = rad
-	return cr
-
-func clock_hand(dict :Dictionary) -> Line2D:
-	var cr = Line2D.new()
-	cr.default_color = dict.color
-	cr.width = dict.width*clock_R
-	cr.add_point(Vector2(0,-dict.height*clock_R))
-	cr.add_point(Vector2(0,dict.height*clock_R/8))
-	return cr
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:

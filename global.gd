@@ -29,7 +29,7 @@ var HandDict = {
 	"minute" : {
 		"color" :Color.PALE_GREEN,
 		"width" : 1.0/50,
-		"height" : 0.85,
+		"height" : 0.9,
 	},
 	"second" : {
 		"color" :Color.LIGHT_CORAL,
