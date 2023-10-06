@@ -16,19 +16,10 @@ func _ready() -> void:
 	add_child(Global.new_circle(clock_R-clock_R/20, Color.DIM_GRAY, clock_R/200))
 	add_child(Global.new_circle(clock_R-clock_R/10, Color.DIM_GRAY, clock_R/200))
 
-	for i in range(0,360):
-		if i == 0:
-			add_child( new_clock_face( Color.WHITE, deg2rad(i), clock_R/50, clock_R/10, 0  ) )
-			add_child( new_clock_face( Color.RED, deg2rad(i), clock_R/200, clock_R/10, 0  ) )
-		elif i % 90 ==0:
-			add_child( new_clock_face( Color.WHITE, deg2rad(i), clock_R/100, clock_R/10, 0  ) )
-			add_child( new_clock_face( Color.RED, deg2rad(i), clock_R/300, clock_R/20, clock_R/20  ) )
-		elif i % 30 == 0 :
-			add_child( new_clock_face( Color.WHITE, deg2rad(i), clock_R/150, clock_R/10, 0  ) )
-		elif i % 6 == 0 :
-			add_child( new_clock_face( Color.WHITE, deg2rad(i), clock_R/200, clock_R/20, 0  ) )
-		else :
-			add_child( new_clock_face( Color.WHITE, deg2rad(i), clock_R/400, clock_R/40, 0  ) )
+	draw_dial(0,0,clock_R)
+	draw_dial(-clock_R/2, 0,clock_R/4)
+	draw_dial( clock_R/2, 0,clock_R/4)
+
 
 	HourHand = clock_hand(Global.HandDict.hour)
 	add_child(HourHand)
@@ -42,18 +33,35 @@ func _ready() -> void:
 	add_child(Global.new_circle_fill(clock_R/25, Color.GOLD))
 	add_child(Global.new_circle_fill(clock_R/30, Color.DARK_GOLDENROD))
 
-func new_clock_face(co :Color, rad :float, w , h, y ) -> Line2D:
+func draw_dial(x,y, r):
+	for i in range(0,360):
+		if i == 0:
+			add_child( new_clock_face( Vector2(x,y), r, Color.WHITE, deg2rad(i), r/50, r/10, 0  ) )
+			add_child( new_clock_face( Vector2(x,y), r, Color.RED, deg2rad(i), r/200, r/10, 0  ) )
+		elif i % 90 ==0:
+			add_child( new_clock_face( Vector2(x,y), r, Color.WHITE, deg2rad(i), r/100, r/10, 0  ) )
+			add_child( new_clock_face( Vector2(x,y), r, Color.RED, deg2rad(i), r/300, r/20, r/20  ) )
+		elif i % 30 == 0 :
+			add_child( new_clock_face( Vector2(x,y), r, Color.WHITE, deg2rad(i), r/150, r/10, 0  ) )
+		elif i % 6 == 0 :
+			add_child( new_clock_face( Vector2(x,y), r, Color.WHITE, deg2rad(i), r/200, r/20, 0  ) )
+		else :
+			add_child( new_clock_face( Vector2(x,y), r, Color.WHITE, deg2rad(i), r/400, r/40, 0  ) )
+
+
+func new_clock_face(p :Vector2,r, co :Color, rad :float, w , h, y ) -> Line2D:
 	var cr = Line2D.new()
 	cr.default_color = co
 	cr.width = w
-	cr.add_point(Vector2(0,y-clock_R))
-	cr.add_point(Vector2(0,y-clock_R+h))
+	cr.add_point(Vector2(0,y-r))
+	cr.add_point(Vector2(0,y-r+h))
 	cr.rotation = rad
+	cr.position = p
 	return cr
 
 func clock_hand(dict :Dictionary) -> Line2D:
 	var cr = Line2D.new()
-	var pca : PackedColorArray
+	var pca : PackedColorArray = []
 	pca.append(dict.color)
 	pca.append(dict.color.darkened(0.5))
 	var gr = Gradient.new()
