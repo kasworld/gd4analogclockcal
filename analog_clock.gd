@@ -17,8 +17,8 @@ func _ready() -> void:
 	add_child(Global.new_circle(clock_R-clock_R/10, Color.DIM_GRAY, clock_R/200))
 
 	draw_dial(0,0,clock_R)
-	draw_dial(-clock_R/2, 0,clock_R/4)
-	draw_dial( clock_R/2, 0,clock_R/4)
+#	draw_dial(-clock_R/2, 0,clock_R/4)
+#	draw_dial( clock_R/2, 0,clock_R/4)
 
 
 	HourHand = clock_hand(Global.HandDict.hour)
