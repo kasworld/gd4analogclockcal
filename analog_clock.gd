@@ -1,7 +1,6 @@
 extends Node2D
 
-#var vp_size :Vector2
-var clock_R : float
+var clock_R :float
 var HourHand :Line2D
 var HourHand2 :Line2D
 var MinuteHand :Line2D
@@ -12,14 +11,9 @@ func _ready() -> void:
 	var vp_size = get_viewport_rect().size
 	clock_R = vp_size.y / 2
 
-	add_child( Global.new_circle(clock_R, Color.DIM_GRAY, clock_R/200))
-	add_child(Global.new_circle(clock_R-clock_R/20, Color.DIM_GRAY, clock_R/200))
-	add_child(Global.new_circle(clock_R-clock_R/10, Color.DIM_GRAY, clock_R/200))
-
 	draw_dial(0,0,clock_R)
 #	draw_dial(-clock_R/2, 0,clock_R/4)
 #	draw_dial( clock_R/2, 0,clock_R/4)
-
 
 	HourHand = clock_hand(Global.HandDict.hour)
 	add_child(HourHand)
@@ -30,26 +24,29 @@ func _ready() -> void:
 	SecondHand = clock_hand(Global.HandDict.second)
 	add_child(SecondHand)
 
-	add_child(Global.new_circle_fill(clock_R/25, Color.GOLD))
-	add_child(Global.new_circle_fill(clock_R/30, Color.DARK_GOLDENROD))
+	add_child(Global.new_circle_fill(Vector2(0,0), clock_R/25, Color.GOLD))
+	add_child(Global.new_circle_fill(Vector2(0,0), clock_R/30, Color.DARK_GOLDENROD))
 
-func draw_dial(x,y, r):
+func draw_dial(x :float,y :float, r :float):
+	add_child( Global.new_circle(Vector2(x,y), r, Color.DIM_GRAY, r/200))
+	add_child(Global.new_circle(Vector2(x,y), r-r/20, Color.DIM_GRAY, r/200))
+	add_child(Global.new_circle(Vector2(x,y), r-r/10, Color.DIM_GRAY, r/200))
 	for i in range(0,360):
 		if i == 0:
-			add_child( new_clock_face( Vector2(x,y), r, Color.WHITE, deg2rad(i), r/50, r/10, 0  ) )
-			add_child( new_clock_face( Vector2(x,y), r, Color.RED, deg2rad(i), r/200, r/10, 0  ) )
+			add_child( new_clock_face( Vector2(x,y), r, Color.WHITE, deg2rad(i), r/50, r/10, 0 ) )
+			add_child( new_clock_face( Vector2(x,y), r, Color.RED, deg2rad(i), r/200, r/10, 0 ) )
 		elif i % 90 ==0:
-			add_child( new_clock_face( Vector2(x,y), r, Color.WHITE, deg2rad(i), r/100, r/10, 0  ) )
-			add_child( new_clock_face( Vector2(x,y), r, Color.RED, deg2rad(i), r/300, r/20, r/20  ) )
+			add_child( new_clock_face( Vector2(x,y), r, Color.WHITE, deg2rad(i), r/100, r/10, 0 ) )
+			add_child( new_clock_face( Vector2(x,y), r, Color.RED, deg2rad(i), r/300, r/20, r/20 ) )
 		elif i % 30 == 0 :
-			add_child( new_clock_face( Vector2(x,y), r, Color.WHITE, deg2rad(i), r/150, r/10, 0  ) )
+			add_child( new_clock_face( Vector2(x,y), r, Color.WHITE, deg2rad(i), r/150, r/10, 0 ) )
 		elif i % 6 == 0 :
-			add_child( new_clock_face( Vector2(x,y), r, Color.WHITE, deg2rad(i), r/200, r/20, 0  ) )
+			add_child( new_clock_face( Vector2(x,y), r, Color.WHITE, deg2rad(i), r/200, r/20, 0 ) )
 		else :
-			add_child( new_clock_face( Vector2(x,y), r, Color.WHITE, deg2rad(i), r/400, r/40, 0  ) )
+			add_child( new_clock_face( Vector2(x,y), r, Color.WHITE, deg2rad(i), r/400, r/40, 0 ) )
 
 
-func new_clock_face(p :Vector2,r, co :Color, rad :float, w , h, y ) -> Line2D:
+func new_clock_face(p :Vector2, r :float, co :Color, rad :float, w :float, h :float, y :float) -> Line2D:
 	var cr = Line2D.new()
 	cr.default_color = co
 	cr.width = w
@@ -91,14 +88,14 @@ func update_clock():
 func deg2rad(deg :float) ->float :
 	return deg * 2 * PI / 360
 
-func ms2rad(ms) -> float:
+func ms2rad(ms :float) -> float:
 	return 2.0*PI/60*ms
 
-func second2rad(sec) -> float:
+func second2rad(sec :float) -> float:
 	return 2.0*PI/60.0*sec
 
-func minute2rad(m) -> float:
+func minute2rad(m :float) -> float:
 	return 2.0*PI/60.0*m
 
-func hour2rad(hour) -> float:
+func hour2rad(hour :float) -> float:
 	return 2.0*PI/12.0*hour
