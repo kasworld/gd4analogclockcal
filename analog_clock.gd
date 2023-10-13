@@ -47,27 +47,24 @@ func draw_dial(x :float,y :float, r :float):
 
 
 func new_clock_face(p :Vector2, r :float, co :Color, rad :float, w :float, h :float, y :float) -> Line2D:
+	var gr = Gradient.new()
+	gr.colors = [co, co.darkened(0.5)]
 	var cr = Line2D.new()
-	cr.default_color = co
+#	cr.default_color = co
+	cr.gradient = gr
 	cr.width = w
-	cr.add_point(Vector2(0,y-r))
-	cr.add_point(Vector2(0,y-r+h))
+	cr.points = [Vector2(0,y-r), Vector2(0,y-r+h)]
 	cr.rotation = rad
 	cr.position = p
 	return cr
 
 func clock_hand(dict :Dictionary) -> Line2D:
-	var cr = Line2D.new()
-	var pca : PackedColorArray = []
-	pca.append(dict.color)
-	pca.append(dict.color.darkened(0.5))
 	var gr = Gradient.new()
-	gr.colors = pca
+	gr.colors = [dict.color, dict.color.darkened(0.5)]
+	var cr = Line2D.new()
 	cr.gradient = gr
-#	cr.default_color = dict.color
 	cr.width = dict.width*clock_R
-	cr.add_point(Vector2(0,-dict.height*clock_R))
-	cr.add_point(Vector2(0,dict.height*clock_R/8))
+	cr.points = [Vector2(0,-dict.height*clock_R), Vector2(0,dict.height*clock_R/8)]
 	cr.begin_cap_mode = Line2D.LINE_CAP_ROUND
 	cr.end_cap_mode = Line2D.LINE_CAP_ROUND
 	return cr
