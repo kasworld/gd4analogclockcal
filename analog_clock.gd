@@ -33,23 +33,27 @@ func draw_dial(x :float,y :float, r :float):
 #	add_child( Global.new_circle_fill(Vector2(x,y), r-r/10, Color.BLACK) )
 	var center = Vector2(x,y)
 	var w = r/30
-	add_child( Global.new_circle(center, r-w*0.5, Color.GRAY, w))
-	add_child(Global.new_circle(center, r-w*1.5, Color.WEB_GRAY, w))
-	add_child(Global.new_circle(center, r-w*2.5, Color.DIM_GRAY, w))
+#	add_child( Global.new_circle(center, r-w*0.5, Color.GRAY, w))
+#	add_child(Global.new_circle(center, r-w*1.5, Color.WEB_GRAY, w))
+#	add_child(Global.new_circle(center, r-w*2.5, Color.DIM_GRAY, w))
+	add_child( Global.new_circle(center, r-w*0, Color.GRAY, w/15))
+	add_child(Global.new_circle(center, r-w*1, Color.GRAY, w/15))
+	add_child(Global.new_circle(center, r-w*2, Color.GRAY, w/15))
+	add_child(Global.new_circle(center, r-w*3, Color.GRAY, w/15))
 	for i in range(0,360):
 		var rad = deg2rad(i)
 		if i == 0:
-			add_child( new_clock_face( center, r, Color.BLACK, Color.WHITE, rad, r/50, r/10, 0 ) )
-			add_child( new_clock_face( center, r, Color.RED, Color.RED, rad, r/200, r/10, 0 ) )
+			add_child( new_clock_face( center, r, Color.BLACK, Color.WHITE, rad, r/50, w*3, 0 ) )
+			add_child( new_clock_face( center, r, Color.DARK_RED, Color.RED, rad, r/200, w*3, 0 ) )
 		elif i % 90 ==0:
-			add_child( new_clock_face( center, r, Color.BLACK, Color.WHITE, rad, r/100, r/10, 0 ) )
-			add_child( new_clock_face( center, r, Color.RED, Color.RED, rad, r/300, r/20, r/20 ) )
+			add_child( new_clock_face( center, r, Color.BLACK, Color.WHITE, rad, r/100, w*3, 0 ) )
+			add_child( new_clock_face( center, r, Color.DARK_RED, Color.RED, rad, r/300, w*2, 0 ) )
 		elif i % 30 == 0 :
-			add_child( new_clock_face( center, r, Color.GRAY, Color.WHITE, rad, r/150, r/10, 0 ) )
+			add_child( new_clock_face( center, r, Color.BLACK, Color.WHITE, rad, r/150, w*3, 0 ) )
 		elif i % 6 == 0 :
-			add_child( new_clock_face( center, r, Color.GRAY, Color.WHITE, rad, r/200, r/20, 0 ) )
+			add_child( new_clock_face( center, r, Color.BLACK, Color.WHITE, rad, r/200, w*2, 0 ) )
 		else :
-			add_child( new_clock_face( center, r, Color.GRAY, Color.WHITE, rad, r/400, r/40, 0 ) )
+			add_child( new_clock_face( center, r, Color.BLACK, Color.WHITE, rad, r/400, w*1, 0 ) )
 
 
 func new_clock_face(p :Vector2, r :float, co1 :Color, co2 :Color, rad :float, w :float, h :float, y :float) -> Line2D:
