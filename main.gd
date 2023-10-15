@@ -20,6 +20,8 @@ func _process(_delta: float) -> void:
 		rotate_all(rad)
 	else :
 		vt = Input.get_last_mouse_velocity()/100
+		if vt == Vector2.ZERO :
+			vt = Vector2(0,-5)
 		oldvt = (Vector2(vt.x,vt.y) + oldvt).normalized() *100
 		var rad = oldvt.angle_to(Vector2(0,-1))
 		rotate_all(rad)
