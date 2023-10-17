@@ -47,7 +47,7 @@ func handle_get(request: HttpRequest, response: HttpResponse) -> void:
 	var file_exists: bool = _file_exists(serving_path)
 
 	if request.path == "/" and not file_exists:
-		if not index_page.is_empty():
+		if index_page.length() > 0:
 			serving_path = path + "/" + index_page
 			file_exists = _file_exists(serving_path)
 
@@ -66,7 +66,7 @@ func handle_get(request: HttpRequest, response: HttpResponse) -> void:
 			_get_mime(serving_path.get_extension())
 			)
 	else:
-		if not fallback_page.is_empty():
+		if fallback_page.length() > 0:
 			serving_path = path + "/" + fallback_page
 			response.send_raw(200 if index_page == fallback_page else 404, _serve_file(serving_path), _get_mime(fallback_page.get_extension()))
 		else:
@@ -78,13 +78,12 @@ func handle_get(request: HttpRequest, response: HttpResponse) -> void:
 # - file_path: Full path to the file
 func _serve_file(file_path: String) -> PackedByteArray:
 	var content: PackedByteArray = []
-#	var file = FileAccess.new()
-	var file = FileAccess.open(file_path, FileAccess.READ)
-	var error: int = file.get_error()
+	var file: FileAccess = FileAccess.open(file_path, FileAccess.READ)
+	var error = file.get_open_error()
 	if error:
 		content = ("Couldn't serve file, ERROR = %s" % error).to_ascii_buffer()
 	else:
-		content = file.get_buffer(file.get_len())
+		content = file.get_buffer(file.get_length())
 	file.close()
 	return content
 
