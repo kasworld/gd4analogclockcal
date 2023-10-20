@@ -7,13 +7,13 @@ func _ready() -> void:
 	init_http()
 	vp_size = get_viewport_rect().size
 	var calw = vp_size.x-vp_size.y
-#	$Calendar.set_size(vp_size.x/2, vp_size.y)
+	$Calendar.init(-calw/2, -calw/2, calw, calw)
 	$Calendar.position = Vector2(vp_size.y+calw/2, vp_size.y/2 )
 
-	$DateLabel.init(vp_size.x/4, vp_size.y/8)
+	$DateLabel.init( -vp_size.x/4/2, -vp_size.y/8*1.5,  vp_size.x/4, vp_size.y/8)
 	$DateLabel.position = Vector2(vp_size.y/2, vp_size.y/2 )
 
-	$TimeLabel.init(vp_size.x/2, vp_size.y/6)
+	$TimeLabel.init(-vp_size.x/2/2, vp_size.y/6/2,  vp_size.x/2, vp_size.y/6)
 	$TimeLabel.position = Vector2(vp_size.y/2, vp_size.y/2 )
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

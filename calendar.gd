@@ -1,21 +1,16 @@
 extends Node2D
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	init_calendar_labels()
+func init(x :float,y :float, w :float,h :float):
+	$GridCalendar.size.x = w
+	$GridCalendar.size.y = h
+	$GridCalendar.position.x = x
+	$GridCalendar.position.y = y
+
+	init_calendar_labels(h/10)
 	updateCalendar()
 
-#func init(w :float,h :float):
-#	$LabelTime.size.x = w
-#	$LabelTime.size.y = h
-#	$LabelTime.position.x = -w/2
-#	$LabelTime.position.y = h/2
-#	var fi = Global.timelabelColor
-#	$LabelTime.label_settings = Global.make_label_setting(h, fi[0], fi[1])
-#	_on_timer_timeout()
-
 var calendar_labels = []
-func init_calendar_labels():
+func init_calendar_labels(font_size :float):
 	# prepare calendar
 	for _i in range(7): # week title + 6 week
 		var ln = []
@@ -26,7 +21,7 @@ func init_calendar_labels():
 			lb.horizontal_alignment = HorizontalAlignment.HORIZONTAL_ALIGNMENT_CENTER
 			lb.vertical_alignment = VerticalAlignment.VERTICAL_ALIGNMENT_CENTER
 			var fi = Global.weekdayColorInfo[j]
-			Global.set_font_shadow_offset(lb, fi[0], fi[1], fi[2] )
+			lb.label_settings = Global.make_label_setting(font_size, fi[0], fi[1])
 			$GridCalendar.add_child(lb)
 			ln.append(lb)
 		calendar_labels.append(ln)
@@ -47,7 +42,8 @@ func updateCalendar():
 				co = Global.weekdayColorInfo[wd][1]
 			elif dayIndexDict["day"] == todayDict["day"]:
 				co = Global.todayColor
-			Global.set_font_color_shasow(curLabel, co, co.darkened(0.5) )
+			curLabel.label_settings.font_color = co
+			curLabel.label_settings.shadow_color = co.darkened(0.5)
 			dayIndex += 24*60*60
 
 var oldDateUpdate = {"day":0} # datetime dict

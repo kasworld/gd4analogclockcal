@@ -1,10 +1,10 @@
 extends Node2D
 
-func init(w :float,h :float):
+func init(x :float,y :float, w :float,h :float):
 	$LabelTime.size.x = w
 	$LabelTime.size.y = h
-	$LabelTime.position.x = -w/2
-	$LabelTime.position.y = h/2
+	$LabelTime.position.x = x
+	$LabelTime.position.y = y
 	var fi = Global.timelabelColor
 	$LabelTime.label_settings = Global.make_label_setting(h, fi[0], fi[1])
 	_on_timer_timeout()

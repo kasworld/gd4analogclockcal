@@ -1,11 +1,11 @@
 extends Node2D
 
 
-func init(w :float,h :float):
+func init(x :float,y :float, w :float,h :float):
 	$LabelDate.size.x = w
 	$LabelDate.size.y = h
-	$LabelDate.position.x = -w/2
-	$LabelDate.position.y = -h/2-h
+	$LabelDate.position.x = x
+	$LabelDate.position.y = y
 	var fi = Global.datelabelColor
 	$LabelDate.label_settings = Global.make_label_setting(h, fi[0], fi[1])
 	_on_timer_timeout()

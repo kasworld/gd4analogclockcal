@@ -2,17 +2,17 @@ extends Node
 
 const weekdaystring = ["일","월","화","수","목","금","토"]
 var weekdayColorInfo = [
-	[Color.LIGHT_CORAL, Color.LIGHT_CORAL.darkened(0.5), 3],  # sunday
-	[Color.WHITE_SMOKE, Color.WHITE_SMOKE.darkened(0.5), 3],  # monday
-	[Color.WHITE_SMOKE, Color.WHITE_SMOKE.darkened(0.5), 3],
-	[Color.WHITE_SMOKE, Color.WHITE_SMOKE.darkened(0.5), 3],
-	[Color.WHITE_SMOKE, Color.WHITE_SMOKE.darkened(0.5), 3],
-	[Color.WHITE_SMOKE, Color.WHITE_SMOKE.darkened(0.5), 3],
-	[Color.SKY_BLUE, Color.SKY_BLUE.darkened(0.5), 3],  # saturday
+	[Color.LIGHT_CORAL, Color.LIGHT_CORAL.darkened(0.5)],  # sunday
+	[Color.WHITE_SMOKE, Color.WHITE_SMOKE.darkened(0.5)],  # monday
+	[Color.WHITE_SMOKE, Color.WHITE_SMOKE.darkened(0.5)],
+	[Color.WHITE_SMOKE, Color.WHITE_SMOKE.darkened(0.5)],
+	[Color.WHITE_SMOKE, Color.WHITE_SMOKE.darkened(0.5)],
+	[Color.WHITE_SMOKE, Color.WHITE_SMOKE.darkened(0.5)],
+	[Color.SKY_BLUE, Color.SKY_BLUE.darkened(0.5)],  # saturday
 ]
 
-var timelabelColor = [Color.WHITE_SMOKE,Color.WHITE_SMOKE.darkened(0.5),4]
-var datelabelColor = [Color.WHITE_SMOKE,Color.WHITE_SMOKE.darkened(0.5),4]
+var timelabelColor = [Color.WHITE_SMOKE,Color.WHITE_SMOKE.darkened(0.5)]
+var datelabelColor = [Color.WHITE_SMOKE,Color.WHITE_SMOKE.darkened(0.5)]
 var todayColor = Color.GOLD
 
 var HandDict = {
@@ -46,16 +46,6 @@ func make_label_setting(font_size :float , co1 :Color, co2 :Color)->LabelSetting
 	label_settings.shadow_color = co2
 	label_settings.shadow_offset = Vector2( font_size /20,  font_size /20)
 	return label_settings
-
-func set_font_shadow_offset(o, co1 :Color, co2:Color, offset :float ):
-	o.add_theme_color_override("font_color", co1 )
-	o.add_theme_color_override("font_shadow_color", co2 )
-	o.add_theme_constant_override("shadow_offset_x", offset)
-	o.add_theme_constant_override("shadow_offset_y", offset)
-
-func set_font_color_shasow(o, co, shco):
-	o.add_theme_color_override("font_color", co )
-	o.add_theme_color_override("font_shadow_color", shco )
 
 func new_circle_fill(p :Vector2, r :float, co:Color) -> Polygon2D :
 	var rtn = Polygon2D.new()
