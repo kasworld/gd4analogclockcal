@@ -7,9 +7,8 @@ var MinuteHand :Line2D
 var SecondHand :Line2D
 
 # Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	var vp_size = get_viewport_rect().size
-	clock_R = vp_size.y / 2
+func init(x :float,y :float, w :float,h :float) -> void:
+	clock_R = h / 2
 
 	draw_dial(0,0,clock_R)
 #	draw_dial(-clock_R/2, 0,clock_R/4)
