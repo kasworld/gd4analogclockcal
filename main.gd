@@ -9,7 +9,7 @@ func _ready() -> void:
 
 	var calw = vp_size.x-vp_size.y
 	if calw > vp_size.x /2 :
-		calw = vp_size.x /2
+		calw = vp_size.y
 	$Calendar.init(-calw/2, -calw/2, calw, calw)
 	$Calendar.position = Vector2(vp_size.x-calw/2, vp_size.y/2 )
 
