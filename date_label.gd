@@ -1,8 +1,13 @@
 extends Node2D
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	Global.set_font_shadow_offset($LabelDate, Global.datelabelColor)
+
+func init(w :float,h :float):
+	$LabelDate.size.x = w
+	$LabelDate.size.y = h
+	$LabelDate.position.x = -w/2
+	$LabelDate.position.y = -h/2-h
+	var fi = Global.datelabelColor
+	$LabelDate.label_settings = Global.make_label_setting(h, fi[0], fi[1])
 	_on_timer_timeout()
 
 var oldDateUpdate = {"day":0} # datetime dict

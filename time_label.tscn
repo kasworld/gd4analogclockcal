@@ -1,9 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://cwmx6m8hhfxdx"]
+[gd_scene load_steps=2 format=3 uid="uid://cwmx6m8hhfxdx"]
 
 [ext_resource type="Script" path="res://time_label.gd" id="1_0oe0p"]
-
-[sub_resource type="Theme" id="Theme_7tur1"]
-default_font_size = 180
 
 [node name="TimeLabel" type="Node2D"]
 script = ExtResource("1_0oe0p")
@@ -17,13 +14,12 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -360.0
-offset_top = 128.0
-offset_right = 356.0
-offset_bottom = 377.0
+offset_right = 716.0
+offset_bottom = 249.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = SubResource("Theme_7tur1")
+size_flags_horizontal = 3
+size_flags_vertical = 6
 text = "00:00:00"
 horizontal_alignment = 1
 vertical_alignment = 1

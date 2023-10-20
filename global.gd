@@ -38,11 +38,20 @@ var HandDict = {
 	}
 }
 
-func set_font_shadow_offset(o, fontinfo ):
-	o.add_theme_color_override("font_color", fontinfo[0] )
-	o.add_theme_color_override("font_shadow_color", fontinfo[1] )
-	o.add_theme_constant_override("shadow_offset_x",fontinfo[2])
-	o.add_theme_constant_override("shadow_offset_y",fontinfo[2])
+
+func make_label_setting(font_size :float , co1 :Color, co2 :Color)->LabelSettings:
+	var label_settings = LabelSettings.new()
+	label_settings.font_color = co1
+	label_settings.font_size = font_size
+	label_settings.shadow_color = co2
+	label_settings.shadow_offset = Vector2( font_size /20,  font_size /20)
+	return label_settings
+
+func set_font_shadow_offset(o, co1 :Color, co2:Color, offset :float ):
+	o.add_theme_color_override("font_color", co1 )
+	o.add_theme_color_override("font_shadow_color", co2 )
+	o.add_theme_constant_override("shadow_offset_x", offset)
+	o.add_theme_constant_override("shadow_offset_y", offset)
 
 func set_font_color_shasow(o, co, shco):
 	o.add_theme_color_override("font_color", co )

@@ -5,6 +5,15 @@ func _ready() -> void:
 	init_calendar_labels()
 	updateCalendar()
 
+#func init(w :float,h :float):
+#	$LabelTime.size.x = w
+#	$LabelTime.size.y = h
+#	$LabelTime.position.x = -w/2
+#	$LabelTime.position.y = h/2
+#	var fi = Global.timelabelColor
+#	$LabelTime.label_settings = Global.make_label_setting(h, fi[0], fi[1])
+#	_on_timer_timeout()
+
 var calendar_labels = []
 func init_calendar_labels():
 	# prepare calendar
@@ -16,7 +25,8 @@ func init_calendar_labels():
 			lb.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 			lb.horizontal_alignment = HorizontalAlignment.HORIZONTAL_ALIGNMENT_CENTER
 			lb.vertical_alignment = VerticalAlignment.VERTICAL_ALIGNMENT_CENTER
-			Global.set_font_shadow_offset(lb, Global.weekdayColorInfo[j])
+			var fi = Global.weekdayColorInfo[j]
+			Global.set_font_shadow_offset(lb, fi[0], fi[1], fi[2] )
 			$GridCalendar.add_child(lb)
 			ln.append(lb)
 		calendar_labels.append(ln)
@@ -48,3 +58,4 @@ func _on_timer_timeout() -> void:
 	if oldDateUpdate["day"] != timeNowDict["day"]:
 		oldDateUpdate = timeNowDict
 		updateCalendar()
+
