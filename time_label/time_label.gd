@@ -1,16 +1,16 @@
 extends Node2D
 
-func init(x :float,y :float, w :float,h :float):
+func init(x :float, y :float, w :float, h :float, co1 :Color, co2 :Color):
 	$LabelTime.size.x = w
 	$LabelTime.size.y = h
 	$LabelTime.position.x = x
 	$LabelTime.position.y = y
-	var fi = Global.timelabelColor
-	$LabelTime.label_settings = Global.make_label_setting(h, fi[0], fi[1])
+	$LabelTime.label_settings = Global.make_label_setting(h, co1, co2)
 	_on_timer_timeout()
 
-
-var oldDateUpdate = {"day":0} # datetime dict
+var old_time_dict = {"second":0} # datetime dict
 func _on_timer_timeout() -> void:
-	var timeNowDict = Time.get_datetime_dict_from_system()
-	$LabelTime.text = "%02d:%02d:%02d" % [timeNowDict["hour"] , timeNowDict["minute"] ,timeNowDict["second"]  ]
+	var time_now_dict = Time.get_datetime_dict_from_system()
+	if old_time_dict["second"] != time_now_dict["second"]:
+		old_time_dict = time_now_dict
+		$LabelTime.text = "%02d:%02d:%02d" % [time_now_dict["hour"] , time_now_dict["minute"] ,time_now_dict["second"]  ]

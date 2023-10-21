@@ -35,7 +35,7 @@ func draw_dial(p :Vector2, r :float):
 #	add_child( Global.new_circle(p, r-w*0.5, Color.GRAY, w))
 #	add_child(Global.new_circle(p, r-w*1.5, Color.WEB_GRAY, w))
 #	add_child(Global.new_circle(p, r-w*2.5, Color.DIM_GRAY, w))
-	add_child( Global.new_circle(p, r-w*0, Color.GRAY, w/15))
+	add_child(Global.new_circle(p, r-w*0, Color.GRAY, w/15))
 	add_child(Global.new_circle(p, r-w*1, Color.GRAY, w/15))
 	add_child(Global.new_circle(p, r-w*2, Color.GRAY, w/15))
 	add_child(Global.new_circle(p, r-w*3, Color.GRAY, w/15))

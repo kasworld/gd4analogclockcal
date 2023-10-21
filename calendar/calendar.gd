@@ -7,7 +7,7 @@ func init(x :float,y :float, w :float,h :float):
 	$GridCalendar.position.y = y
 
 	init_calendar_labels(h/10)
-	updateCalendar()
+	update_calendar()
 
 var calendar_labels = []
 func init_calendar_labels(font_size :float):
@@ -26,7 +26,7 @@ func init_calendar_labels(font_size :float):
 			ln.append(lb)
 		calendar_labels.append(ln)
 
-func updateCalendar():
+func update_calendar():
 	var tz = Time.get_time_zone_from_system()
 	var today = int(Time.get_unix_time_from_system()) +tz["bias"]*60
 	var todayDict = Time.get_date_dict_from_unix_time(today)
@@ -46,12 +46,12 @@ func updateCalendar():
 			curLabel.label_settings.shadow_color = co.darkened(0.5)
 			dayIndex += 24*60*60
 
-var oldDateUpdate = {"day":0} # datetime dict
+var old_time_dict = {"day":0} # datetime dict
 func _on_timer_timeout() -> void:
-	var timeNowDict = Time.get_datetime_dict_from_system()
+	var time_now_dict = Time.get_datetime_dict_from_system()
 
 	# date changed, update datelabel, calendar
-	if oldDateUpdate["day"] != timeNowDict["day"]:
-		oldDateUpdate = timeNowDict
-		updateCalendar()
+	if old_time_dict["day"] != time_now_dict["day"]:
+		old_time_dict = time_now_dict
+		update_calendar()
 

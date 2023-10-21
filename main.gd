@@ -13,10 +13,12 @@ func _ready() -> void:
 	$Calendar.init(-calw/2, -calw/2, calw, calw)
 	$Calendar.position = Vector2(vp_size.x-calw/2, vp_size.y/2 )
 
-	$DateLabel.init( -vp_size.x/4/2, -vp_size.y/8*1.5,  vp_size.x/4, vp_size.y/8)
+	var fi = Global.datelabelColor
+	$DateLabel.init( -vp_size.x/4/2, -vp_size.y/8*1.5,  vp_size.x/4, vp_size.y/8, fi[0], fi[1])
 	$DateLabel.position = Vector2(vp_size.y/2, vp_size.y/2 )
 
-	$TimeLabel.init(-vp_size.x/2/2, vp_size.y/6/2,  vp_size.x/2, vp_size.y/6)
+	fi = Global.timelabelColor
+	$TimeLabel.init(-vp_size.x/2/2, vp_size.y/6/2,  vp_size.x/2, vp_size.y/6, fi[0], fi[1])
 	$TimeLabel.position = Vector2(vp_size.y/2, vp_size.y/2 )
 
 	$AnalogClock.init(0, 0,  vp_size.y, vp_size.y)

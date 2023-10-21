@@ -1,6 +1,9 @@
 extends Node
 
+# for calendar ans date_label
 const weekdaystring = ["일","월","화","수","목","금","토"]
+
+# for calendar
 var weekdayColorInfo = [
 	[Color.LIGHT_CORAL, Color.LIGHT_CORAL.darkened(0.5)],  # sunday
 	[Color.WHITE_SMOKE, Color.WHITE_SMOKE.darkened(0.5)],  # monday
@@ -10,11 +13,11 @@ var weekdayColorInfo = [
 	[Color.WHITE_SMOKE, Color.WHITE_SMOKE.darkened(0.5)],
 	[Color.SKY_BLUE, Color.SKY_BLUE.darkened(0.5)],  # saturday
 ]
-
 var timelabelColor = [Color.WHITE_SMOKE,Color.WHITE_SMOKE.darkened(0.5)]
 var datelabelColor = [Color.WHITE_SMOKE,Color.WHITE_SMOKE.darkened(0.5)]
 var todayColor = Color.GOLD
 
+# for analog clock
 var HandDict = {
 	"hour" : {
 		"color" :Color.SKY_BLUE,
@@ -38,13 +41,14 @@ var HandDict = {
 	}
 }
 
+# common functions
 
 func make_label_setting(font_size :float , co1 :Color, co2 :Color)->LabelSettings:
 	var label_settings = LabelSettings.new()
 	label_settings.font_color = co1
 	label_settings.font_size = font_size
 	label_settings.shadow_color = co2
-	label_settings.shadow_offset = Vector2( font_size /20,  font_size /20)
+	label_settings.shadow_offset = Vector2( font_size /20, font_size /20)
 	return label_settings
 
 func new_circle_fill(p :Vector2, r :float, co:Color) -> Polygon2D :

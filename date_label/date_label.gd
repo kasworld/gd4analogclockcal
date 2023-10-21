@@ -1,21 +1,20 @@
 extends Node2D
 
 
-func init(x :float,y :float, w :float,h :float):
+func init(x :float, y :float, w :float, h :float, co1 :Color, co2 :Color):
 	$LabelDate.size.x = w
 	$LabelDate.size.y = h
 	$LabelDate.position.x = x
 	$LabelDate.position.y = y
-	var fi = Global.datelabelColor
-	$LabelDate.label_settings = Global.make_label_setting(h, fi[0], fi[1])
+	$LabelDate.label_settings = Global.make_label_setting(h, co1, co2)
 	_on_timer_timeout()
 
-var oldDateUpdate = {"day":0} # datetime dict
+var old_time_dict = {"day":0} # datetime dict
 func _on_timer_timeout() -> void:
-	var timeNowDict = Time.get_datetime_dict_from_system()
-	if oldDateUpdate["day"] != timeNowDict["day"]:
-		oldDateUpdate = timeNowDict
+	var time_now_dict = Time.get_datetime_dict_from_system()
+	if old_time_dict["day"] != time_now_dict["day"]:
+		old_time_dict = time_now_dict
 		$LabelDate.text = "%04d-%02d-%02d %s" % [
-			timeNowDict["year"] , timeNowDict["month"] ,timeNowDict["day"],
-			Global.weekdaystring[ timeNowDict["weekday"]]
+			time_now_dict["year"] , time_now_dict["month"] ,time_now_dict["day"],
+			Global.weekdaystring[ time_now_dict["weekday"]]
 			]
