@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://b50xiuiysska8"]
 
-[ext_resource type="Script" path="res://date_label.gd" id="1_nl55e"]
+[ext_resource type="Script" path="res://date_label/date_label.gd" id="1_nl55e"]
 
 [node name="DateLabel" type="Node2D"]
 script = ExtResource("1_nl55e")

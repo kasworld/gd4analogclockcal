@@ -1,9 +1,9 @@
 [gd_scene load_steps=2 format=3 uid="uid://b1m11n5rm2gh7"]
 
-[ext_resource type="Script" path="res://calendar.gd" id="1_2udk5"]
+[ext_resource type="Script" path="res://calendar/calendar.gd" id="1_hng2e"]
 
 [node name="Calendar" type="Node2D"]
-script = ExtResource("1_2udk5")
+script = ExtResource("1_hng2e")
 
 [node name="GridCalendar" type="GridContainer" parent="."]
 anchors_preset = 8
