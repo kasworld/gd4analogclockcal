@@ -41,15 +41,37 @@ var HandDict = {
 	}
 }
 
+# var font = preload("res://HakgyoansimBareondotumR.ttf")
+
 # common functions
+func invert_label_color(lb :Label)->void:
+	lb.label_settings.font_color = lb.label_settings.font_color.inverted()
+	lb.label_settings.shadow_color = lb.label_settings.shadow_color.inverted()
+
+func set_label_color(lb :Label, co1 :Color, co2 :Color)->void:
+	lb.label_settings.font_color = co1
+	lb.label_settings.shadow_color = co2
 
 func make_label_setting(font_size :float , co1 :Color, co2 :Color)->LabelSettings:
 	var label_settings = LabelSettings.new()
+	# label_settings.font = font
 	label_settings.font_color = co1
 	label_settings.font_size = font_size
 	label_settings.shadow_color = co2
-	label_settings.shadow_offset = Vector2( font_size /20, font_size /20)
+	var offset = calc_font_offset_vector2(font_size)
+	label_settings.shadow_offset = offset
 	return label_settings
+
+func calc_font_offset_vector2(font_size :float)->Vector2:
+	var offset = log(font_size)
+	offset = clampf(offset, 1, 6)
+	return Vector2(offset,offset)
+
+func set_label_font_size(lb :Label, font_size :float)->void:
+	lb.label_settings.font_size = font_size
+	var offset = calc_font_offset_vector2(font_size)
+	lb.label_settings.shadow_offset = offset
+
 
 func new_circle_fill(p :Vector2, r :float, co:Color) -> Polygon2D :
 	var rtn = Polygon2D.new()

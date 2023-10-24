@@ -1,5 +1,7 @@
 extends Node2D
 
+var calendar_labels = []
+
 func init(x :float,y :float, w :float,h :float):
 	$GridCalendar.size.x = w
 	$GridCalendar.size.y = h
@@ -9,7 +11,11 @@ func init(x :float,y :float, w :float,h :float):
 	init_calendar_labels(h/10)
 	update_calendar()
 
-var calendar_labels = []
+func invert_font_color()->void:
+	for l in calendar_labels:
+		for lb in l:
+			Global.invert_label_color(lb)
+
 func init_calendar_labels(font_size :float):
 	# prepare calendar
 	for _i in range(7): # week title + 6 week
@@ -42,8 +48,7 @@ func update_calendar():
 				co = Global.weekdayColorInfo[wd][1]
 			elif dayIndexDict["day"] == todayDict["day"]:
 				co = Global.todayColor
-			curLabel.label_settings.font_color = co
-			curLabel.label_settings.shadow_color = co.darkened(0.5)
+			Global.set_label_color(curLabel, co, co.darkened(0.5))
 			dayIndex += 24*60*60
 
 var old_time_dict = {"day":0} # datetime dict
