@@ -4,6 +4,8 @@ var vp_size :Vector2
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	set_color_mode_by_time()
+
 	init_http()
 	vp_size = get_viewport_rect().size
 
@@ -13,12 +15,14 @@ func _ready() -> void:
 	$Calendar.init(-calw/2, -calw/2, calw, calw)
 	$Calendar.position = Vector2(vp_size.x-calw/2, vp_size.y/2 )
 
-	var fi = Global.datelabelColor
-	$DateLabel.init( -vp_size.x/4/2, -vp_size.y/8*1.5,  vp_size.x/4, vp_size.y/8, fi[0], fi[1])
+	var co = Global.colors.datelabel
+	$DateLabel.init( -vp_size.x/4/2, -vp_size.y/8*1.5,  vp_size.x/4, vp_size.y/8,
+		co, Global.make_shadow_color(co))
 	$DateLabel.position = Vector2(vp_size.y/2, vp_size.y/2 )
 
-	fi = Global.timelabelColor
-	$TimeLabel.init(-vp_size.x/2/2, vp_size.y/6/2,  vp_size.x/2, vp_size.y/6, fi[0], fi[1])
+	co = Global.colors.timelabel
+	$TimeLabel.init(-vp_size.x/2/2, vp_size.y/6/2,  vp_size.x/2, vp_size.y/6,
+		co, Global.make_shadow_color(co))
 	$TimeLabel.position = Vector2(vp_size.y/2, vp_size.y/2 )
 
 	$AnalogClock.init(0, 0,  vp_size.y, vp_size.y)
@@ -48,10 +52,16 @@ func rotate_all(rad :float):
 	$Calendar.rotation = rad
 
 # esc to exit
-func _input(event):
+func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed:
 		if event.keycode == KEY_ESCAPE:
 			get_tree().quit()
+		else:
+			update_color(not Global.dark_mode)
+
+	elif event is InputEventMouseButton and event.is_pressed():
+		update_color(not Global.dark_mode)
+
 
 func init_http():
 	var ccr = ClockCalRouter.new()
@@ -63,3 +73,32 @@ func init_http():
 
 func helloed():
 	print_debug("helloed")
+
+
+func set_color_mode_by_time()->void:
+	var now = Time.get_datetime_dict_from_system()
+	if now["hour"] < 6 or now["hour"] >= 18 :
+		Global.set_dark_mode(true)
+	else :
+		Global.set_dark_mode(false)
+
+func update_color(darkmode :bool)->void:
+	Global.set_dark_mode(darkmode)
+	$TimeLabel.update_color()
+	$DateLabel.update_color()
+	$Calendar.update_color()
+
+# change dark mode by time
+var old_time_dict = Time.get_datetime_dict_from_system() # datetime dict
+func _on_timer_day_night_timeout() -> void:
+	var time_now_dict = Time.get_datetime_dict_from_system()
+	if old_time_dict["hour"] != time_now_dict["hour"]:
+		old_time_dict = time_now_dict
+		match time_now_dict["hour"]:
+			6:
+				update_color(false)
+			18:
+				update_color(true)
+			_:
+#				update_color(not Global.dark_mode)
+				pass

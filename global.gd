@@ -4,49 +4,79 @@ extends Node
 const weekdaystring = ["일","월","화","수","목","금","토"]
 
 # for calendar
-var weekdayColorInfo = [
-	[Color.LIGHT_CORAL, Color.LIGHT_CORAL.darkened(0.5)],  # sunday
-	[Color.WHITE_SMOKE, Color.WHITE_SMOKE.darkened(0.5)],  # monday
-	[Color.WHITE_SMOKE, Color.WHITE_SMOKE.darkened(0.5)],
-	[Color.WHITE_SMOKE, Color.WHITE_SMOKE.darkened(0.5)],
-	[Color.WHITE_SMOKE, Color.WHITE_SMOKE.darkened(0.5)],
-	[Color.WHITE_SMOKE, Color.WHITE_SMOKE.darkened(0.5)],
-	[Color.SKY_BLUE, Color.SKY_BLUE.darkened(0.5)],  # saturday
-]
-var timelabelColor = [Color.WHITE_SMOKE,Color.WHITE_SMOKE.darkened(0.5)]
-var datelabelColor = [Color.WHITE_SMOKE,Color.WHITE_SMOKE.darkened(0.5)]
-var todayColor = Color.GOLD
+var colors_dark = {
+	weekday = [
+		Color.RED.lightened(0.5),  # sunday
+		Color.WHITE,  # monday
+		Color.WHITE,
+		Color.WHITE,
+		Color.WHITE,
+		Color.WHITE,
+		Color.BLUE.lightened(0.5),  # saturday
+	],
+	today = Color.GREEN,
+	timelabel = Color.WHITE,
+	datelabel = Color.WHITE,
+	default_clear = Color.BLACK,
+}
+var colors_light = 	{
+	weekday = [
+		Color.RED,   # sunday
+		Color.BLACK,   # monday
+		Color.BLACK,
+		Color.BLACK,
+		Color.BLACK,
+		Color.BLACK,
+		Color.BLUE,   # saturday
+	],
+	today = Color.GREEN.darkened(0.5),
+	timelabel = Color.BLACK,
+	datelabel = Color.BLACK,
+	default_clear = Color.WHITE,
+}
+var colors = colors_dark
 
 # for analog clock
 var HandDict = {
-	"hour" : {
-		"color" :Color.SKY_BLUE,
-		"width" : 1.0/25,
-		"height" : 0.7,
+	hour = {
+		color = Color.SKY_BLUE,
+		width = 1.0/25,
+		height = 0.7,
 	},
-	"hour2" : {
-		"color" :Color.SKY_BLUE.darkened(0.5),
-		"width" : 1.0/100,
-		"height" : 0.65,
+	hour2 = {
+		color = Color.SKY_BLUE.darkened(0.5),
+		width = 1.0/100,
+		height = 0.65,
 	},
-	"minute" : {
-		"color" :Color.PALE_GREEN,
-		"width" : 1.0/50,
-		"height" : 0.9,
+	minute = {
+		color = Color.PALE_GREEN,
+		width = 1.0/50,
+		height = 0.9,
 	},
-	"second" : {
-		"color" :Color.LIGHT_CORAL,
-		"width" : 1.0/100,
-		"height" : 1.0,
+	second = {
+		color = Color.LIGHT_CORAL,
+		width = 1.0/100,
+		height = 1.0,
 	}
 }
 
-# var font = preload("res://HakgyoansimBareondotumR.ttf")
+var font = preload("res://HakgyoansimBareondotumR.ttf")
 
 # common functions
-func invert_label_color(lb :Label)->void:
-	lb.label_settings.font_color = lb.label_settings.font_color.inverted()
-	lb.label_settings.shadow_color = lb.label_settings.shadow_color.inverted()
+var dark_mode = true
+func set_dark_mode(b :bool)->void:
+	dark_mode = b
+	if dark_mode :
+		colors = colors_dark
+	else :
+		colors = colors_light
+	RenderingServer.set_default_clear_color(colors.default_clear)
+
+func make_shadow_color(co :Color)->Color:
+	if dark_mode:
+		return co.darkened(0.5)
+	else :
+		return co.lightened(0.5)
 
 func set_label_color(lb :Label, co1 :Color, co2 :Color)->void:
 	lb.label_settings.font_color = co1
@@ -54,7 +84,7 @@ func set_label_color(lb :Label, co1 :Color, co2 :Color)->void:
 
 func make_label_setting(font_size :float , co1 :Color, co2 :Color)->LabelSettings:
 	var label_settings = LabelSettings.new()
-	# label_settings.font = font
+	label_settings.font = font
 	label_settings.font_color = co1
 	label_settings.font_size = font_size
 	label_settings.shadow_color = co2
