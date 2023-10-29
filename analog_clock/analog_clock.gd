@@ -15,17 +15,17 @@ func init(x :float, y :float, w :float, h :float) -> void:
 #	draw_dial(-clock_R/2, 0,clock_R/4)
 #	draw_dial( clock_R/2, 0,clock_R/4)
 
-	HourHand = clock_hand(center, Global.HandDict.hour)
+	HourHand = clock_hand(center, Global.colors.hour, 1.0/25, 0.7 )
 	add_child(HourHand)
-	HourHand2 = clock_hand(center, Global.HandDict.hour2)
+	HourHand2 = clock_hand(center, Global.colors.hour2, 1.0/100, 0.65)
 	add_child(HourHand2)
-	MinuteHand = clock_hand(center, Global.HandDict.minute)
+	MinuteHand = clock_hand(center, Global.colors.minute, 1.0/50, 0.9)
 	add_child(MinuteHand)
-	SecondHand = clock_hand(center, Global.HandDict.second)
+	SecondHand = clock_hand(center, Global.colors.second, 1.0/100, 1.0)
 	add_child(SecondHand)
 
-	add_child(Global.new_circle_fill(center, clock_R/25, Color.GOLD))
-	add_child(Global.new_circle_fill(center, clock_R/30, Color.DARK_GOLDENROD))
+	add_child(Global.new_circle_fill(center, clock_R/25, Global.colors.center_circle1))
+	add_child(Global.new_circle_fill(center, clock_R/30, Global.colors.center_circle2))
 
 func draw_dial(p :Vector2, r :float):
 #	add_child( Global.new_circle_fill(p, r, Color.GRAY) )
@@ -35,29 +35,29 @@ func draw_dial(p :Vector2, r :float):
 #	add_child( Global.new_circle(p, r-w*0.5, Color.GRAY, w))
 #	add_child(Global.new_circle(p, r-w*1.5, Color.WEB_GRAY, w))
 #	add_child(Global.new_circle(p, r-w*2.5, Color.DIM_GRAY, w))
-	add_child(Global.new_circle(p, r-w*0, Color.GRAY, w/15))
-	add_child(Global.new_circle(p, r-w*1, Color.GRAY, w/15))
-	add_child(Global.new_circle(p, r-w*2, Color.GRAY, w/15))
-	add_child(Global.new_circle(p, r-w*3, Color.GRAY, w/15))
+	add_child(Global.new_circle(p, r-w*0, Global.colors.outer_circle1, w/15))
+	add_child(Global.new_circle(p, r-w*1, Global.colors.outer_circle2, w/15))
+	add_child(Global.new_circle(p, r-w*2, Global.colors.outer_circle3, w/15))
+	add_child(Global.new_circle(p, r-w*3, Global.colors.outer_circle4, w/15))
 	for i in range(0,360):
 		var rad = deg2rad(i)
 		if i == 0:
-			add_child( new_clock_face( p, r, Color.BLACK, Color.WHITE, rad, r/50, w*3, 0 ) )
-			add_child( new_clock_face( p, r, Color.DARK_RED, Color.RED, rad, r/200, w*3, 0 ) )
+			add_child( new_clock_face( p, r, Global.colors.dial_360_1, rad, r/50, w*3, 0 ) )
+			add_child( new_clock_face( p, r, Global.colors.dial_360_2, rad, r/200, w*3, 0 ) )
 		elif i % 90 ==0:
-			add_child( new_clock_face( p, r, Color.BLACK, Color.WHITE, rad, r/100, w*3, 0 ) )
-			add_child( new_clock_face( p, r, Color.DARK_RED, Color.RED, rad, r/300, w*2, 0 ) )
+			add_child( new_clock_face( p, r, Global.colors.dial_90_1, rad, r/100, w*3, 0 ) )
+			add_child( new_clock_face( p, r, Global.colors.dial_90_2, rad, r/300, w*2, 0 ) )
 		elif i % 30 == 0 :
-			add_child( new_clock_face( p, r, Color.BLACK, Color.WHITE, rad, r/150, w*3, 0 ) )
+			add_child( new_clock_face( p, r, Global.colors.dial_30, rad, r/150, w*3, 0 ) )
 		elif i % 6 == 0 :
-			add_child( new_clock_face( p, r, Color.BLACK, Color.WHITE, rad, r/200, w*2, 0 ) )
+			add_child( new_clock_face( p, r, Global.colors.dial_6, rad, r/200, w*2, 0 ) )
 		else :
-			add_child( new_clock_face( p, r, Color.BLACK, Color.WHITE, rad, r/400, w*1, 0 ) )
+			add_child( new_clock_face( p, r, Global.colors.dial_1, rad, r/400, w*1, 0 ) )
 
 
-func new_clock_face(p :Vector2, r :float, co1 :Color, co2 :Color, rad :float, w :float, h :float, y :float) -> Line2D:
+func new_clock_face(p :Vector2, r :float, co_list :Array, rad :float, w :float, h :float, y :float) -> Line2D:
 	var gr = Gradient.new()
-	gr.colors = [co1, co2]
+	gr.colors = co_list
 	var cr = Line2D.new()
 	cr.gradient = gr
 	cr.width = w
@@ -66,13 +66,13 @@ func new_clock_face(p :Vector2, r :float, co1 :Color, co2 :Color, rad :float, w 
 	cr.position = p
 	return cr
 
-func clock_hand(p :Vector2, dict :Dictionary) -> Line2D:
+func clock_hand(p :Vector2, co_list :Array, w :float, h: float) -> Line2D:
 	var gr = Gradient.new()
-	gr.colors = [dict.color, dict.color.darkened(0.5)]
+	gr.colors = co_list
 	var cr = Line2D.new()
 	cr.gradient = gr
-	cr.width = dict.width*clock_R
-	cr.points = [Vector2(0,-dict.height*clock_R), Vector2(0,dict.height*clock_R/8)]
+	cr.width = w*clock_R
+	cr.points = [Vector2(0,-h*clock_R), Vector2(0,h*clock_R/8)]
 	cr.begin_cap_mode = Line2D.LINE_CAP_ROUND
 	cr.end_cap_mode = Line2D.LINE_CAP_ROUND
 	cr.position = p

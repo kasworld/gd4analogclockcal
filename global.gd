@@ -18,6 +18,24 @@ var colors_dark = {
 	timelabel = Color.WHITE,
 	datelabel = Color.WHITE,
 	default_clear = Color.BLACK,
+	# analog clock
+	hour = [Color.SKY_BLUE, Color.SKY_BLUE],
+	hour2 = [Color.SKY_BLUE.darkened(0.5), Color.SKY_BLUE.darkened(0.5)],
+	minute = [Color.PALE_GREEN, Color.PALE_GREEN],
+	second = [Color.LIGHT_CORAL, Color.LIGHT_CORAL],
+	center_circle1 = Color.GOLD,
+	center_circle2 = Color.DARK_GOLDENROD,
+	outer_circle1 = Color.GRAY,
+	outer_circle2 = Color.GRAY,
+	outer_circle3 = Color.GRAY,
+	outer_circle4 = Color.GRAY,
+	dial_360_1 = [Color.BLACK, Color.WHITE],
+	dial_360_2 = [Color.DARK_RED, Color.RED],
+	dial_90_1 = [Color.BLACK, Color.WHITE],
+	dial_90_2 = [Color.DARK_RED, Color.RED],
+	dial_30 = [Color.BLACK, Color.WHITE],
+	dial_6 = [Color.BLACK, Color.WHITE],
+	dial_1 = [Color.BLACK, Color.WHITE],
 }
 var colors_light = 	{
 	weekday = [
@@ -33,32 +51,26 @@ var colors_light = 	{
 	timelabel = Color.BLACK,
 	datelabel = Color.BLACK,
 	default_clear = Color.WHITE,
+	# analog clock
+	hour = [Color.SKY_BLUE, Color.SKY_BLUE],
+	hour2 = [Color.SKY_BLUE.darkened(0.5), Color.SKY_BLUE.darkened(0.5)],
+	minute = [Color.PALE_GREEN, Color.PALE_GREEN],
+	second = [Color.LIGHT_CORAL, Color.LIGHT_CORAL],
+	center_circle1 = Color.GOLD,
+	center_circle2 = Color.DARK_GOLDENROD,
+	outer_circle1 = Color.GRAY,
+	outer_circle2 = Color.GRAY,
+	outer_circle3 = Color.GRAY,
+	outer_circle4 = Color.GRAY,
+	dial_360_1 = [Color.BLACK, Color.WHITE],
+	dial_360_2 = [Color.DARK_RED, Color.RED],
+	dial_90_1 = [Color.BLACK, Color.WHITE],
+	dial_90_2 = [Color.DARK_RED, Color.RED],
+	dial_30 = [Color.BLACK, Color.WHITE],
+	dial_6 = [Color.BLACK, Color.WHITE],
+	dial_1 = [Color.BLACK, Color.WHITE],
 }
 var colors = colors_dark
-
-# for analog clock
-var HandDict = {
-	hour = {
-		color = Color.SKY_BLUE,
-		width = 1.0/25,
-		height = 0.7,
-	},
-	hour2 = {
-		color = Color.SKY_BLUE.darkened(0.5),
-		width = 1.0/100,
-		height = 0.65,
-	},
-	minute = {
-		color = Color.PALE_GREEN,
-		width = 1.0/50,
-		height = 0.9,
-	},
-	second = {
-		color = Color.LIGHT_CORAL,
-		width = 1.0/100,
-		height = 1.0,
-	}
-}
 
 var font = preload("res://HakgyoansimBareondotumR.ttf")
 
