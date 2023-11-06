@@ -1,11 +1,9 @@
 extends Node2D
 
-func init(x :float, y :float, w :float, h :float, co1 :Color, co2 :Color)->void:
-	$LabelDate.size.x = w
-	$LabelDate.size.y = h
-	$LabelDate.position.x = x
-	$LabelDate.position.y = y
-	$LabelDate.label_settings = Global.make_label_setting(h*0.9, co1, co2)
+func init(rt :Rect2, co1 :Color, co2 :Color)->void:
+	$LabelDate.size = rt.size
+	$LabelDate.position = rt.position
+	$LabelDate.label_settings = Global.make_label_setting(rt.size.y*0.9, co1, co2)
 	_on_timer_timeout()
 
 func update_color()->void:

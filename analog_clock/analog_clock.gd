@@ -7,9 +7,8 @@ var MinuteHand :Line2D
 var SecondHand :Line2D
 
 # Called when the node enters the scene tree for the first time.
-func init(x :float, y :float, w :float, h :float) -> void:
-	clock_R = minf(w/2, h/2)
-	var center = Vector2(x,y)
+func init(center :Vector2 , size :Vector2) -> void:
+	clock_R = minf(size.x/2, size.y/2)
 
 	draw_dial(center, clock_R)
 #	draw_dial(-clock_R/2, 0,clock_R/4)

@@ -12,20 +12,20 @@ func _ready() -> void:
 	var calw = vp_size.x-vp_size.y
 	if calw > vp_size.x /2 :
 		calw = vp_size.y
-	$Calendar.init(-calw/2, -calw/2, calw, calw)
+	$Calendar.init( Rect2(-calw/2, -calw/2, calw, calw) )
 	$Calendar.position = Vector2(vp_size.x-calw/2, vp_size.y/2 )
 
 	var co = Global.colors.datelabel
-	$DateLabel.init( -vp_size.x/4/2, -vp_size.y/8*1.5,  vp_size.x/4, vp_size.y/8,
+	$DateLabel.init( Rect2(-vp_size.x/4/2, -vp_size.y/8*1.5,  vp_size.x/4, vp_size.y/8),
 		co, Global.make_shadow_color(co))
 	$DateLabel.position = Vector2(vp_size.y/2, vp_size.y/2 )
 
 	co = Global.colors.timelabel
-	$TimeLabel.init(-vp_size.x/2/2, vp_size.y/6/2,  vp_size.x/2, vp_size.y/6,
+	$TimeLabel.init( Rect2(-vp_size.x/2/2, vp_size.y/6/2,  vp_size.x/2, vp_size.y/6),
 		co, Global.make_shadow_color(co))
 	$TimeLabel.position = Vector2(vp_size.y/2, vp_size.y/2 )
 
-	$AnalogClock.init(0, 0,  vp_size.y, vp_size.y)
+	$AnalogClock.init( Vector2(0, 0), Vector2(vp_size.y, vp_size.y) )
 	$AnalogClock.position = Vector2(vp_size.y/2, vp_size.y/2 )
 
 
