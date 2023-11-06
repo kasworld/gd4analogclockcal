@@ -25,7 +25,7 @@ func _ready() -> void:
 		co, Global.make_shadow_color(co))
 	$TimeLabel.position = Vector2(vp_size.y/2, vp_size.y/2 )
 
-	$AnalogClock.init( Vector2(0, 0), Vector2(vp_size.y, vp_size.y) )
+	$AnalogClock.init( Vector2(0, 0), vp_size.y/2 , 9.0 )
 	$AnalogClock.position = Vector2(vp_size.y/2, vp_size.y/2 )
 
 

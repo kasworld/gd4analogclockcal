@@ -5,10 +5,12 @@ var HourHand :Line2D
 var HourHand2 :Line2D
 var MinuteHand :Line2D
 var SecondHand :Line2D
+var tz_shift :float
 
 # Called when the node enters the scene tree for the first time.
-func init(center :Vector2 , size :Vector2) -> void:
-	clock_R = minf(size.x/2, size.y/2)
+func init(center :Vector2 , r :float, tz_s :float) -> void:
+	tz_shift = tz_s
+	clock_R = r
 
 	draw_dial(center, clock_R)
 #	draw_dial(-clock_R/2, 0,clock_R/4)
@@ -83,18 +85,18 @@ func _process(_delta: float) -> void:
 
 func update_clock():
 	var ms = Time.get_unix_time_from_system()
-	ms = ms - int(ms)
-	var timeNowDict = Time.get_datetime_dict_from_system()
-	SecondHand.rotation = second2rad(timeNowDict["second"]) + ms2rad(ms)
-	MinuteHand.rotation = minute2rad(timeNowDict["minute"]) + second2rad(timeNowDict["second"]) / 60
-	HourHand.rotation = hour2rad(timeNowDict["hour"]) + minute2rad(timeNowDict["minute"]) /12
+	var second = ms - int(ms/60)*60
+	ms = ms / 60
+	var minute = ms - int(ms/60)*60
+	ms = ms / 60
+	var hour = ms - int(ms/24)*24 + tz_shift
+	SecondHand.rotation = second2rad(second)
+	MinuteHand.rotation = minute2rad(minute)
+	HourHand.rotation = hour2rad(hour)
 	HourHand2.rotation = HourHand.rotation
 
 func deg2rad(deg :float) ->float :
 	return deg * 2 * PI / 360
-
-func ms2rad(ms :float) -> float:
-	return 2.0*PI/60*ms
 
 func second2rad(sec :float) -> float:
 	return 2.0*PI/60.0*sec
