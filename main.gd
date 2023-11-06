@@ -15,19 +15,21 @@ func _ready() -> void:
 	$Calendar.init( Rect2(-calw/2, -calw/2, calw, calw) )
 	$Calendar.position = Vector2(vp_size.x-calw/2, vp_size.y/2 )
 
-	var co = Global.colors.datelabel
-	$DateLabel.init( Rect2(-vp_size.x/4/2, -vp_size.y/8*1.5,  vp_size.x/4, vp_size.y/8),
-		co, Global.make_shadow_color(co))
-	$DateLabel.position = Vector2(vp_size.y/2, vp_size.y/2 )
-
+	var co :Color
 	co = Global.colors.timelabel
-	$TimeLabel.init( Rect2(-vp_size.x/2/2, vp_size.y/6/2,  vp_size.x/2, vp_size.y/6),
+	$TimeLabel.init(
+		Rect2(-vp_size.x/2/2, -vp_size.y/6*1.5, vp_size.x/2, vp_size.y/6),
 		co, Global.make_shadow_color(co))
 	$TimeLabel.position = Vector2(vp_size.y/2, vp_size.y/2 )
 
+	co = Global.colors.datelabel
+	$DateLabel.init(
+		Rect2(-vp_size.x/4/2, vp_size.y/8/2,  vp_size.x/4, vp_size.y/8 ),
+		co, Global.make_shadow_color(co))
+	$DateLabel.position = Vector2(vp_size.y/2, vp_size.y/2 )
+
 	$AnalogClock.init( Vector2(0, 0), vp_size.y/2 , 9.0 )
 	$AnalogClock.position = Vector2(vp_size.y/2, vp_size.y/2 )
-
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 var oldvt = Vector2(0,-100)
