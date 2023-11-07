@@ -18,7 +18,7 @@ func _ready() -> void:
 	var co :Color
 	co = Global.colors.timelabel
 	$TimeLabel.init(
-		Rect2(-vp_size.x/2/2, -vp_size.y/6*1.5, vp_size.x/2, vp_size.y/6),
+		Rect2(-vp_size.x/3/2, -vp_size.y/4, vp_size.x/3, vp_size.y/6),
 		co, Global.make_shadow_color(co))
 	$TimeLabel.position = Vector2(vp_size.y/2, vp_size.y/2 )
 

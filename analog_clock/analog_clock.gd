@@ -29,17 +29,11 @@ func init(center :Vector2 , r :float, tz_s :float) -> void:
 	add_child(Global.new_circle_fill(center, clock_R/30, Global.colors.center_circle2))
 
 func draw_dial(p :Vector2, r :float):
-#	add_child( Global.new_circle_fill(p, r, Color.GRAY) )
-#	add_child( Global.new_circle_fill(p, r-r/20, Color.WEB_GRAY) )
-#	add_child( Global.new_circle_fill(p, r-r/10, Color.BLACK) )
 	var w = r/30
-#	add_child( Global.new_circle(p, r-w*0.5, Color.GRAY, w))
-#	add_child(Global.new_circle(p, r-w*1.5, Color.WEB_GRAY, w))
-#	add_child(Global.new_circle(p, r-w*2.5, Color.DIM_GRAY, w))
-	add_child(Global.new_circle(p, r-w*0, Global.colors.outer_circle1, w/15))
-	add_child(Global.new_circle(p, r-w*1, Global.colors.outer_circle2, w/15))
-	add_child(Global.new_circle(p, r-w*2, Global.colors.outer_circle3, w/15))
-	add_child(Global.new_circle(p, r-w*3, Global.colors.outer_circle4, w/15))
+#	add_child(Global.new_circle(p, r-w*0, Global.colors.outer_circle1, w/15))
+#	add_child(Global.new_circle(p, r-w*1, Global.colors.outer_circle2, w/15))
+#	add_child(Global.new_circle(p, r-w*2, Global.colors.outer_circle3, w/15))
+#	add_child(Global.new_circle(p, r-w*3, Global.colors.outer_circle4, w/15))
 	for i in range(0,360):
 		var rad = deg2rad(i)
 		if i == 0:
@@ -55,6 +49,19 @@ func draw_dial(p :Vector2, r :float):
 		else :
 			add_child( new_clock_face( p, r, Global.colors.dial_1, rad, r/400, w*1, 0 ) )
 
+	for i in range(1,13):
+		add_child(hour_letter(p,r, i))
+
+func hour_letter(p :Vector2,r :float,  i :int)->Label:
+	var lb = Label.new()
+	lb.text = "%d" % i
+	lb.label_settings = Global.make_label_setting(clock_R/8, Color.DIM_GRAY, Color.GRAY)
+	lb.horizontal_alignment = HorizontalAlignment.HORIZONTAL_ALIGNMENT_CENTER
+	lb.vertical_alignment = VerticalAlignment.VERTICAL_ALIGNMENT_CENTER
+	var rad = deg2rad( i*30.0 -90)
+#	lb.rotation = rad + PI/2
+	lb.position = Vector2( r*0.85 * cos(rad), r*0.85 * sin(rad) ) + p - Vector2(r*0.04,r*0.06)
+	return lb
 
 func new_clock_face(p :Vector2, r :float, co_list :Array, rad :float, w :float, h :float, y :float) -> Line2D:
 	var gr = Gradient.new()
