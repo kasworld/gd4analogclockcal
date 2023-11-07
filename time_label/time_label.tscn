@@ -6,6 +6,7 @@
 script = ExtResource("1_0oe0p")
 
 [node name="Timer" type="Timer" parent="."]
+wait_time = 0.1
 autostart = true
 
 [node name="LabelTime" type="Label" parent="."]
