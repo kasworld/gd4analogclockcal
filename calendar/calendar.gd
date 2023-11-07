@@ -2,12 +2,18 @@ extends Node2D
 
 var calendar_labels = []
 
-func init( rt :Rect2)->void:
-	$GridCalendar.size = rt.size
-	$GridCalendar.position = rt.position
+@onready var GridCalendar = $VBoxContainer/GridCalendar
+@onready var LabelDate = $VBoxContainer/LabelDate
 
-	init_calendar_labels(rt.size.y/8.5)
-	update_calendar()
+func init(rt :Rect2)->void:
+	$VBoxContainer.size = rt.size
+	$VBoxContainer.position = rt.position
+
+	var co = Global.colors.datelabel
+	LabelDate.label_settings = Global.make_label_setting(rt.size.y/9, co, Global.make_shadow_color(co))
+
+	init_calendar_labels(rt.size.y/9)
+	_on_timer_timeout()
 
 func update_color()->void:
 	for i in range(7): # week title + 6 week
@@ -15,6 +21,10 @@ func update_color()->void:
 			var co = Global.colors.weekday[j]
 			Global.set_label_color(calendar_labels[i][j], co, Global.make_shadow_color(co))
 	update_calendar()
+
+	var co = Global.colors.datelabel
+	Global.set_label_color(LabelDate, co, Global.make_shadow_color(co))
+
 
 func init_calendar_labels(font_size :float)->void:
 	# prepare calendar
@@ -28,7 +38,7 @@ func init_calendar_labels(font_size :float)->void:
 			lb.vertical_alignment = VerticalAlignment.VERTICAL_ALIGNMENT_CENTER
 			var co = Global.colors.weekday[j]
 			lb.label_settings = Global.make_label_setting(font_size, co, Global.make_shadow_color(co))
-			$GridCalendar.add_child(lb)
+			GridCalendar.add_child(lb)
 			ln.append(lb)
 		calendar_labels.append(ln)
 
@@ -59,4 +69,8 @@ func _on_timer_timeout() -> void:
 	if old_time_dict["day"] != time_now_dict["day"]:
 		old_time_dict = time_now_dict
 		update_calendar()
+
+		LabelDate.text = "%04d년 %02d월" % [
+			time_now_dict["year"] , time_now_dict["month"]
+			]
 

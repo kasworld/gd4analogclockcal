@@ -22,12 +22,6 @@ func _ready() -> void:
 		co, Global.make_shadow_color(co))
 	$TimeLabel.position = Vector2(vp_size.y/2, vp_size.y/2 )
 
-	co = Global.colors.datelabel
-	$DateLabel.init(
-		Rect2(-vp_size.x/4/2, vp_size.y/8/2,  vp_size.x/4, vp_size.y/8 ),
-		co, Global.make_shadow_color(co))
-	$DateLabel.position = Vector2(vp_size.y/2, vp_size.y/2 )
-
 	$AnalogClock.init( Vector2(0, 0), vp_size.y/2 , 9.0 )
 	$AnalogClock.position = Vector2(vp_size.y/2, vp_size.y/2 )
 
@@ -50,7 +44,6 @@ func _process(_delta: float) -> void:
 func rotate_all(rad :float):
 	$AnalogClock.rotation = rad
 	$TimeLabel.rotation = rad
-	$DateLabel.rotation = rad
 	$Calendar.rotation = rad
 
 # esc to exit
@@ -87,7 +80,6 @@ func set_color_mode_by_time()->void:
 func update_color(darkmode :bool)->void:
 	Global.set_dark_mode(darkmode)
 	$TimeLabel.update_color()
-	$DateLabel.update_color()
 	$Calendar.update_color()
 
 # change dark mode by time
