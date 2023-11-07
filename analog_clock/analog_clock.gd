@@ -54,13 +54,13 @@ func draw_dial(p :Vector2, r :float):
 
 func hour_letter(p :Vector2,r :float,  i :int)->Label:
 	var lb = Label.new()
-	lb.text = "%d" % i
+	lb.text = "%2d" % i
 	lb.label_settings = Global.make_label_setting(clock_R/8, Color.DIM_GRAY, Color.GRAY)
 	lb.horizontal_alignment = HorizontalAlignment.HORIZONTAL_ALIGNMENT_CENTER
 	lb.vertical_alignment = VerticalAlignment.VERTICAL_ALIGNMENT_CENTER
 	var rad = deg2rad( i*30.0 -90)
 #	lb.rotation = rad + PI/2
-	lb.position = Vector2( r*0.85 * cos(rad), r*0.85 * sin(rad) ) + p - Vector2(r*0.04,r*0.06)
+	lb.position = Vector2( r*0.85 * cos(rad), r*0.85 * sin(rad) ) + p - Vector2(r*0.08,r*0.06)
 	return lb
 
 func new_clock_face(p :Vector2, r :float, co_list :Array, rad :float, w :float, h :float, y :float) -> Line2D:
