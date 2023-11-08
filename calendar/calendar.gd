@@ -70,7 +70,7 @@ func _on_timer_timeout() -> void:
 		old_time_dict = time_now_dict
 		update_calendar()
 
-		LabelDate.text = "%04d년 %02d월" % [
+		LabelDate.text = "%4d년 %2d월" % [
 			time_now_dict["year"] , time_now_dict["month"]
 			]
 
