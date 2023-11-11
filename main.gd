@@ -1,29 +1,34 @@
 extends Node2D
 
-var vp_size :Vector2
+var vp_rect :Rect2
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	set_color_mode_by_time()
 
 	init_http()
-	vp_size = get_viewport_rect().size
+	vp_rect = get_viewport_rect()
 
-	var calw = vp_size.x-vp_size.y
-	if calw > vp_size.x /2 :
-		calw = vp_size.y
+	var calw = vp_rect.size.x-vp_rect.size.y
+	if calw > vp_rect.size.x /2 :
+		calw = vp_rect.size.y
 	$Calendar.init( Rect2(-calw/2, -calw/2, calw, calw) )
-	$Calendar.position = Vector2(vp_size.x-calw/2, vp_size.y/2 )
+	$Calendar.position = Vector2(vp_rect.size.x-calw/2, vp_rect.size.y/2 )
 
 	var co :Color
 	co = Global.colors.timelabel
 	$TimeLabel.init(
-		Rect2(-vp_size.x/3/2, -vp_size.y/4, vp_size.x/3, vp_size.y/6),
+		Rect2(-vp_rect.size.x/3/2, -vp_rect.size.y/4, vp_rect.size.x/3, vp_rect.size.y/6),
 		co, Global.make_shadow_color(co))
-	$TimeLabel.position = Vector2(vp_size.y/2, vp_size.y/2 )
+	$TimeLabel.position = Vector2(vp_rect.size.y/2, vp_rect.size.y/2 )
 
-	$AnalogClock.init( Vector2(0, 0), vp_size.y/2 , 9.0 )
-	$AnalogClock.position = Vector2(vp_size.y/2, vp_size.y/2 )
+	$AnalogClock.init( Vector2(0, 0), vp_rect.size.y/2 , 9.0 )
+	$AnalogClock.position = Vector2(vp_rect.size.y/2, vp_rect.size.y/2 )
+
+	var msgrect = Rect2( vp_rect.size.x * 0.2 ,vp_rect.size.y * 0.4 , vp_rect.size.x * 0.6 , vp_rect.size.y * 0.2   )
+	$TimedMessage.init(msgrect, tr("gd4analogclockcal 2.0"))
+	$TimedMessage.show_message("시작합니다.")
+
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 var oldvt = Vector2(0,-100)
