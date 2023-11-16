@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://btxtva4j47rfm"]
+[gd_scene load_steps=7 format=3 uid="uid://btxtva4j47rfm"]
 
 [ext_resource type="PackedScene" uid="uid://66uu15vflcpu" path="res://analog_clock/analog_clock.tscn" id="1_eyl4w"]
 [ext_resource type="Script" path="res://main.gd" id="1_q4spd"]
 [ext_resource type="PackedScene" uid="uid://b1m11n5rm2gh7" path="res://calendar/calendar.tscn" id="2_4ure6"]
 [ext_resource type="PackedScene" uid="uid://cwmx6m8hhfxdx" path="res://time_label/time_label.tscn" id="4_7h3nq"]
 [ext_resource type="PackedScene" uid="uid://c6cct2gj2a3im" path="res://timed_message/timed_message.tscn" id="5_kxj0x"]
+[ext_resource type="PackedScene" uid="uid://bf1vkxi8i0lm1" path="res://ani_move/ani_move.tscn" id="6_8hgi2"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_q4spd")
@@ -22,5 +23,7 @@ autostart = true
 
 [node name="TimedMessage" parent="." instance=ExtResource("5_kxj0x")]
 visible = false
+
+[node name="AniMove" parent="." instance=ExtResource("6_8hgi2")]
 
 [connection signal="timeout" from="TimerDayNight" to="." method="_on_timer_day_night_timeout"]
