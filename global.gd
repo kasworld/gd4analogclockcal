@@ -17,7 +17,10 @@ var colors_dark = {
 	today = Color.GREEN,
 	timelabel = Color.WHITE,
 	datelabel = Color.WHITE,
+	infolabel = Color.WHITE,
+	paneloption = Color.WHITE,
 	default_clear = Color.BLACK,
+
 	# analog clock
 	hour = [Color.SKY_BLUE, Color.SKY_BLUE],
 	hour2 = [Color.SKY_BLUE.darkened(0.5), Color.SKY_BLUE.darkened(0.5)],
@@ -50,6 +53,8 @@ var colors_light = 	{
 	today = Color.GREEN.darkened(0.5),
 	timelabel = Color.BLACK,
 	datelabel = Color.BLACK,
+	infolabel = Color.BLACK,
+	paneloption = Color.BLACK,
 	default_clear = Color.WHITE,
 	# analog clock
 	hour = [Color.SKY_BLUE, Color.SKY_BLUE],
@@ -113,7 +118,6 @@ func set_label_font_size(lb :Label, font_size :float)->void:
 	lb.label_settings.font_size = font_size
 	var offset = calc_font_offset_vector2(font_size)
 	lb.label_settings.shadow_offset = offset
-
 
 func new_circle_fill(p :Vector2, r :float, co:Color) -> Polygon2D :
 	var rtn = Polygon2D.new()

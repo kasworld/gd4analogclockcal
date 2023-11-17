@@ -1,16 +1,22 @@
-[gd_scene load_steps=7 format=3 uid="uid://btxtva4j47rfm"]
+[gd_scene load_steps=8 format=3 uid="uid://btxtva4j47rfm"]
 
 [ext_resource type="PackedScene" uid="uid://66uu15vflcpu" path="res://analog_clock/analog_clock.tscn" id="1_eyl4w"]
 [ext_resource type="Script" path="res://main.gd" id="1_q4spd"]
 [ext_resource type="PackedScene" uid="uid://b1m11n5rm2gh7" path="res://calendar/calendar.tscn" id="2_4ure6"]
 [ext_resource type="PackedScene" uid="uid://cwmx6m8hhfxdx" path="res://time_label/time_label.tscn" id="4_7h3nq"]
-[ext_resource type="PackedScene" uid="uid://c6cct2gj2a3im" path="res://timed_message/timed_message.tscn" id="5_kxj0x"]
 [ext_resource type="PackedScene" uid="uid://bf1vkxi8i0lm1" path="res://ani_move/ani_move.tscn" id="6_8hgi2"]
+[ext_resource type="PackedScene" uid="uid://btysv8q6rp8ku" path="res://panel_option/panel_option.tscn" id="6_wscdf"]
+[ext_resource type="PackedScene" uid="uid://b0lh1apt682gt" path="res://info_label/info_label.tscn" id="7_wokk2"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_q4spd")
 
+[node name="BackgroundSprite" type="Sprite2D" parent="."]
+z_index = -1
+
 [node name="TimeLabel" parent="." instance=ExtResource("4_7h3nq")]
+
+[node name="InfoLabel" parent="." instance=ExtResource("7_wokk2")]
 
 [node name="Calendar" parent="." instance=ExtResource("2_4ure6")]
 position = Vector2(1080, 160)
@@ -21,9 +27,14 @@ position = Vector2(540, 540)
 [node name="TimerDayNight" type="Timer" parent="."]
 autostart = true
 
-[node name="TimedMessage" parent="." instance=ExtResource("5_kxj0x")]
-visible = false
-
 [node name="AniMove" parent="." instance=ExtResource("6_8hgi2")]
 
+[node name="PanelOption" parent="." instance=ExtResource("6_wscdf")]
+
+[node name="AutoHideOptionPanel" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+autostart = true
+
 [connection signal="timeout" from="TimerDayNight" to="." method="_on_timer_day_night_timeout"]
+[connection signal="timeout" from="AutoHideOptionPanel" to="." method="_on_auto_hide_option_panel_timeout"]
