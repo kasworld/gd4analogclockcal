@@ -119,12 +119,13 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed:
 		if event.keycode == KEY_ESCAPE:
 			get_tree().quit()
+		elif event.keycode == KEY_ENTER:
+			_on_button_option_pressed()
 		else:
 			update_color(not Global.dark_mode)
 
 	elif event is InputEventMouseButton and event.is_pressed():
 		update_color(not Global.dark_mode)
-
 
 func init_http():
 	var ccr = ClockCalRouter.new()
@@ -141,6 +142,9 @@ func config_changed():
 	for k in request_dict:
 		request_dict[k].url_to_get = $PanelOption.cfg.config[k]
 		request_dict[k].force_update()
+
+func _on_button_option_pressed() -> void:
+	$PanelOption.visible = not $PanelOption.visible
 
 func _on_auto_hide_option_panel_timeout() -> void:
 	$PanelOption.hide()
