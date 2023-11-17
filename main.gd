@@ -194,6 +194,7 @@ func update_color(darkmode :bool)->void:
 	$TimeLabel.update_color()
 	$InfoLabel.update_color()
 	$Calendar.update_color()
+	$AnalogClock.update_color()
 
 # change dark mode by time
 var old_time_dict = Time.get_datetime_dict_from_system() # datetime dict

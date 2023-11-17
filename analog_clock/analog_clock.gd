@@ -6,6 +6,7 @@ var HourHand2 :Line2D
 var MinuteHand :Line2D
 var SecondHand :Line2D
 var tz_shift :float
+var dial_nums :Array
 
 # Called when the node enters the scene tree for the first time.
 func init(center :Vector2 , r :float, tz_s :float) -> void:
@@ -50,12 +51,18 @@ func draw_dial(p :Vector2, r :float):
 			add_child( new_clock_face( p, r, Global.colors.dial_1, rad, r/400, w*1, 0 ) )
 
 	for i in range(1,13):
-		add_child(hour_letter(p,r, i))
+		var n = hour_letter(p,r, i)
+		dial_nums.append(n)
+		add_child(n)
+
+func update_color()->void:
+	for n in dial_nums:
+		Global.set_label_color(n,Global.colors.dial_num[0], Global.colors.dial_num[1] )
 
 func hour_letter(p :Vector2,r :float,  i :int)->Label:
 	var lb = Label.new()
 	lb.text = "%2d" % i
-	lb.label_settings = Global.make_label_setting(clock_R/8, Color.DIM_GRAY, Color.GRAY)
+	lb.label_settings = Global.make_label_setting(clock_R/8, Global.colors.dial_num[0], Global.colors.dial_num[1])
 	lb.horizontal_alignment = HorizontalAlignment.HORIZONTAL_ALIGNMENT_CENTER
 	lb.vertical_alignment = VerticalAlignment.VERTICAL_ALIGNMENT_CENTER
 	var rad = deg2rad( i*30.0 -90)
