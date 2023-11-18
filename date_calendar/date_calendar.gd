@@ -12,6 +12,9 @@ func init(rt :Rect2)->void:
 	_on_timer_timeout()
 
 func update_color()->void:
+	var co = Global.colors.datelabel
+	Global.set_label_color($VBoxContainer/LabelDate, co, Global.make_shadow_color(co))
+
 	$VBoxContainer/Calendar.update_color()
 
 var old_time_dict = {"day":0} # datetime dict
