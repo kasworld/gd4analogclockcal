@@ -8,6 +8,16 @@ func init(rt :Rect2, co1 :Color, co2 :Color)->void:
 
 var height :float
 
+func get_req_callable()->Dictionary:
+	return {
+		weather_success = weather_success,
+		weather_fail = weather_fail,
+		dayinfo_success = dayinfo_success,
+		dayinfo_fail = dayinfo_fail,
+		todayinfo_success = todayinfo_success,
+		todayinfo_fail = todayinfo_fail,
+	}
+
 var weather_info :Array[String]
 func weather_success(body)->void:
 	var text = body.get_string_from_utf8()

@@ -1,0 +1,15 @@
+[gd_scene load_steps=5 format=3 uid="uid://dctr260o2g2x7"]
+
+[ext_resource type="Script" path="res://sect_analog_clock/sect_analog_clock.gd" id="1_ipdw3"]
+[ext_resource type="PackedScene" uid="uid://cwmx6m8hhfxdx" path="res://time_label/time_label.tscn" id="2_gnvw0"]
+[ext_resource type="PackedScene" uid="uid://b0lh1apt682gt" path="res://info_label/info_label.tscn" id="3_dkeg8"]
+[ext_resource type="PackedScene" uid="uid://66uu15vflcpu" path="res://analog_clock/analog_clock.tscn" id="4_wd82t"]
+
+[node name="SectAnalogClock" type="Node2D"]
+script = ExtResource("1_ipdw3")
+
+[node name="TimeLabel" parent="." instance=ExtResource("2_gnvw0")]
+
+[node name="InfoLabel" parent="." instance=ExtResource("3_dkeg8")]
+
+[node name="AnalogClock" parent="." instance=ExtResource("4_wd82t")]

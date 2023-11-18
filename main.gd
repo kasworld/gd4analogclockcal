@@ -1,11 +1,8 @@
 extends Node2D
 
 var vp_rect :Rect2
-
 var calendar_pos_list :Array
-var timelabel_pos_list :Array
 var analogclock_pos_list :Array
-var infolabel_pos_list :Array
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -19,32 +16,16 @@ func _ready() -> void:
 	var calw = vp_rect.size.x-vp_rect.size.y
 	if calw > vp_rect.size.x /2 :
 		calw = vp_rect.size.y
-	$DateCalendar.init( Rect2(-calw/2, -calw/2, calw, calw) )
+	$SectCalendar.init( Rect2(-calw/2, -calw/2, calw, calw) )
 	calendar_pos_list.append(Vector2(vp_rect.size.x-calw/2, vp_rect.size.y/2 ))
 	calendar_pos_list.append(Vector2(calw/2, vp_rect.size.y/2 ))
-	$DateCalendar.position = calendar_pos_list[0]
+	$SectCalendar.position = calendar_pos_list[0]
 
 	var co :Color
-	co = Global.colors.timelabel
-	$TimeLabel.init(
-		Rect2(-vp_rect.size.x/3/2, -vp_rect.size.y/4, vp_rect.size.x/3, vp_rect.size.y/6),
-		co, Global.make_shadow_color(co))
-	timelabel_pos_list.append(Vector2(vp_rect.size.y/2, vp_rect.size.y/2 ))
-	timelabel_pos_list.append(Vector2(vp_rect.size.x - vp_rect.size.y/2, vp_rect.size.y/2 ))
-	$TimeLabel.position = timelabel_pos_list[0]
-
-	$AnalogClock.init( Vector2(0, 0), vp_rect.size.y/2 , 9.0 )
+	$SectAnalogClock.init( Rect2(-vp_rect.size.y/2,-vp_rect.size.y/2,vp_rect.size.y,vp_rect.size.y) )
 	analogclock_pos_list.append(Vector2(vp_rect.size.y/2, vp_rect.size.y/2 ))
 	analogclock_pos_list.append(Vector2(vp_rect.size.x - vp_rect.size.y/2, vp_rect.size.y/2 ))
-	$AnalogClock.position = analogclock_pos_list[0]
-
-	co = Global.colors.infolabel
-	$InfoLabel.init(
-		Rect2(-vp_rect.size.x/3/2, vp_rect.size.y/20, vp_rect.size.x/3, vp_rect.size.y/2),
-		co, Global.make_shadow_color(co) )
-	infolabel_pos_list.append(Vector2(vp_rect.size.y/2, vp_rect.size.y/2 ))
-	infolabel_pos_list.append(Vector2(vp_rect.size.x - vp_rect.size.y/2, vp_rect.size.y/2 ))
-	$InfoLabel.position = timelabel_pos_list[0]
+	$SectAnalogClock.position = analogclock_pos_list[0]
 
 	co = Global.colors.paneloption
 	var optrect = Rect2( vp_rect.size.x * 0.1 ,vp_rect.size.y * 0.3 , vp_rect.size.x * 0.8 , vp_rect.size.y * 0.4 )
@@ -52,16 +33,9 @@ func _ready() -> void:
 	$PanelOption.config_changed.connect(config_changed)
 	init_request_dict()
 
-#	var msgrect = Rect2( vp_rect.size.x * 0.2 ,vp_rect.size.y * 0.4 , vp_rect.size.x * 0.6 , vp_rect.size.y * 0.2   )
-#	$TimedMessage.init(msgrect, tr("gd4analogclockcal 2.1.0"))
-#	$TimedMessage.show_message("Copyright 2023 SeukWon Kang (kasworld@gmail.com)")
-
-
 func reset_pos()->void:
-	$TimeLabel.position = timelabel_pos_list[0]
-	$InfoLabel.position = timelabel_pos_list[0]
-	$DateCalendar.position = calendar_pos_list[0]
-	$AnalogClock.position = analogclock_pos_list[0]
+	$SectCalendar.position = calendar_pos_list[0]
+	$SectAnalogClock.position = analogclock_pos_list[0]
 	$AniMove.stop()
 
 func animove_toggle()->void:
@@ -75,18 +49,13 @@ func animove_step():
 	var ms = $AniMove.get_ms()
 	match $AniMove.state%2:
 		0:
-			$AniMove.move_by_ms($TimeLabel, timelabel_pos_list[0], timelabel_pos_list[1], ms)
-			$AniMove.move_by_ms($InfoLabel, infolabel_pos_list[0], infolabel_pos_list[1], ms)
-			$AniMove.move_by_ms($DateCalendar, calendar_pos_list[0], calendar_pos_list[1], ms)
-			$AniMove.move_by_ms($AnalogClock, analogclock_pos_list[0], analogclock_pos_list[1], ms)
+			$AniMove.move_by_ms($SectCalendar, calendar_pos_list[0], calendar_pos_list[1], ms)
+			$AniMove.move_by_ms($SectAnalogClock, analogclock_pos_list[0], analogclock_pos_list[1], ms)
 		1:
-			$AniMove.move_by_ms($TimeLabel, timelabel_pos_list[1], timelabel_pos_list[0], ms)
-			$AniMove.move_by_ms($InfoLabel, infolabel_pos_list[1], infolabel_pos_list[0], ms)
-			$AniMove.move_by_ms($DateCalendar, calendar_pos_list[1], calendar_pos_list[0], ms)
-			$AniMove.move_by_ms($AnalogClock, analogclock_pos_list[1], analogclock_pos_list[0], ms)
+			$AniMove.move_by_ms($SectCalendar, calendar_pos_list[1], calendar_pos_list[0], ms)
+			$AniMove.move_by_ms($SectAnalogClock, analogclock_pos_list[1], analogclock_pos_list[0], ms)
 		_:
 			print_debug("invalid state", $AniMove.state)
-
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
@@ -109,10 +78,8 @@ func rot_by_accel()->void:
 		rotate_all(rad)
 
 func rotate_all(rad :float):
-	$AnalogClock.rotation = rad
-	$TimeLabel.rotation = rad
-	$InfoLabel.rotation = rad
-	$DateCalendar.rotation = rad
+	$SectAnalogClock.rotation = rad
+	$SectCalendar.rotation = rad
 
 # esc to exit
 func _unhandled_input(event: InputEvent) -> void:
@@ -151,17 +118,18 @@ func _on_auto_hide_option_panel_timeout() -> void:
 
 var request_dict = {}
 func init_request_dict()->void:
+	var callable_dict = $SectAnalogClock.get_req_callable()
 	request_dict["weather_url"] = MyHTTPRequest.new(
 		$PanelOption.cfg.config["weather_url"],
-		60,	$InfoLabel.weather_success, $InfoLabel.weather_fail,
+		60,	callable_dict.weather_success, callable_dict.weather_fail,
 	)
 	request_dict["dayinfo_url"] = MyHTTPRequest.new(
 		$PanelOption.cfg.config["dayinfo_url"],
-		60, $InfoLabel.dayinfo_success, $InfoLabel.dayinfo_fail,
+		60, callable_dict.dayinfo_success, callable_dict.dayinfo_fail,
 	)
 	request_dict["todayinfo_url"] = MyHTTPRequest.new(
 		$PanelOption.cfg.config["todayinfo_url"],
-		60, $InfoLabel.todayinfo_success, $InfoLabel.todayinfo_fail,
+		60, callable_dict.todayinfo_success, callable_dict.todayinfo_fail,
 	)
 	request_dict["background_url"] = MyHTTPRequest.new(
 		$PanelOption.cfg.config["background_url"],
@@ -191,10 +159,8 @@ func set_color_mode_by_time()->void:
 
 func update_color(darkmode :bool)->void:
 	Global.set_dark_mode(darkmode)
-	$TimeLabel.update_color()
-	$InfoLabel.update_color()
-	$DateCalendar.update_color()
-	$AnalogClock.update_color()
+	$SectCalendar.update_color()
+	$SectAnalogClock.update_color()
 
 # change dark mode by time
 var old_time_dict = Time.get_datetime_dict_from_system() # datetime dict

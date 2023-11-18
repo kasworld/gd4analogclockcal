@@ -1,12 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://btxtva4j47rfm"]
+[gd_scene load_steps=6 format=3 uid="uid://btxtva4j47rfm"]
 
-[ext_resource type="PackedScene" uid="uid://66uu15vflcpu" path="res://analog_clock/analog_clock.tscn" id="1_eyl4w"]
 [ext_resource type="Script" path="res://main.gd" id="1_q4spd"]
-[ext_resource type="PackedScene" uid="uid://cwmx6m8hhfxdx" path="res://time_label/time_label.tscn" id="4_7h3nq"]
-[ext_resource type="PackedScene" uid="uid://dl1x7ofp7wto2" path="res://date_calendar/date_calendar.tscn" id="5_7bnet"]
+[ext_resource type="PackedScene" uid="uid://dctr260o2g2x7" path="res://sect_analog_clock/sect_analog_clock.tscn" id="2_sgkgi"]
+[ext_resource type="PackedScene" uid="uid://dl1x7ofp7wto2" path="res://sect_calendar/sect_calendar.tscn" id="5_7bnet"]
 [ext_resource type="PackedScene" uid="uid://bf1vkxi8i0lm1" path="res://ani_move/ani_move.tscn" id="6_8hgi2"]
 [ext_resource type="PackedScene" uid="uid://btysv8q6rp8ku" path="res://panel_option/panel_option.tscn" id="6_wscdf"]
-[ext_resource type="PackedScene" uid="uid://b0lh1apt682gt" path="res://info_label/info_label.tscn" id="7_wokk2"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_q4spd")
@@ -14,14 +12,9 @@ script = ExtResource("1_q4spd")
 [node name="BackgroundSprite" type="Sprite2D" parent="."]
 z_index = -1
 
-[node name="TimeLabel" parent="." instance=ExtResource("4_7h3nq")]
+[node name="SectAnalogClock" parent="." instance=ExtResource("2_sgkgi")]
 
-[node name="InfoLabel" parent="." instance=ExtResource("7_wokk2")]
-
-[node name="AnalogClock" parent="." instance=ExtResource("1_eyl4w")]
-position = Vector2(540, 540)
-
-[node name="DateCalendar" parent="." instance=ExtResource("5_7bnet")]
+[node name="SectCalendar" parent="." instance=ExtResource("5_7bnet")]
 
 [node name="TimerDayNight" type="Timer" parent="."]
 autostart = true

@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://dl1x7ofp7wto2"]
 
-[ext_resource type="Script" path="res://date_calendar/date_calendar.gd" id="1_gm1gq"]
+[ext_resource type="Script" path="res://sect_calendar/sect_calendar.gd" id="1_gm1gq"]
 [ext_resource type="PackedScene" uid="uid://b1m11n5rm2gh7" path="res://calendar/calendar.tscn" id="1_gucbb"]
 
 [node name="DateCalendar" type="Node2D"]
