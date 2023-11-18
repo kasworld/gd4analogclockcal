@@ -19,10 +19,10 @@ func _ready() -> void:
 	var calw = vp_rect.size.x-vp_rect.size.y
 	if calw > vp_rect.size.x /2 :
 		calw = vp_rect.size.y
-	$Calendar.init( Rect2(-calw/2, -calw/2, calw, calw) )
+	$DateCalendar.init( Rect2(-calw/2, -calw/2, calw, calw) )
 	calendar_pos_list.append(Vector2(vp_rect.size.x-calw/2, vp_rect.size.y/2 ))
 	calendar_pos_list.append(Vector2(calw/2, vp_rect.size.y/2 ))
-	$Calendar.position = calendar_pos_list[0]
+	$DateCalendar.position = calendar_pos_list[0]
 
 	var co :Color
 	co = Global.colors.timelabel
@@ -60,7 +60,7 @@ func _ready() -> void:
 func reset_pos()->void:
 	$TimeLabel.position = timelabel_pos_list[0]
 	$InfoLabel.position = timelabel_pos_list[0]
-	$Calendar.position = calendar_pos_list[0]
+	$DateCalendar.position = calendar_pos_list[0]
 	$AnalogClock.position = analogclock_pos_list[0]
 	$AniMove.stop()
 
@@ -77,12 +77,12 @@ func animove_step():
 		0:
 			$AniMove.move_by_ms($TimeLabel, timelabel_pos_list[0], timelabel_pos_list[1], ms)
 			$AniMove.move_by_ms($InfoLabel, infolabel_pos_list[0], infolabel_pos_list[1], ms)
-			$AniMove.move_by_ms($Calendar, calendar_pos_list[0], calendar_pos_list[1], ms)
+			$AniMove.move_by_ms($DateCalendar, calendar_pos_list[0], calendar_pos_list[1], ms)
 			$AniMove.move_by_ms($AnalogClock, analogclock_pos_list[0], analogclock_pos_list[1], ms)
 		1:
 			$AniMove.move_by_ms($TimeLabel, timelabel_pos_list[1], timelabel_pos_list[0], ms)
 			$AniMove.move_by_ms($InfoLabel, infolabel_pos_list[1], infolabel_pos_list[0], ms)
-			$AniMove.move_by_ms($Calendar, calendar_pos_list[1], calendar_pos_list[0], ms)
+			$AniMove.move_by_ms($DateCalendar, calendar_pos_list[1], calendar_pos_list[0], ms)
 			$AniMove.move_by_ms($AnalogClock, analogclock_pos_list[1], analogclock_pos_list[0], ms)
 		_:
 			print_debug("invalid state", $AniMove.state)
@@ -112,7 +112,7 @@ func rotate_all(rad :float):
 	$AnalogClock.rotation = rad
 	$TimeLabel.rotation = rad
 	$InfoLabel.rotation = rad
-	$Calendar.rotation = rad
+	$DateCalendar.rotation = rad
 
 # esc to exit
 func _unhandled_input(event: InputEvent) -> void:
@@ -193,7 +193,7 @@ func update_color(darkmode :bool)->void:
 	Global.set_dark_mode(darkmode)
 	$TimeLabel.update_color()
 	$InfoLabel.update_color()
-	$Calendar.update_color()
+	$DateCalendar.update_color()
 	$AnalogClock.update_color()
 
 # change dark mode by time
