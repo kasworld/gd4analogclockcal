@@ -51,7 +51,8 @@ func update_color()->void:
 func update_info_label()->void:
 	var dayinfo = day_info.get_daystringlist()
 	var all = []
-	all.append(" ".join(weather_info))
+	if weather_info.size() > 0:
+		all.append(" ".join(weather_info))
 	all.append_array(dayinfo)
 	all.append_array(today_info)
 	$LabelInfo.text = "\n".join(all)
