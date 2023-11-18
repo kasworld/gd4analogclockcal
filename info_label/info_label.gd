@@ -51,9 +51,9 @@ func update_color()->void:
 func update_info_label()->void:
 	var dayinfo = day_info.get_daystringlist()
 	var all = []
+	all.append(" ".join(weather_info))
 	all.append_array(dayinfo)
 	all.append_array(today_info)
-	all.append_array(weather_info)
 	$LabelInfo.text = "\n".join(all)
 	var line2calcfont = clampf(all.size(), 6, 20)
 	var fontsize = height/line2calcfont
