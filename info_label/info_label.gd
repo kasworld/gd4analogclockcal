@@ -56,7 +56,7 @@ func update_info_label()->void:
 	all.append_array(dayinfo)
 	all.append_array(today_info)
 	$LabelInfo.text = "\n".join(all)
-	var line2calcfont = clampf(all.size(), 6, 20)
+	var line2calcfont = clampf(all.size(), 4, 10)
 	var fontsize = height/line2calcfont
 	Global.set_label_font_size($LabelInfo, fontsize )
 
