@@ -7,6 +7,8 @@ var MinuteHand :Line2D
 var SecondHand :Line2D
 var tz_shift :float
 var dial_nums :Array
+var center_circle1 :Polygon2D
+var center_circle2 :Polygon2D
 
 # Called when the node enters the scene tree for the first time.
 func init(center :Vector2 , r :float, tz_s :float) -> void:
@@ -14,8 +16,10 @@ func init(center :Vector2 , r :float, tz_s :float) -> void:
 	clock_R = r
 	draw_dial(center, clock_R)
 	draw_hand(center)
-	add_child(Global.new_circle_fill(center, clock_R/25, Global.colors.center_circle1))
-	add_child(Global.new_circle_fill(center, clock_R/30, Global.colors.center_circle2))
+	center_circle1 = Global.new_circle_fill(center, clock_R/25, Global.colors.center_circle1)
+	add_child(center_circle1)
+	center_circle2 = Global.new_circle_fill(center, clock_R/30, Global.colors.center_circle2)
+	add_child(center_circle2)
 
 var gr_hand_hour_1 :Gradient
 var gr_hand_hour_2 :Gradient
@@ -86,6 +90,8 @@ func update_color()->void:
 	gr_hand_hour_2.colors = Global.colors.hour2
 	gr_hand_minute.colors = Global.colors.minute
 	gr_hand_second.colors = Global.colors.second
+	center_circle1.color = Global.colors.center_circle1
+	center_circle2.color = Global.colors.center_circle2
 
 func new_gradient(co_list :Array)->Gradient:
 	var gr = Gradient.new()
