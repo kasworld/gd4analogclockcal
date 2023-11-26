@@ -129,6 +129,7 @@ func new_circle_fill(p :Vector2, r :float, co:Color) -> Polygon2D :
 		pv2a.append(v2)
 	rtn.polygon = pv2a
 	rtn.color = co
+	rtn.antialiased = true
 	return rtn
 
 func new_circle(p :Vector2, r :float, co :Color, w :float) -> Line2D :
@@ -138,4 +139,5 @@ func new_circle(p :Vector2, r :float, co :Color, w :float) -> Line2D :
 		rtn.add_point(v2)
 	rtn.default_color = co
 	rtn.width = w
+	rtn.antialiased = true
 	return rtn

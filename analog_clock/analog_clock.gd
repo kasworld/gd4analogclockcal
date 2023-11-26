@@ -116,6 +116,7 @@ func new_clock_face(p :Vector2, r :float, gr :Gradient, rad :float, w :float, h 
 	cr.points = [Vector2(0,y-r), Vector2(0,y-r+h)]
 	cr.rotation = rad
 	cr.position = p
+	cr.antialiased = true
 	return cr
 
 func new_clock_hand(p :Vector2, gr :Gradient, w :float, h: float) -> Line2D:
@@ -126,6 +127,7 @@ func new_clock_hand(p :Vector2, gr :Gradient, w :float, h: float) -> Line2D:
 	cr.begin_cap_mode = Line2D.LINE_CAP_ROUND
 	cr.end_cap_mode = Line2D.LINE_CAP_ROUND
 	cr.position = p
+	cr.antialiased = true
 	return cr
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

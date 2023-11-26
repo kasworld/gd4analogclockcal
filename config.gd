@@ -10,7 +10,7 @@ var editable_keys = [
 	]
 
 var config = {
-	version_key : "gd4analogclockcal 3.5.2",
+	version_key : "gd4analogclockcal 3.5.3",
 	"weather_url" : "http://192.168.0.10/weather.txt",
 	"dayinfo_url" : "http://192.168.0.10/dayinfo.txt",
 	"todayinfo_url" : "http://192.168.0.10/todayinfo.txt",
