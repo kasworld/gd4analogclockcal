@@ -12,7 +12,7 @@ config_version=5
 
 config/name="gd4analogclockcal"
 run/main_scene="res://main.tscn"
-config/features=PackedStringArray("4.1", "Forward Plus")
+config/features=PackedStringArray("4.2", "Forward Plus")
 boot_splash/image="res://analog_clock.png"
 boot_splash/fullsize=false
 config/icon="res://analog_clock.png"
@@ -36,4 +36,8 @@ enabled=PackedStringArray("res://addons/godottpd/plugin.cfg")
 [rendering]
 
 textures/vram_compression/import_etc2_astc=true
-environment/defaults/default_clear_color=Color(0, 0, 0, 1)
+environment/defaults/default_clear_color=Color(0, 0, 0, 0)
+anti_aliasing/quality/msaa_2d=3
+anti_aliasing/quality/msaa_3d=3
+anti_aliasing/quality/screen_space_aa=1
+anti_aliasing/quality/use_taa=true
