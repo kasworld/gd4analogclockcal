@@ -21,8 +21,7 @@ func get_req_callable()->Dictionary:
 var weather_info :Array[String]
 func weather_success(body)->void:
 	var text = body.get_string_from_utf8()
-	weather_info = split2list( text ).slice(0,2)
-	weather_info[0] = weather_info[0].lstrip("현재 온도")
+	weather_info = split2list( text )
 	update_info_label()
 func weather_fail()->void:
 	weather_info.clear()

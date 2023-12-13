@@ -94,17 +94,6 @@ func _unhandled_input(event: InputEvent) -> void:
 	elif event is InputEventMouseButton and event.is_pressed():
 		update_color(not Global.dark_mode)
 
-func init_http():
-	var ccr = ClockCalRouter.new()
-	ccr.helloed.connect(helloed)
-	var server = HttpServer.new()
-	server.register_router("/", ccr)
-	add_child(server)
-	server.start()
-
-func helloed():
-	print_debug("helloed")
-
 func config_changed():
 	for k in request_dict:
 		request_dict[k].url_to_get = $PanelOption.cfg.config[k]
