@@ -51,12 +51,12 @@ func update_info_label()->void:
 	var dayinfo = day_info.get_daystringlist()
 	var all = []
 	if weather_info.size() > 0:
-		all.append(" ".join(weather_info))
+		all.append_array(weather_info)
 	all.append_array(dayinfo)
 	all.append_array(today_info)
 	$LabelInfo.text = "\n".join(all)
 	var line2calcfont = clampf(all.size(), 4, 10)
-	var fontsize = height/line2calcfont
+	var fontsize = height/line2calcfont*0.8
 	Global.set_label_font_size($LabelInfo, fontsize )
 
 # remove empty line
