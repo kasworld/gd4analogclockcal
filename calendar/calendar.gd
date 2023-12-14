@@ -38,6 +38,13 @@ func update_calendar()->void:
 	var today_dict = Time.get_date_dict_from_unix_time(today)
 	var day_index = today - (7 + today_dict["weekday"] )*24*60*60 #datetime.timedelta(days=(-today.weekday() - 7))
 
+	for wd in range(7):
+		var curLabel = calendar_labels[0][wd]
+		var co = Global.colors.weekday[wd]
+		if wd == today_dict["weekday"] :
+			co = Global.colors.today
+		Global.set_label_color(curLabel, co, Global.make_shadow_color(co))
+
 	for week in range(6):
 		for wd in range(7):
 			var day_index_dict = Time.get_date_dict_from_unix_time(day_index)
