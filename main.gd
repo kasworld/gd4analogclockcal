@@ -62,6 +62,12 @@ func _process(_delta: float) -> void:
 	animove_step()
 	rot_by_accel()
 
+func _notification(what: int) -> void:
+	# app resume on android
+	if what == NOTIFICATION_APPLICATION_RESUMED :
+		set_color_mode_by_time()
+		update_color()
+
 var oldvt = Vector2(0,-100)
 func rot_by_accel()->void:
 	var vt = Input.get_accelerometer()
@@ -89,10 +95,10 @@ func _unhandled_input(event: InputEvent) -> void:
 		elif event.keycode == KEY_ENTER:
 			_on_button_option_pressed()
 		else:
-			update_color(not Global.dark_mode)
+			update_color_with_mode(not Global.dark_mode)
 
 	elif event is InputEventMouseButton and event.is_pressed():
-		update_color(not Global.dark_mode)
+		update_color_with_mode(not Global.dark_mode)
 
 func config_changed():
 	for k in request_dict:
@@ -146,7 +152,11 @@ func set_color_mode_by_time()->void:
 	else :
 		Global.set_dark_mode(false)
 
-func update_color(darkmode :bool)->void:
+func update_color()->void:
+	$SectCalendar.update_color()
+	$SectAnalogClock.update_color()
+
+func update_color_with_mode(darkmode :bool)->void:
 	Global.set_dark_mode(darkmode)
 	$SectCalendar.update_color()
 	$SectAnalogClock.update_color()
@@ -165,9 +175,9 @@ func _on_timer_day_night_timeout() -> void:
 		old_time_dict = time_now_dict
 		match time_now_dict["hour"]:
 			6:
-				update_color(false)
+				update_color_with_mode(false)
 			18:
-				update_color(true)
+				update_color_with_mode(true)
 			_:
 #				update_color(not Global.dark_mode)
 				pass
