@@ -11,23 +11,23 @@ func init(rt :Rect2)->void:
 
 func update_color()->void:
 	for i in range(7): # week title + 6 week
-		for j in Global.weekdaystring.size():
-			var co = Global.colors.weekday[j]
-			Global.set_label_color(calendar_labels[i][j], co, Global.make_shadow_color(co))
+		for j in Global2d.weekdaystring.size():
+			var co = Global2d.colors.weekday[j]
+			Global2d.set_label_color(calendar_labels[i][j], co, Global2d.make_shadow_color(co))
 	update_calendar()
 
 func init_calendar_labels(font_size :float)->void:
 	# prepare calendar
 	for _i in range(7): # week title + 6 week
 		var ln = []
-		for j in Global.weekdaystring.size():
+		for j in Global2d.weekdaystring.size():
 			var lb = Label.new()
-			lb.text = Global.weekdaystring[j]
+			lb.text = Global2d.weekdaystring[j]
 			lb.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 			lb.horizontal_alignment = HorizontalAlignment.HORIZONTAL_ALIGNMENT_CENTER
 			lb.vertical_alignment = VerticalAlignment.VERTICAL_ALIGNMENT_CENTER
-			var co = Global.colors.weekday[j]
-			lb.label_settings = Global.make_label_setting(font_size, co, Global.make_shadow_color(co))
+			var co = Global2d.colors.weekday[j]
+			lb.label_settings = Global2d.make_label_setting(font_size, co, Global2d.make_shadow_color(co))
 			$GridCalendar.add_child(lb)
 			ln.append(lb)
 		calendar_labels.append(ln)
@@ -40,22 +40,22 @@ func update_calendar()->void:
 
 	for wd in range(7):
 		var curLabel = calendar_labels[0][wd]
-		var co = Global.colors.weekday[wd]
+		var co = Global2d.colors.weekday[wd]
 		if wd == today_dict["weekday"] :
-			co = Global.colors.today
-		Global.set_label_color(curLabel, co, Global.make_shadow_color(co))
+			co = Global2d.colors.today
+		Global2d.set_label_color(curLabel, co, Global2d.make_shadow_color(co))
 
 	for week in range(6):
 		for wd in range(7):
 			var day_index_dict = Time.get_date_dict_from_unix_time(day_index)
 			var curLabel = calendar_labels[week+1][wd]
 			curLabel.text = "%d" % day_index_dict["day"]
-			var co = Global.colors.weekday[wd]
+			var co = Global2d.colors.weekday[wd]
 			if day_index_dict["month"] != today_dict["month"]:
-				co = Global.make_shadow_color(co)
+				co = Global2d.make_shadow_color(co)
 			elif day_index_dict["day"] == today_dict["day"]:
-				co = Global.colors.today
-			Global.set_label_color(curLabel, co, Global.make_shadow_color(co))
+				co = Global2d.colors.today
+			Global2d.set_label_color(curLabel, co, Global2d.make_shadow_color(co))
 			day_index += 24*60*60
 
 var old_time_dict = {"day":0} # datetime dict

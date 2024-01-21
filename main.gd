@@ -4,8 +4,27 @@ var vp_rect :Rect2
 var calendar_pos_list :Array
 var analogclock_pos_list :Array
 
+var file_name = "gd4analogclockcal_config.json"
+var editable_keys = [
+	"weather_url",
+	"dayinfo_url",
+	"todayinfo_url",
+	"background_url",
+	]
+
+var config = {
+	"version" : "gd4analogclockcal 4.0.0",
+	"weather_url" : "http://192.168.0.10/weather.txt",
+	"dayinfo_url" : "http://192.168.0.10/dayinfo.txt",
+	"todayinfo_url" : "http://192.168.0.10/todayinfo.txt",
+	"background_url" : "http://192.168.0.10/background.png",
+}
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	config = Config.load_or_save(file_name,config,"version" )
+	print_debug(config)
+
 	set_color_mode_by_time()
 
 #	init_http()
@@ -27,35 +46,35 @@ func _ready() -> void:
 	analogclock_pos_list.append(Vector2(vp_rect.size.x - vp_rect.size.y/2, vp_rect.size.y/2 ))
 	$SectAnalogClock.position = analogclock_pos_list[0]
 
-	co = Global.colors.paneloption
+	co = Global2d.colors.paneloption
 	var optrect = Rect2( vp_rect.size.x * 0.1 ,vp_rect.size.y * 0.3 , vp_rect.size.x * 0.8 , vp_rect.size.y * 0.4 )
-	$PanelOption.init( optrect, co, Global.make_shadow_color(co))
+	$PanelOption.init(file_name,config,editable_keys, optrect, co, Global2d.make_shadow_color(co))
 	$PanelOption.config_changed.connect(config_changed)
 	init_request_dict()
 
 func reset_pos()->void:
 	$SectCalendar.position = calendar_pos_list[0]
 	$SectAnalogClock.position = analogclock_pos_list[0]
-	$AniMove.stop()
+	$AniMove2D.stop()
 
 func animove_toggle()->void:
-	$AniMove.toggle()
-	if not $AniMove.enabled:
+	$AniMove2D.toggle()
+	if not $AniMove2D.enabled:
 		reset_pos()
 
 func animove_step():
-	if not $AniMove.enabled:
+	if not $AniMove2D.enabled:
 		return
-	var ms = $AniMove.get_ms()
-	match $AniMove.state%2:
+	var ms = $AniMove2D.get_ms()
+	match $AniMove2D.state%2:
 		0:
-			$AniMove.move_by_ms($SectCalendar, calendar_pos_list[0], calendar_pos_list[1], ms)
-			$AniMove.move_by_ms($SectAnalogClock, analogclock_pos_list[0], analogclock_pos_list[1], ms)
+			$AniMove2D.move_by_ms($SectCalendar, calendar_pos_list[0], calendar_pos_list[1], ms)
+			$AniMove2D.move_by_ms($SectAnalogClock, analogclock_pos_list[0], analogclock_pos_list[1], ms)
 		1:
-			$AniMove.move_by_ms($SectCalendar, calendar_pos_list[1], calendar_pos_list[0], ms)
-			$AniMove.move_by_ms($SectAnalogClock, analogclock_pos_list[1], analogclock_pos_list[0], ms)
+			$AniMove2D.move_by_ms($SectCalendar, calendar_pos_list[1], calendar_pos_list[0], ms)
+			$AniMove2D.move_by_ms($SectAnalogClock, analogclock_pos_list[1], analogclock_pos_list[0], ms)
 		_:
-			print_debug("invalid state", $AniMove.state)
+			print_debug("invalid state", $AniMove2D.state)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
@@ -95,10 +114,10 @@ func _unhandled_input(event: InputEvent) -> void:
 		elif event.keycode == KEY_ENTER:
 			_on_button_option_pressed()
 		else:
-			update_color_with_mode(not Global.dark_mode)
+			update_color_with_mode(not Global2d.dark_mode)
 
 	elif event is InputEventMouseButton and event.is_pressed():
-		update_color_with_mode(not Global.dark_mode)
+		update_color_with_mode(not Global2d.dark_mode)
 
 func config_changed():
 	for k in request_dict:
@@ -115,19 +134,19 @@ var request_dict = {}
 func init_request_dict()->void:
 	var callable_dict = $SectAnalogClock.get_req_callable()
 	request_dict["weather_url"] = MyHTTPRequest.new(
-		$PanelOption.cfg.config["weather_url"],
+		config["weather_url"],
 		60,	callable_dict.weather_success, callable_dict.weather_fail,
 	)
 	request_dict["dayinfo_url"] = MyHTTPRequest.new(
-		$PanelOption.cfg.config["dayinfo_url"],
+		config["dayinfo_url"],
 		60, callable_dict.dayinfo_success, callable_dict.dayinfo_fail,
 	)
 	request_dict["todayinfo_url"] = MyHTTPRequest.new(
-		$PanelOption.cfg.config["todayinfo_url"],
+		config["todayinfo_url"],
 		60, callable_dict.todayinfo_success, callable_dict.todayinfo_fail,
 	)
 	request_dict["background_url"] = MyHTTPRequest.new(
-		$PanelOption.cfg.config["background_url"],
+		config["background_url"],
 		60, bgimage_success, bgimage_fail,
 	)
 	for k in request_dict:
@@ -148,16 +167,16 @@ func bgimage_fail()->void:
 func set_color_mode_by_time()->void:
 	var now = Time.get_datetime_dict_from_system()
 	if now["hour"] < 6 or now["hour"] >= 18 :
-		Global.set_dark_mode(true)
+		Global2d.set_dark_mode(true)
 	else :
-		Global.set_dark_mode(false)
+		Global2d.set_dark_mode(false)
 
 func update_color()->void:
 	$SectCalendar.update_color()
 	$SectAnalogClock.update_color()
 
 func update_color_with_mode(darkmode :bool)->void:
-	Global.set_dark_mode(darkmode)
+	Global2d.set_dark_mode(darkmode)
 	$SectCalendar.update_color()
 	$SectAnalogClock.update_color()
 
@@ -168,7 +187,7 @@ func _on_timer_day_night_timeout() -> void:
 	var time_now_dict = Time.get_datetime_dict_from_system()
 
 	if old_minute_dict["minute"] != time_now_dict["minute"]:
-		$AniMove.start_with_step(1)
+		$AniMove2D.start_with_step(1)
 		old_minute_dict = time_now_dict
 
 	if old_time_dict["hour"] != time_now_dict["hour"]:
@@ -179,7 +198,7 @@ func _on_timer_day_night_timeout() -> void:
 			18:
 				update_color_with_mode(true)
 			_:
-#				update_color(not Global.dark_mode)
+#				update_color(not Global2d.dark_mode)
 				pass
 
 

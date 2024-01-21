@@ -4,16 +4,16 @@ func init(rt :Rect2)->void:
 	$VBoxContainer.size = rt.size
 	$VBoxContainer.position = rt.position
 
-	var co = Global.colors.datelabel
-	$VBoxContainer/LabelDate.label_settings = Global.make_label_setting(rt.size.y/9, co, Global.make_shadow_color(co))
+	var co = Global2d.colors.datelabel
+	$VBoxContainer/LabelDate.label_settings = Global2d.make_label_setting(rt.size.y/9, co, Global2d.make_shadow_color(co))
 
 	$VBoxContainer/Calendar.init(Rect2(Vector2(0,rt.size.y/9), Vector2(rt.size.x, rt.size.y-rt.size.y/9) ) )
 
 	_on_timer_timeout()
 
 func update_color()->void:
-	var co = Global.colors.datelabel
-	Global.set_label_color($VBoxContainer/LabelDate, co, Global.make_shadow_color(co))
+	var co = Global2d.colors.datelabel
+	Global2d.set_label_color($VBoxContainer/LabelDate, co, Global2d.make_shadow_color(co))
 
 	$VBoxContainer/Calendar.update_color()
 

@@ -16,9 +16,9 @@ func init(center :Vector2 , r :float, tz_s :float) -> void:
 	clock_R = r
 	draw_dial(center, clock_R)
 	draw_hand(center)
-	center_circle1 = Global.new_circle_fill(center, clock_R/25, Global.colors.center_circle1)
+	center_circle1 = Global2d.new_circle_fill(center, clock_R/25, Global2d.colors.center_circle1)
 	add_child(center_circle1)
-	center_circle2 = Global.new_circle_fill(center, clock_R/30, Global.colors.center_circle2)
+	center_circle2 = Global2d.new_circle_fill(center, clock_R/30, Global2d.colors.center_circle2)
 	add_child(center_circle2)
 
 var gr_hand_hour_1 :Gradient
@@ -26,10 +26,10 @@ var gr_hand_hour_2 :Gradient
 var gr_hand_minute :Gradient
 var gr_hand_second :Gradient
 func draw_hand(center :Vector2)->void:
-	gr_hand_hour_1 = new_gradient(Global.colors.hour)
-	gr_hand_hour_2 = new_gradient(Global.colors.hour2)
-	gr_hand_minute = new_gradient(Global.colors.minute)
-	gr_hand_second = new_gradient(Global.colors.second)
+	gr_hand_hour_1 = new_gradient(Global2d.colors.hour)
+	gr_hand_hour_2 = new_gradient(Global2d.colors.hour2)
+	gr_hand_minute = new_gradient(Global2d.colors.minute)
+	gr_hand_second = new_gradient(Global2d.colors.second)
 	HourHand = new_clock_hand(center, gr_hand_hour_1, 1.0/25, 0.7 )
 	add_child(HourHand)
 	HourHand2 = new_clock_hand(center, gr_hand_hour_2, 1.0/100, 0.65)
@@ -49,13 +49,13 @@ var gr_6 :Gradient
 var gr_1 :Gradient
 func draw_dial(p :Vector2, r :float):
 	var w = r/30
-	gr_360_1 = new_gradient(Global.colors.dial_360_1)
-	gr_360_2 = new_gradient(Global.colors.dial_360_2)
-	gr_90_1 = new_gradient(Global.colors.dial_90_1)
-	gr_90_2 = new_gradient(Global.colors.dial_90_2)
-	gr_30 = new_gradient(Global.colors.dial_30)
-	gr_6 = new_gradient(Global.colors.dial_6)
-	gr_1 = new_gradient(Global.colors.dial_1)
+	gr_360_1 = new_gradient(Global2d.colors.dial_360_1)
+	gr_360_2 = new_gradient(Global2d.colors.dial_360_2)
+	gr_90_1 = new_gradient(Global2d.colors.dial_90_1)
+	gr_90_2 = new_gradient(Global2d.colors.dial_90_2)
+	gr_30 = new_gradient(Global2d.colors.dial_30)
+	gr_6 = new_gradient(Global2d.colors.dial_6)
+	gr_1 = new_gradient(Global2d.colors.dial_1)
 	for i in range(0,360):
 		var rad = deg2rad(i)
 		if i == 0:
@@ -78,20 +78,20 @@ func draw_dial(p :Vector2, r :float):
 
 func update_color()->void:
 	for n in dial_nums:
-		Global.set_label_color(n,Global.colors.dial_num[0], Global.colors.dial_num[1] )
-	gr_360_1.colors = Global.colors.dial_360_1
-	gr_360_2.colors = Global.colors.dial_360_2
-	gr_90_1.colors = Global.colors.dial_90_1
-	gr_90_2.colors = Global.colors.dial_90_2
-	gr_30.colors = Global.colors.dial_30
-	gr_6.colors = Global.colors.dial_6
-	gr_1.colors = Global.colors.dial_1
-	gr_hand_hour_1.colors = Global.colors.hour
-	gr_hand_hour_2.colors = Global.colors.hour2
-	gr_hand_minute.colors = Global.colors.minute
-	gr_hand_second.colors = Global.colors.second
-	center_circle1.color = Global.colors.center_circle1
-	center_circle2.color = Global.colors.center_circle2
+		Global2d.set_label_color(n,Global2d.colors.dial_num[0], Global2d.colors.dial_num[1] )
+	gr_360_1.colors = Global2d.colors.dial_360_1
+	gr_360_2.colors = Global2d.colors.dial_360_2
+	gr_90_1.colors = Global2d.colors.dial_90_1
+	gr_90_2.colors = Global2d.colors.dial_90_2
+	gr_30.colors = Global2d.colors.dial_30
+	gr_6.colors = Global2d.colors.dial_6
+	gr_1.colors = Global2d.colors.dial_1
+	gr_hand_hour_1.colors = Global2d.colors.hour
+	gr_hand_hour_2.colors = Global2d.colors.hour2
+	gr_hand_minute.colors = Global2d.colors.minute
+	gr_hand_second.colors = Global2d.colors.second
+	center_circle1.color = Global2d.colors.center_circle1
+	center_circle2.color = Global2d.colors.center_circle2
 
 func new_gradient(co_list :Array)->Gradient:
 	var gr = Gradient.new()
@@ -101,7 +101,7 @@ func new_gradient(co_list :Array)->Gradient:
 func hour_letter(p :Vector2,r :float,  i :int)->Label:
 	var lb = Label.new()
 	lb.text = "%2d" % i
-	lb.label_settings = Global.make_label_setting(clock_R/8, Global.colors.dial_num[0], Global.colors.dial_num[1])
+	lb.label_settings = Global2d.make_label_setting(clock_R/8, Global2d.colors.dial_num[0], Global2d.colors.dial_num[1])
 	lb.horizontal_alignment = HorizontalAlignment.HORIZONTAL_ALIGNMENT_CENTER
 	lb.vertical_alignment = VerticalAlignment.VERTICAL_ALIGNMENT_CENTER
 	var rad = deg2rad( i*30.0 -90)

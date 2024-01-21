@@ -20,7 +20,8 @@ config/icon="res://analog_clock.png"
 
 [autoload]
 
-Global="*res://global/global.gd"
+Global2d="*res://global/global2d.gd"
+Config="*res://global/config.gd"
 
 [display]
 

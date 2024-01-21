@@ -3,12 +3,12 @@ extends Node2D
 func init(rt :Rect2, co1 :Color, co2 :Color)->void:
 	$LabelTime.size = rt.size
 	$LabelTime.position = rt.position
-	$LabelTime.label_settings = Global.make_label_setting(rt.size.x/5, co1, co2)
+	$LabelTime.label_settings = Global2d.make_label_setting(rt.size.x/5, co1, co2)
 	_on_timer_timeout()
 
 func update_color()->void:
-	var co = Global.colors.timelabel
-	Global.set_label_color($LabelTime, co, Global.make_shadow_color(co))
+	var co = Global2d.colors.timelabel
+	Global2d.set_label_color($LabelTime, co, Global2d.make_shadow_color(co))
 
 var old_time_dict = {"second":0} # datetime dict
 func _on_timer_timeout() -> void:

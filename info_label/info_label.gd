@@ -3,7 +3,7 @@ extends Node2D
 func init(rt :Rect2, co1 :Color, co2 :Color)->void:
 	$LabelInfo.size = rt.size
 	$LabelInfo.position = rt.position
-	$LabelInfo.label_settings = Global.make_label_setting(rt.size.y/6, co1, co2)
+	$LabelInfo.label_settings = Global2d.make_label_setting(rt.size.y/6, co1, co2)
 	height = rt.size.y # use to fontsize by line count
 
 var height :float
@@ -44,8 +44,8 @@ func todayinfo_fail()->void:
 	update_info_label()
 
 func update_color()->void:
-	var co = Global.colors.infolabel
-	Global.set_label_color($LabelInfo, co, Global.make_shadow_color(co))
+	var co = Global2d.colors.infolabel
+	Global2d.set_label_color($LabelInfo, co, Global2d.make_shadow_color(co))
 
 func update_info_label()->void:
 	var dayinfo = day_info.get_daystringlist()
@@ -57,7 +57,7 @@ func update_info_label()->void:
 	$LabelInfo.text = "\n".join(all)
 	var line2calcfont = clampf(all.size(), 4, 10)
 	var fontsize = height/line2calcfont*0.8
-	Global.set_label_font_size($LabelInfo, fontsize )
+	Global2d.set_label_font_size($LabelInfo, fontsize )
 
 # remove empty line
 func split2list(text :String)->Array[String]:
@@ -72,7 +72,7 @@ func make_date_string()->String:
 	var time_now_dict = Time.get_datetime_dict_from_system()
 	return "%4d년%2d월%2d일 %s요일" % [
 		time_now_dict["year"] , time_now_dict["month"] ,time_now_dict["day"],
-		Global.weekdaystring[ time_now_dict["weekday"]]
+		Global2d.weekdaystring[ time_now_dict["weekday"]]
 		]
 
 var old_time_dict = {"day":0} # datetime dict
