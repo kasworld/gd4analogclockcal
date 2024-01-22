@@ -1,19 +1,11 @@
 extends PanelContainer
 
-signal config_changed()
-
-var config_ori :Dictionary
-var config :Dictionary
-var editable_keys :Array
-var filename :String
+signal config_changed(cfg :Dictionary)
+signal config_reset_req()
 
 var lineedit_dict = {}
 
-func init(fname:String, cfg:Dictionary, editkeys:Array, rt :Rect2, co1 :Color, co2 :Color)->void:
-	filename = fname
-	config_ori = cfg
-	config = cfg
-	editable_keys = editkeys
+func init(filename:String, config:Dictionary, editable_keys:Array, rt :Rect2, co1 :Color, co2 :Color)->void:
 
 	size = rt.size
 	position = rt.position
@@ -26,33 +18,27 @@ func init(fname:String, cfg:Dictionary, editkeys:Array, rt :Rect2, co1 :Color, c
 		$VBoxContainer/GridContainer.add_child(lb)
 		var le = LineEdit.new()
 		le.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		le.text = cfg[k]
+		le.text = config[k]
 		lineedit_dict[k]= le
 		$VBoxContainer/GridContainer.add_child(le)
 
-	config_to_control()
+	config_to_control(filename,config,editable_keys)
 
-func config_to_control()->void:
+func config_to_control(filename:String, config:Dictionary, editable_keys:Array)->void:
 	$VBoxContainer/ConfigLabel.text =Config.file_full_path(filename)
 	$VBoxContainer/VersionLabel.text = config.version
 	for k in editable_keys:
 		lineedit_dict[k].text = config[k]
 
-func reset_config()->void:
-	config = config_ori
-	Config.save_json(filename,config)
-	config_to_control()
-
 func _on_button_ok_pressed() -> void:
 	hide()
-	for k in editable_keys:
-		config[k] = lineedit_dict[k].text
-	Config.save_json(filename,config)
-
-	config_changed.emit()
+	var cfg :Dictionary = {}
+	for k in lineedit_dict:
+		cfg[k] = lineedit_dict[k].text
+	config_changed.emit(cfg)
 
 func _on_button_cancel_pressed() -> void:
 	hide()
 
 func _on_button_reset_pressed() -> void:
-	reset_config()
+	config_reset_req.emit()

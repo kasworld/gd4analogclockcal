@@ -41,6 +41,12 @@ func init(config :Dictionary, r :float, tz_s :float) -> void:
 func update_info_text(t :String)->void:
 	$LabelInfo.text = t
 
+func update_req_url(cfg:Dictionary)->void:
+	info_text.request_dict.weather_url.url_to_get = cfg.weather_url
+	info_text.request_dict.dayinfo_url.url_to_get = cfg.dayinfo_url
+	info_text.request_dict.todayinfo_url.url_to_get = cfg.todayinfo_url
+	info_text.force_update()
+
 var gr_hand_hour_1 :Gradient
 var gr_hand_hour_2 :Gradient
 var gr_hand_minute :Gradient

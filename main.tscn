@@ -18,6 +18,7 @@ autostart = true
 [node name="AniMove2D" parent="." instance=ExtResource("6_8hgi2")]
 
 [node name="PanelOption" parent="." instance=ExtResource("6_wscdf")]
+z_index = 1
 
 [node name="AutoHideOptionPanel" type="Timer" parent="."]
 wait_time = 3.0

@@ -50,7 +50,8 @@ func _ready() -> void:
 	var optrect = Rect2( vp_rect.size.x * 0.1 ,vp_rect.size.y * 0.3 , vp_rect.size.x * 0.8 , vp_rect.size.y * 0.4 )
 	$PanelOption.init(file_name,config,editable_keys, optrect, co, Global2d.make_shadow_color(co))
 	$PanelOption.config_changed.connect(config_changed)
-	#init_request_dict()
+	$PanelOption.config_reset_req.connect(panel_config_reset_req)
+	init_request_bg()
 
 func reset_pos()->void:
 	$Calendar.position = calendar_pos_list[0]
@@ -119,24 +120,29 @@ func _unhandled_input(event: InputEvent) -> void:
 	elif event is InputEventMouseButton and event.is_pressed():
 		update_color_with_mode(not Global2d.dark_mode)
 
-
 func _on_button_option_pressed() -> void:
 	$PanelOption.visible = not $PanelOption.visible
 
 func _on_auto_hide_option_panel_timeout() -> void:
 	$PanelOption.hide()
 
-var bg_request :MyHTTPRequest
-func config_changed():
-	bg_request.url_to_get = $PanelOption.config["background_url"]
+func panel_config_reset_req()->void:
+	$PanelOption.config_to_control(file_name,config,editable_keys)
+
+func config_changed(cfg :Dictionary):
+	#update config
+	for k in cfg:
+		config[k]=cfg[k]
+	bg_request.url_to_get = config["background_url"]
 	bg_request.force_update()
-func init_request_dict()->void:
+
+var bg_request :MyHTTPRequest
+func init_request_bg()->void:
 	bg_request = MyHTTPRequest.new(
 		config["background_url"],
 		60, bgimage_success, bgimage_fail,
 	)
 	add_child(bg_request)
-
 
 var bgimage :Image
 func bgimage_success(body)->void:
