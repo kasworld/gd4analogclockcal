@@ -13,7 +13,7 @@ var editable_keys = [
 	]
 
 var config = {
-	"version" : "gd4analogclockcal 4.0.0",
+	"version" : "gd4analogclockcal 4.1.0",
 	"weather_url" : "http://192.168.0.10/weather.txt",
 	"dayinfo_url" : "http://192.168.0.10/dayinfo.txt",
 	"todayinfo_url" : "http://192.168.0.10/todayinfo.txt",
@@ -35,10 +35,10 @@ func _ready() -> void:
 	var calw = vp_rect.size.x-vp_rect.size.y
 	if calw > vp_rect.size.x /2 :
 		calw = vp_rect.size.y
-	$SectCalendar.init( Rect2(-calw/2, -calw/2, calw, calw) )
+	$Calendar.init( Vector2( calw, calw) )
 	calendar_pos_list.append(Vector2(vp_rect.size.x-calw/2, vp_rect.size.y/2 ))
 	calendar_pos_list.append(Vector2(calw/2, vp_rect.size.y/2 ))
-	$SectCalendar.position = calendar_pos_list[0]
+	$Calendar.position = calendar_pos_list[0]
 
 	var co :Color
 	$SectAnalogClock.init( Rect2(-vp_rect.size.y/2,-vp_rect.size.y/2,vp_rect.size.y,vp_rect.size.y) )
@@ -53,7 +53,7 @@ func _ready() -> void:
 	init_request_dict()
 
 func reset_pos()->void:
-	$SectCalendar.position = calendar_pos_list[0]
+	$Calendar.position = calendar_pos_list[0]
 	$SectAnalogClock.position = analogclock_pos_list[0]
 	$AniMove2D.stop()
 
@@ -68,10 +68,10 @@ func animove_step():
 	var ms = $AniMove2D.get_ms()
 	match $AniMove2D.state%2:
 		0:
-			$AniMove2D.move_by_ms($SectCalendar, calendar_pos_list[0], calendar_pos_list[1], ms)
+			$AniMove2D.move_by_ms($Calendar, calendar_pos_list[0], calendar_pos_list[1], ms)
 			$AniMove2D.move_by_ms($SectAnalogClock, analogclock_pos_list[0], analogclock_pos_list[1], ms)
 		1:
-			$AniMove2D.move_by_ms($SectCalendar, calendar_pos_list[1], calendar_pos_list[0], ms)
+			$AniMove2D.move_by_ms($Calendar, calendar_pos_list[1], calendar_pos_list[0], ms)
 			$AniMove2D.move_by_ms($SectAnalogClock, analogclock_pos_list[1], analogclock_pos_list[0], ms)
 		_:
 			print_debug("invalid state", $AniMove2D.state)
@@ -104,7 +104,7 @@ func rot_by_accel()->void:
 
 func rotate_all(rad :float):
 	$SectAnalogClock.rotation = rad
-	$SectCalendar.rotation = rad
+	$Calendar.rotation = rad
 
 # esc to exit
 func _unhandled_input(event: InputEvent) -> void:
@@ -172,12 +172,12 @@ func set_color_mode_by_time()->void:
 		Global2d.set_dark_mode(false)
 
 func update_color()->void:
-	$SectCalendar.update_color()
+	$Calendar.update_color()
 	$SectAnalogClock.update_color()
 
 func update_color_with_mode(darkmode :bool)->void:
 	Global2d.set_dark_mode(darkmode)
-	$SectCalendar.update_color()
+	$Calendar.update_color()
 	$SectAnalogClock.update_color()
 
 # change dark mode by time

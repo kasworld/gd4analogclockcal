@@ -5,9 +5,6 @@
 [node name="Calendar" type="Node2D"]
 script = ExtResource("1_hng2e")
 
-[node name="GridCalendar" type="GridContainer" parent="."]
-columns = 7
-
 [node name="Timer" type="Timer" parent="."]
 autostart = true
 
