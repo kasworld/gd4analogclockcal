@@ -24,11 +24,11 @@ func init(config :Dictionary, r :float, tz_s :float) -> void:
 	add_child(center_circle2)
 
 	var co = Global2d.colors.timelabel
-	$LabelTime.position = Vector2(-r/4,-r/2)
+	$LabelTime.position = Vector2(-r/3.0,-r/2)
 	$LabelTime.label_settings = Global2d.make_label_setting(r/4, co, co)
 
 	co = Global2d.colors.infolabel
-	$LabelInfo.position = Vector2(-r/2,r/4)
+	$LabelInfo.position = Vector2(-r/2.0,r/4)
 	$LabelInfo.label_settings = Global2d.make_label_setting(r/8, co, co)
 
 	info_text = InfoText.new()
@@ -42,9 +42,7 @@ func update_info_text(t :String)->void:
 	$LabelInfo.text = t
 
 func update_req_url(cfg:Dictionary)->void:
-	info_text.request_dict.weather_url.url_to_get = cfg.weather_url
-	info_text.request_dict.dayinfo_url.url_to_get = cfg.dayinfo_url
-	info_text.request_dict.todayinfo_url.url_to_get = cfg.todayinfo_url
+	info_text.update_urls(cfg.weather_url,cfg.dayinfo_url,cfg.todayinfo_url)
 	info_text.force_update()
 
 var gr_hand_hour_1 :Gradient
