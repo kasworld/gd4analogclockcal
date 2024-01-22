@@ -4,3 +4,25 @@
 
 [node name="AnalogClock" type="Node2D"]
 script = ExtResource("1_bs3fy")
+
+[node name="LabelTime" type="Label" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_right = 716.0
+offset_bottom = 249.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+text = "00:00:00"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LabelInfo" type="Label" parent="."]
+offset_right = 40.0
+offset_bottom = 23.0
+horizontal_alignment = 1
+vertical_alignment = 1

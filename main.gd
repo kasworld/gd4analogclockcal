@@ -13,7 +13,7 @@ var editable_keys = [
 	]
 
 var config = {
-	"version" : "gd4analogclockcal 4.1.0",
+	"version" : "gd4analogclockcal 4.2.0",
 	"weather_url" : "http://192.168.0.10/weather.txt",
 	"dayinfo_url" : "http://192.168.0.10/dayinfo.txt",
 	"todayinfo_url" : "http://192.168.0.10/todayinfo.txt",
@@ -23,11 +23,9 @@ var config = {
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	config = Config.load_or_save(file_name,config,"version" )
-	print_debug(config)
 
 	set_color_mode_by_time()
 
-#	init_http()
 	vp_rect = get_viewport_rect()
 
 	bgimage = Image.create(vp_rect.size.x,vp_rect.size.y,true,Image.FORMAT_RGBA8)
@@ -36,25 +34,27 @@ func _ready() -> void:
 	if calw > vp_rect.size.x /2 :
 		calw = vp_rect.size.y
 	$Calendar.init( Vector2( calw, calw) )
-	calendar_pos_list.append(Vector2(vp_rect.size.x-calw/2, vp_rect.size.y/2 ))
-	calendar_pos_list.append(Vector2(calw/2, vp_rect.size.y/2 ))
+	calendar_pos_list.append_array(
+		[Vector2(vp_rect.size.x-calw/2, vp_rect.size.y/2 ), Vector2(calw/2, vp_rect.size.y/2 )]
+		)
 	$Calendar.position = calendar_pos_list[0]
 
 	var co :Color
-	$SectAnalogClock.init( Rect2(-vp_rect.size.y/2,-vp_rect.size.y/2,vp_rect.size.y,vp_rect.size.y) )
-	analogclock_pos_list.append(Vector2(vp_rect.size.y/2, vp_rect.size.y/2 ))
-	analogclock_pos_list.append(Vector2(vp_rect.size.x - vp_rect.size.y/2, vp_rect.size.y/2 ))
-	$SectAnalogClock.position = analogclock_pos_list[0]
+	$AnalogClock.init(config, vp_rect.size.y/2, 9 )
+	analogclock_pos_list.append_array(
+		[Vector2(vp_rect.size.y/2, vp_rect.size.y/2 ), Vector2(vp_rect.size.x - vp_rect.size.y/2, vp_rect.size.y/2 ) ]
+		)
+	$AnalogClock.position = analogclock_pos_list[0]
 
 	co = Global2d.colors.paneloption
 	var optrect = Rect2( vp_rect.size.x * 0.1 ,vp_rect.size.y * 0.3 , vp_rect.size.x * 0.8 , vp_rect.size.y * 0.4 )
 	$PanelOption.init(file_name,config,editable_keys, optrect, co, Global2d.make_shadow_color(co))
 	$PanelOption.config_changed.connect(config_changed)
-	init_request_dict()
+	#init_request_dict()
 
 func reset_pos()->void:
 	$Calendar.position = calendar_pos_list[0]
-	$SectAnalogClock.position = analogclock_pos_list[0]
+	$AnalogClock.position = analogclock_pos_list[0]
 	$AniMove2D.stop()
 
 func animove_toggle()->void:
@@ -69,10 +69,10 @@ func animove_step():
 	match $AniMove2D.state%2:
 		0:
 			$AniMove2D.move_by_ms($Calendar, calendar_pos_list[0], calendar_pos_list[1], ms)
-			$AniMove2D.move_by_ms($SectAnalogClock, analogclock_pos_list[0], analogclock_pos_list[1], ms)
+			$AniMove2D.move_by_ms($AnalogClock, analogclock_pos_list[0], analogclock_pos_list[1], ms)
 		1:
 			$AniMove2D.move_by_ms($Calendar, calendar_pos_list[1], calendar_pos_list[0], ms)
-			$AniMove2D.move_by_ms($SectAnalogClock, analogclock_pos_list[1], analogclock_pos_list[0], ms)
+			$AniMove2D.move_by_ms($AnalogClock, analogclock_pos_list[1], analogclock_pos_list[0], ms)
 		_:
 			print_debug("invalid state", $AniMove2D.state)
 
@@ -103,7 +103,7 @@ func rot_by_accel()->void:
 		rotate_all(rad)
 
 func rotate_all(rad :float):
-	$SectAnalogClock.rotation = rad
+	$AnalogClock.rotation = rad
 	$Calendar.rotation = rad
 
 # esc to exit
@@ -119,10 +119,6 @@ func _unhandled_input(event: InputEvent) -> void:
 	elif event is InputEventMouseButton and event.is_pressed():
 		update_color_with_mode(not Global2d.dark_mode)
 
-func config_changed():
-	for k in request_dict:
-		request_dict[k].url_to_get = $PanelOption.cfg.config[k]
-		request_dict[k].force_update()
 
 func _on_button_option_pressed() -> void:
 	$PanelOption.visible = not $PanelOption.visible
@@ -130,27 +126,17 @@ func _on_button_option_pressed() -> void:
 func _on_auto_hide_option_panel_timeout() -> void:
 	$PanelOption.hide()
 
-var request_dict = {}
+var bg_request :MyHTTPRequest
+func config_changed():
+	bg_request.url_to_get = $PanelOption.config["background_url"]
+	bg_request.force_update()
 func init_request_dict()->void:
-	var callable_dict = $SectAnalogClock.get_req_callable()
-	request_dict["weather_url"] = MyHTTPRequest.new(
-		config["weather_url"],
-		60,	callable_dict.weather_success, callable_dict.weather_fail,
-	)
-	request_dict["dayinfo_url"] = MyHTTPRequest.new(
-		config["dayinfo_url"],
-		60, callable_dict.dayinfo_success, callable_dict.dayinfo_fail,
-	)
-	request_dict["todayinfo_url"] = MyHTTPRequest.new(
-		config["todayinfo_url"],
-		60, callable_dict.todayinfo_success, callable_dict.todayinfo_fail,
-	)
-	request_dict["background_url"] = MyHTTPRequest.new(
+	bg_request = MyHTTPRequest.new(
 		config["background_url"],
 		60, bgimage_success, bgimage_fail,
 	)
-	for k in request_dict:
-		add_child(request_dict[k])
+	add_child(bg_request)
+
 
 var bgimage :Image
 func bgimage_success(body)->void:
@@ -173,12 +159,12 @@ func set_color_mode_by_time()->void:
 
 func update_color()->void:
 	$Calendar.update_color()
-	$SectAnalogClock.update_color()
+	$AnalogClock.update_color()
 
 func update_color_with_mode(darkmode :bool)->void:
 	Global2d.set_dark_mode(darkmode)
 	$Calendar.update_color()
-	$SectAnalogClock.update_color()
+	$AnalogClock.update_color()
 
 # change dark mode by time
 var old_time_dict = Time.get_datetime_dict_from_system() # datetime dict
