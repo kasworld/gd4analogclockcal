@@ -2,20 +2,6 @@ extends Node2D
 
 var clock_R :float
 
-# dict to line2d
-var hands_lines = {
-	hour1 =null,
-	hour2 =null,
-	minute =null,
-	second =null,
-}
-# dict to gradient
-var hands_gradients = {
-	hour1 =null,
-	hour2 =null,
-	minute =null,
-	second =null,
-}
 var tz_shift :float
 var dial_nums :Array
 var center_circle1 :Polygon2D
@@ -56,6 +42,20 @@ func update_req_url(cfg:Dictionary)->void:
 	info_text.update_urls(cfg.weather_url,cfg.dayinfo_url,cfg.todayinfo_url)
 	info_text.force_update()
 
+# dict to line2d
+var hands_lines = {
+	hour1 = null,
+	hour2 = null,
+	minute = null,
+	second = null,
+}
+# dict to gradient
+var hands_gradients = {
+	hour1 = null,
+	hour2 = null,
+	minute = null,
+	second = null,
+}
 func draw_hand()->void:
 	var hands_param = {
 		hour1 =[1.0/25, 0.7],
@@ -77,36 +77,24 @@ var dial_gradient = {
 	dial_6 = null,
 	dial_1 = null,
 }
-var gr_360_1 :Gradient
-var gr_360_2 :Gradient
-var gr_90_1 :Gradient
-var gr_90_2 :Gradient
-var gr_30 :Gradient
-var gr_6 :Gradient
-var gr_1 :Gradient
 func draw_dial(r :float):
 	var w = r/30
-	gr_360_1 = new_gradient(Global2d.colors.dial_360_1)
-	gr_360_2 = new_gradient(Global2d.colors.dial_360_2)
-	gr_90_1 = new_gradient(Global2d.colors.dial_90_1)
-	gr_90_2 = new_gradient(Global2d.colors.dial_90_2)
-	gr_30 = new_gradient(Global2d.colors.dial_30)
-	gr_6 = new_gradient(Global2d.colors.dial_6)
-	gr_1 = new_gradient(Global2d.colors.dial_1)
+	for k in dial_gradient:
+		dial_gradient[k] = new_gradient(Global2d.colors[k])
 	for i in range(0,360):
 		var rad = deg2rad(i)
 		if i == 0:
-			add_child( new_clock_face( r, gr_360_1, rad, r/50, w*3, 0 ) )
-			add_child( new_clock_face( r, gr_360_2, rad, r/200, w*3, 0 ) )
+			add_child( new_clock_face( r, dial_gradient.dial_360_1, rad, r/50, w*3, 0 ) )
+			add_child( new_clock_face( r, dial_gradient.dial_360_2, rad, r/200, w*3, 0 ) )
 		elif i % 90 ==0:
-			add_child( new_clock_face( r, gr_90_1, rad, r/100, w*3, 0 ) )
-			add_child( new_clock_face( r, gr_90_2, rad, r/300, w*2, 0 ) )
+			add_child( new_clock_face( r, dial_gradient.dial_90_1, rad, r/100, w*3, 0 ) )
+			add_child( new_clock_face( r, dial_gradient.dial_90_2, rad, r/300, w*2, 0 ) )
 		elif i % 30 == 0 :
-			add_child( new_clock_face( r, gr_30, rad, r/150, w*3, 0 ) )
+			add_child( new_clock_face( r, dial_gradient.dial_30, rad, r/150, w*3, 0 ) )
 		elif i % 6 == 0 :
-			add_child( new_clock_face( r, gr_6, rad, r/200, w*2, 0 ) )
+			add_child( new_clock_face( r, dial_gradient.dial_6, rad, r/200, w*2, 0 ) )
 		else :
-			add_child( new_clock_face( r, gr_1, rad, r/400, w*1, 0 ) )
+			add_child( new_clock_face( r, dial_gradient.dial_1, rad, r/400, w*1, 0 ) )
 
 	for i in range(1,13):
 		var n = hour_letter(r, i)
@@ -116,13 +104,8 @@ func draw_dial(r :float):
 func update_color()->void:
 	for n in dial_nums:
 		Global2d.set_label_color(n,Global2d.colors.dial_num[0], Global2d.colors.dial_num[1] )
-	gr_360_1.colors = Global2d.colors.dial_360_1
-	gr_360_2.colors = Global2d.colors.dial_360_2
-	gr_90_1.colors = Global2d.colors.dial_90_1
-	gr_90_2.colors = Global2d.colors.dial_90_2
-	gr_30.colors = Global2d.colors.dial_30
-	gr_6.colors = Global2d.colors.dial_6
-	gr_1.colors = Global2d.colors.dial_1
+	for k in dial_gradient:
+		dial_gradient[k].colors = Global2d.colors[k]
 	for k in hands_lines:
 		hands_gradients[k].colors = Global2d.colors[k]
 	center_circle1.color = Global2d.colors.center_circle1
