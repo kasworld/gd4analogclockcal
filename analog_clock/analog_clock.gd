@@ -1,10 +1,21 @@
 extends Node2D
 
 var clock_R :float
-var HourHand :Line2D
-var HourHand2 :Line2D
-var MinuteHand :Line2D
-var SecondHand :Line2D
+
+# dict to line2d
+var hands_lines = {
+	hour1 =null,
+	hour2 =null,
+	minute =null,
+	second =null,
+}
+# dict to gradient
+var hands_gradients = {
+	hour1 =null,
+	hour2 =null,
+	minute =null,
+	second =null,
+}
 var tz_shift :float
 var dial_nums :Array
 var center_circle1 :Polygon2D
@@ -45,24 +56,27 @@ func update_req_url(cfg:Dictionary)->void:
 	info_text.update_urls(cfg.weather_url,cfg.dayinfo_url,cfg.todayinfo_url)
 	info_text.force_update()
 
-var gr_hand_hour_1 :Gradient
-var gr_hand_hour_2 :Gradient
-var gr_hand_minute :Gradient
-var gr_hand_second :Gradient
 func draw_hand()->void:
-	gr_hand_hour_1 = new_gradient(Global2d.colors.hour)
-	gr_hand_hour_2 = new_gradient(Global2d.colors.hour2)
-	gr_hand_minute = new_gradient(Global2d.colors.minute)
-	gr_hand_second = new_gradient(Global2d.colors.second)
-	HourHand = new_clock_hand(gr_hand_hour_1, 1.0/25, 0.7 )
-	add_child(HourHand)
-	HourHand2 = new_clock_hand(gr_hand_hour_2, 1.0/100, 0.65)
-	add_child(HourHand2)
-	MinuteHand = new_clock_hand(gr_hand_minute, 1.0/50, 0.9)
-	add_child(MinuteHand)
-	SecondHand = new_clock_hand(gr_hand_second, 1.0/100, 1.0)
-	add_child(SecondHand)
+	var hands_param = {
+		hour1 =[1.0/25, 0.7],
+		hour2 =[1.0/100, 0.65],
+		minute =[1.0/50, 0.9],
+		second =[1.0/100, 1.0],
+	}
+	for k in hands_gradients:
+		hands_gradients[k] = new_gradient(Global2d.colors[k])
+		hands_lines[k] = new_clock_hand(hands_gradients[k], hands_param[k][0],hands_param[k][1] )
+		add_child(hands_lines[k])
 
+var dial_gradient = {
+	dial_360_1 = null,
+	dial_360_2 = null,
+	dial_90_1 = null,
+	dial_90_2 = null,
+	dial_30 = null,
+	dial_6 = null,
+	dial_1 = null,
+}
 var gr_360_1 :Gradient
 var gr_360_2 :Gradient
 var gr_90_1 :Gradient
@@ -109,10 +123,8 @@ func update_color()->void:
 	gr_30.colors = Global2d.colors.dial_30
 	gr_6.colors = Global2d.colors.dial_6
 	gr_1.colors = Global2d.colors.dial_1
-	gr_hand_hour_1.colors = Global2d.colors.hour
-	gr_hand_hour_2.colors = Global2d.colors.hour2
-	gr_hand_minute.colors = Global2d.colors.minute
-	gr_hand_second.colors = Global2d.colors.second
+	for k in hands_lines:
+		hands_gradients[k].colors = Global2d.colors[k]
 	center_circle1.color = Global2d.colors.center_circle1
 	center_circle2.color = Global2d.colors.center_circle2
 
@@ -169,10 +181,10 @@ func update_clock():
 	var minute = ms - int(ms/60)*60
 	ms = ms / 60
 	var hour = ms - int(ms/24)*24 + tz_shift
-	SecondHand.rotation = second2rad(second)
-	MinuteHand.rotation = minute2rad(minute)
-	HourHand.rotation = hour2rad(hour)
-	HourHand2.rotation = HourHand.rotation
+	hands_lines.second.rotation = second2rad(second)
+	hands_lines.minute.rotation = minute2rad(minute)
+	hands_lines.hour1.rotation = hour2rad(hour)
+	hands_lines.hour2.rotation = hour2rad(hour)
 
 	var time_now_dict = Time.get_datetime_dict_from_system()
 	if old_time_dict["second"] != time_now_dict["second"]:
