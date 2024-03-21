@@ -13,6 +13,7 @@ var info_text :InfoText
 func init(config :Dictionary, r :float, tz_s :float) -> void:
 	tz_shift = tz_s
 	clock_R = r
+	draw_dial(clock_R)
 	draw_hand()
 	center_circle1 = Global2d.new_circle_fill(Vector2(0,0), clock_R/25, Global2d.colors.center_circle1)
 	add_child(center_circle1)
@@ -68,6 +69,12 @@ func draw_hand()->void:
 		hands_gradients[k] = new_gradient(Global2d.colors[k])
 		hands_lines[k] = new_clock_hand(hands_gradients[k], hands_param[k][0],hands_param[k][1] )
 		add_child(hands_lines[k])
+
+func draw_dial(r :float):
+	for i in range(1,13):
+		var n = hour_letter(r, i)
+		dial_nums.append(n)
+		add_child(n)
 
 func update_color()->void:
 	$AnalogDial.update_color()
