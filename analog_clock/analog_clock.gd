@@ -82,7 +82,7 @@ func draw_dial(r :float):
 	for k in dial_gradient:
 		dial_gradient[k] = new_gradient(Global2d.colors[k])
 	for i in range(0,360):
-		var rad = deg2rad(i)
+		var rad = deg_to_rad(i)
 		if i == 0:
 			add_child( new_clock_face( r, dial_gradient.dial_360_1, rad, r/50, w*3, 0 ) )
 			add_child( new_clock_face( r, dial_gradient.dial_360_2, rad, r/200, w*3, 0 ) )
@@ -128,7 +128,7 @@ func hour_letter(r :float,  i :int)->Label:
 	lb.label_settings = Global2d.make_label_setting(clock_R/8, Global2d.colors.dial_num[0], Global2d.colors.dial_num[1])
 	lb.horizontal_alignment = HorizontalAlignment.HORIZONTAL_ALIGNMENT_CENTER
 	lb.vertical_alignment = VerticalAlignment.VERTICAL_ALIGNMENT_CENTER
-	var rad = deg2rad( i*30.0 -90)
+	var rad = deg_to_rad( i*30.0 -90)
 #	lb.rotation = rad + PI/2
 	lb.position = Vector2( r*0.85 * cos(rad), r*0.85 * sin(rad) ) - Vector2(r*0.08,r*0.06)
 	return lb
@@ -174,9 +174,6 @@ func update_clock():
 		old_time_dict = time_now_dict
 		$LabelTime.text = "%02d:%02d:%02d" % [time_now_dict["hour"] , time_now_dict["minute"] ,time_now_dict["second"]  ]
 
-
-func deg2rad(deg :float) ->float :
-	return deg * 2 * PI / 360
 
 func second2rad(sec :float) -> float:
 	return 2.0*PI/60.0*sec

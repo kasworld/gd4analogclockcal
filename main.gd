@@ -13,7 +13,7 @@ var editable_keys = [
 	]
 
 var config = {
-	"version" : "gd4analogclockcal 4.3.2",
+	"version" : "gd4analogclockcal 4.3.4",
 	"weather_url" : "http://192.168.0.10/weather.txt",
 	"dayinfo_url" : "http://192.168.0.10/dayinfo.txt",
 	"todayinfo_url" : "http://192.168.0.10/todayinfo.txt",
@@ -45,6 +45,10 @@ func _ready() -> void:
 		[Vector2(vp_rect.size.y/2, vp_rect.size.y/2 ), Vector2(vp_rect.size.x - vp_rect.size.y/2, vp_rect.size.y/2 ) ]
 		)
 	$AnalogClock.position = analogclock_pos_list[0]
+
+	$AnalogClock2.init(vp_rect.size.y/2)
+	$AnalogClock2.position = analogclock_pos_list[0]
+
 
 	co = Global2d.colors.paneloption
 	var optrect = Rect2( vp_rect.size.x * 0.1 ,vp_rect.size.y * 0.3 , vp_rect.size.x * 0.8 , vp_rect.size.y * 0.4 )
