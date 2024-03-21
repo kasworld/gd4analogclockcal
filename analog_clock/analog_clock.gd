@@ -13,12 +13,13 @@ var info_text :InfoText
 func init(config :Dictionary, r :float, tz_s :float) -> void:
 	tz_shift = tz_s
 	clock_R = r
-	draw_dial(clock_R)
 	draw_hand()
 	center_circle1 = Global2d.new_circle_fill(Vector2(0,0), clock_R/25, Global2d.colors.center_circle1)
 	add_child(center_circle1)
 	center_circle2 = Global2d.new_circle_fill(Vector2(0,0), clock_R/30, Global2d.colors.center_circle2)
 	add_child(center_circle2)
+
+	$AnalogDial.init(r)
 
 	var co = Global2d.colors.timelabel
 	$LabelTime.position = Vector2(-r/3.0,-r/2)
@@ -68,44 +69,10 @@ func draw_hand()->void:
 		hands_lines[k] = new_clock_hand(hands_gradients[k], hands_param[k][0],hands_param[k][1] )
 		add_child(hands_lines[k])
 
-var dial_gradient = {
-	dial_360_1 = null,
-	dial_360_2 = null,
-	dial_90_1 = null,
-	dial_90_2 = null,
-	dial_30 = null,
-	dial_6 = null,
-	dial_1 = null,
-}
-func draw_dial(r :float):
-	var w = r/30
-	for k in dial_gradient:
-		dial_gradient[k] = new_gradient(Global2d.colors[k])
-	for i in range(0,360):
-		var rad = deg_to_rad(i)
-		if i == 0:
-			add_child( new_clock_face( r, dial_gradient.dial_360_1, rad, r/50, w*3, 0 ) )
-			add_child( new_clock_face( r, dial_gradient.dial_360_2, rad, r/200, w*3, 0 ) )
-		elif i % 90 ==0:
-			add_child( new_clock_face( r, dial_gradient.dial_90_1, rad, r/100, w*3, 0 ) )
-			add_child( new_clock_face( r, dial_gradient.dial_90_2, rad, r/300, w*2, 0 ) )
-		elif i % 30 == 0 :
-			add_child( new_clock_face( r, dial_gradient.dial_30, rad, r/150, w*3, 0 ) )
-		elif i % 6 == 0 :
-			add_child( new_clock_face( r, dial_gradient.dial_6, rad, r/200, w*2, 0 ) )
-		else :
-			add_child( new_clock_face( r, dial_gradient.dial_1, rad, r/400, w*1, 0 ) )
-
-	for i in range(1,13):
-		var n = hour_letter(r, i)
-		dial_nums.append(n)
-		add_child(n)
-
 func update_color()->void:
+	$AnalogDial.update_color()
 	for n in dial_nums:
 		Global2d.set_label_color(n,Global2d.colors.dial_num[0], Global2d.colors.dial_num[1] )
-	for k in dial_gradient:
-		dial_gradient[k].colors = Global2d.colors[k]
 	for k in hands_lines:
 		hands_gradients[k].colors = Global2d.colors[k]
 	center_circle1.color = Global2d.colors.center_circle1
@@ -132,15 +99,6 @@ func hour_letter(r :float,  i :int)->Label:
 #	lb.rotation = rad + PI/2
 	lb.position = Vector2( r*0.85 * cos(rad), r*0.85 * sin(rad) ) - Vector2(r*0.08,r*0.06)
 	return lb
-
-func new_clock_face(r :float, gr :Gradient, rad :float, w :float, h :float, y :float) -> Line2D:
-	var cr = Line2D.new()
-	cr.gradient = gr
-	cr.width = w
-	cr.points = [Vector2(0,y-r), Vector2(0,y-r+h)]
-	cr.rotation = rad
-	cr.antialiased = true
-	return cr
 
 func new_clock_hand(gr :Gradient, w :float, h: float) -> Line2D:
 	var cr = Line2D.new()
@@ -173,7 +131,6 @@ func update_clock():
 	if old_time_dict["second"] != time_now_dict["second"]:
 		old_time_dict = time_now_dict
 		$LabelTime.text = "%02d:%02d:%02d" % [time_now_dict["hour"] , time_now_dict["minute"] ,time_now_dict["second"]  ]
-
 
 func second2rad(sec :float) -> float:
 	return 2.0*PI/60.0*sec

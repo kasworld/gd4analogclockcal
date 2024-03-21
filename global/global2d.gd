@@ -29,13 +29,7 @@ var colors_dark = {
 	center_circle1 = Color.GOLD,
 	center_circle2 = Color.YELLOW,
 	dial_num = [Color.GRAY, Color.WHITE],
-	dial_360_1 = [Color.DARK_GREEN, Color.GREEN],
-	dial_360_2 = [Color.ORANGE_RED, Color.DARK_RED],
-	dial_90_1 = [Color.DARK_GREEN, Color.GREEN],
-	dial_90_2 = [Color.ORANGE_RED, Color.DARK_RED],
-	dial_30 = [Color.DARK_GREEN, Color.GREEN],
-	dial_6 = [Color.DARK_GREEN, Color.GREEN],
-	dial_1 = [Color.DARK_GREEN, Color.GREEN],
+	dial_1 = Color.GREEN,
 }
 var colors_light = 	{
 	weekday = [
@@ -61,13 +55,7 @@ var colors_light = 	{
 	center_circle1 = Color.GOLDENROD,
 	center_circle2 = Color.DARK_GOLDENROD,
 	dial_num = [Color.GRAY, Color.BLACK],
-	dial_360_1 = [Color.LIGHT_CORAL, Color.DARK_RED],
-	dial_360_2 = [Color.DARK_BLUE, Color.SKY_BLUE],
-	dial_90_1 = [Color.LIGHT_CORAL, Color.DARK_RED],
-	dial_90_2 = [Color.DARK_BLUE, Color.SKY_BLUE],
-	dial_30 = [Color.LIGHT_CORAL, Color.DARK_RED],
-	dial_6 = [Color.LIGHT_CORAL, Color.DARK_RED],
-	dial_1 = [Color.LIGHT_CORAL, Color.DARK_RED],
+	dial_1 = Color.RED,
 }
 var colors = colors_dark
 

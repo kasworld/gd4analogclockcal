@@ -1,10 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://btxtva4j47rfm"]
+[gd_scene load_steps=6 format=3 uid="uid://btxtva4j47rfm"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_q4spd"]
 [ext_resource type="PackedScene" uid="uid://b1m11n5rm2gh7" path="res://calendar/calendar.tscn" id="5_3yc3x"]
 [ext_resource type="PackedScene" uid="uid://66uu15vflcpu" path="res://analog_clock/analog_clock.tscn" id="5_lttaa"]
 [ext_resource type="PackedScene" uid="uid://bf1vkxi8i0lm1" path="res://ani_move_2d/ani_move_2d.tscn" id="6_8hgi2"]
-[ext_resource type="PackedScene" uid="uid://dt2l1jpw00non" path="res://analog_clock2/analog_clock_2.tscn" id="6_hi08c"]
 [ext_resource type="PackedScene" uid="uid://btysv8q6rp8ku" path="res://panel_option/panel_option.tscn" id="6_wscdf"]
 
 [node name="Main" type="Node2D"]
@@ -27,12 +26,8 @@ one_shot = true
 autostart = true
 
 [node name="Calendar" parent="." instance=ExtResource("5_3yc3x")]
-visible = false
 
 [node name="AnalogClock" parent="." instance=ExtResource("5_lttaa")]
-visible = false
-
-[node name="AnalogClock2" parent="." instance=ExtResource("6_hi08c")]
 
 [connection signal="timeout" from="TimerDayNight" to="." method="_on_timer_day_night_timeout"]
 [connection signal="timeout" from="AutoHideOptionPanel" to="." method="_on_auto_hide_option_panel_timeout"]

@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dt2l1jpw00non"]
 
-[ext_resource type="Script" path="res://analog_clock2/analog_clock_2.gd" id="1_f3jyu"]
+[ext_resource type="Script" path="res://analog_dial/analog_dial.gd" id="1_f3jyu"]
 
 [node name="AnalogClock2" type="Node2D"]
 script = ExtResource("1_f3jyu")
