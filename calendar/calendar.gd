@@ -37,12 +37,12 @@ func init_calendar_labels( csize :Vector2)->void:
 		var ln = []
 		for j in Global2d.weekdaystring.size():
 			lb = Label.new()
-			lb.text = Global2d.weekdaystring[j]
+			lb.text =  Global2d.weekdaystring[j]
 			#lb.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 			lb.horizontal_alignment = HorizontalAlignment.HORIZONTAL_ALIGNMENT_CENTER
 			lb.vertical_alignment = VerticalAlignment.VERTICAL_ALIGNMENT_CENTER
 			co = Global2d.colors.weekday[j]
-			lb.label_settings = Global2d.make_label_setting(fh, co, Global2d.make_shadow_color(co))
+			lb.label_settings = Global2d.make_label_setting(fh*0.8, co, Global2d.make_shadow_color(co))
 			lb.position = Vector2(fw*j,fh*i) - csize/2
 			ln.append(lb)
 			add_child(lb)
@@ -67,7 +67,7 @@ func update_calendar()->void:
 		for wd in range(7):
 			var day_index_dict = Time.get_date_dict_from_unix_time(day_index)
 			var curLabel = calendar_labels[week][wd]
-			curLabel.text = "%d" % day_index_dict["day"]
+			curLabel.text = "%2d" % day_index_dict["day"]
 			var co = Global2d.colors.weekday[wd]
 			if day_index_dict["month"] != today_dict["month"]:
 				co = Global2d.make_shadow_color(co)
