@@ -13,7 +13,6 @@ var info_text :InfoText
 func init(config :Dictionary, r :float, tz_s :float) -> void:
 	tz_shift = tz_s
 	clock_R = r
-	draw_dial(clock_R)
 	draw_hand()
 	center_circle1 = Global2d.new_circle_fill(Vector2(0,0), clock_R/25, Global2d.colors.center_circle1)
 	add_child(center_circle1)
@@ -70,12 +69,6 @@ func draw_hand()->void:
 		hands_lines[k] = new_clock_hand(hands_gradients[k], hands_param[k][0],hands_param[k][1] )
 		add_child(hands_lines[k])
 
-func draw_dial(r :float):
-	for i in range(1,13):
-		var n = hour_letter(r, i)
-		dial_nums.append(n)
-		add_child(n)
-
 func update_color()->void:
 	$AnalogDial.update_color()
 	for n in dial_nums:
@@ -95,17 +88,6 @@ func new_gradient(co_list :Array)->Gradient:
 	var gr = Gradient.new()
 	gr.colors = co_list
 	return gr
-
-func hour_letter(r :float,  i :int)->Label:
-	var lb = Label.new()
-	lb.text = "%2d" % i
-	lb.label_settings = Global2d.make_label_setting(clock_R/8, Global2d.colors.dial_num[0], Global2d.colors.dial_num[1])
-	lb.horizontal_alignment = HorizontalAlignment.HORIZONTAL_ALIGNMENT_CENTER
-	lb.vertical_alignment = VerticalAlignment.VERTICAL_ALIGNMENT_CENTER
-	var rad = deg_to_rad( i*30.0 -90)
-#	lb.rotation = rad + PI/2
-	lb.position = Vector2( r*0.85 * cos(rad), r*0.85 * sin(rad) ) - Vector2(r*0.08,r*0.06)
-	return lb
 
 func new_clock_hand(gr :Gradient, w :float, h: float) -> Line2D:
 	var cr = Line2D.new()

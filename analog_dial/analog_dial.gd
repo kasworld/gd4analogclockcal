@@ -35,4 +35,12 @@ func update_color()->void:
 
 func _draw() -> void:
 	draw_multiline(dial_lines,Global2d.colors.dial_1, line_thick)
+	for i in range(1,13):
+		draw_hour_letter(clock_R,i)
 
+func draw_hour_letter(r :float,  i :int)->void:
+	var rad = deg_to_rad( -i*30.0 -180)
+	var pos = make_pos_by_rad_r(rad, clock_R*0.87)  + Vector2(-r*0.05,r*0.05)
+	var t = "%2d" % i
+	var default_font = ThemeDB.fallback_font
+	draw_string(default_font, pos, t, HORIZONTAL_ALIGNMENT_CENTER, -1,  clock_R/10, Global2d.colors.dial_1 )
