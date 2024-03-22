@@ -2,8 +2,6 @@ extends Node2D
 
 class_name AnalogDial
 
-var dfont = preload("res://HakgyoansimBareondotumR.ttf")
-
 var dial_lines :PackedVector2Array =[]
 var line_thick :float = 2
 var clock_R :float
@@ -53,4 +51,4 @@ func draw_hour_letter(r :float,  i :int)->void:
 	var offset = Vector2(-fsize/3.5*t.length(),fsize/3)
 	#draw_cross(pos+offset,fsize*2, Global2d.colors.dial_1)
 	#var default_font = ThemeDB.fallback_font
-	draw_string(dfont, pos+offset, t, HORIZONTAL_ALIGNMENT_CENTER, -1,  fsize, Global2d.colors.dial_num )
+	draw_string(Global2d.font, pos+offset, t, HORIZONTAL_ALIGNMENT_CENTER, -1,  fsize, Global2d.colors.dial_num )

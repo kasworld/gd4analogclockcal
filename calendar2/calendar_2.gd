@@ -2,8 +2,6 @@ extends Node2D
 
 class_name Calendar2
 
-var dfont = preload("res://HakgyoansimBareondotumR.ttf")
-
 var csize :Vector2
 func init(cs :Vector2)->void:
 	csize = cs
@@ -23,7 +21,7 @@ func draw_calendar()->void:
 	var offset = Vector2(0,fh*0.7)
 
 	var text_ym = "%4d년 %2d월" % [today_dict["year"] , today_dict["month"]]
-	draw_string(dfont, Vector2(-csize.x/3,-csize.y/2) +offset, text_ym, HORIZONTAL_ALIGNMENT_CENTER, -1,  fh, Global2d.colors.datelabel )
+	draw_string(Global2d.font, Vector2(-csize.x/3,-csize.y/2) +offset, text_ym, HORIZONTAL_ALIGNMENT_CENTER, -1,  fh, Global2d.colors.datelabel )
 
 	for wd in Global2d.weekdaystring.size():
 		var week = 1
@@ -32,7 +30,7 @@ func draw_calendar()->void:
 			co = Global2d.colors.today
 		var pos = Vector2(fw*wd,fh*week) - csize/2 +offset
 		var text =  Global2d.weekdaystring[wd]
-		draw_string(dfont, pos , text, HORIZONTAL_ALIGNMENT_CENTER, -1,  fh*0.9, co )
+		draw_string(Global2d.font, pos , text, HORIZONTAL_ALIGNMENT_CENTER, -1,  fh*0.9, co )
 
 	for week in range(2,8):
 		for wd in range(7):
@@ -45,7 +43,7 @@ func draw_calendar()->void:
 			elif day_index_dict["day"] == today_dict["day"]:
 				co = Global2d.colors.today
 			day_index += 24*60*60
-			draw_string(dfont, pos , text, HORIZONTAL_ALIGNMENT_CENTER, -1,  fh*0.9, co )
+			draw_string(Global2d.font, pos , text, HORIZONTAL_ALIGNMENT_CENTER, -1,  fh*0.9, co )
 
 func _draw() -> void:
 	draw_calendar()

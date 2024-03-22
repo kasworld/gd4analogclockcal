@@ -3,7 +3,6 @@ extends Node2D
 var clock_R :float
 
 var tz_shift :float
-var dial_nums :Array
 var center_circle1 :Polygon2D
 var center_circle2 :Polygon2D
 
@@ -13,13 +12,13 @@ var info_text :InfoText
 func init(config :Dictionary, r :float, tz_s :float) -> void:
 	tz_shift = tz_s
 	clock_R = r
+
+	$AnalogDial.init(r)
 	draw_hand()
 	center_circle1 = Global2d.new_circle_fill(Vector2(0,0), clock_R/25, Global2d.colors.center_circle1)
 	add_child(center_circle1)
 	center_circle2 = Global2d.new_circle_fill(Vector2(0,0), clock_R/30, Global2d.colors.center_circle2)
 	add_child(center_circle2)
-
-	$AnalogDial.init(r)
 
 	var co = Global2d.colors.timelabel
 	$LabelTime.position = Vector2(-r/3.0,-r/2)
@@ -71,8 +70,6 @@ func draw_hand()->void:
 
 func update_color()->void:
 	$AnalogDial.update_color()
-	for n in dial_nums:
-		Global2d.set_label_color(n,Global2d.colors.dial_num[0], Global2d.colors.dial_num[1] )
 	for k in hands_lines:
 		hands_gradients[k].colors = Global2d.colors[k]
 	center_circle1.color = Global2d.colors.center_circle1

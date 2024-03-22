@@ -86,9 +86,9 @@ func make_label_setting(font_size :float , co1 :Color, co2 :Color)->LabelSetting
 	label_settings.font = font
 	label_settings.font_color = co1
 	label_settings.font_size = font_size
-	label_settings.shadow_color = co2
-	var offset = calc_font_offset_vector2(font_size)
-	label_settings.shadow_offset = offset
+	#label_settings.shadow_color = co2
+	#var offset = calc_font_offset_vector2(font_size)
+	#label_settings.shadow_offset = offset
 	return label_settings
 
 func calc_font_offset_vector2(font_size :float)->Vector2:
