@@ -2,6 +2,8 @@ extends Node2D
 
 class_name AnalogDial
 
+var dfont = preload("res://HakgyoansimBareondotumR.ttf")
+
 var dial_lines :PackedVector2Array =[]
 var line_thick :float = 2
 var clock_R :float
@@ -38,9 +40,17 @@ func _draw() -> void:
 	for i in range(1,13):
 		draw_hour_letter(clock_R,i)
 
+func draw_cross(p :Vector2, l:float, co :Color)->void:
+	draw_line(p + Vector2(-l/2,0),p + Vector2(l/2,0), co,-1 )
+	draw_line(p + Vector2(0,-l/2),p + Vector2(0,l/2), co,-1 )
+
 func draw_hour_letter(r :float,  i :int)->void:
 	var rad = deg_to_rad( -i*30.0 -180)
-	var pos = make_pos_by_rad_r(rad, clock_R*0.87)  + Vector2(-r*0.05,r*0.05)
-	var t = "%2d" % i
-	var default_font = ThemeDB.fallback_font
-	draw_string(default_font, pos, t, HORIZONTAL_ALIGNMENT_CENTER, -1,  clock_R/10, Global2d.colors.dial_1 )
+	var fsize = r/10
+	var t = "%d" % i
+	var pos = make_pos_by_rad_r(rad, r*0.87)
+	#draw_cross(pos,fsize*2, Global2d.colors.dial_1)
+	var offset = Vector2(-fsize/3.5*t.length(),fsize/3)
+	#draw_cross(pos+offset,fsize*2, Global2d.colors.dial_1)
+	#var default_font = ThemeDB.fallback_font
+	draw_string(dfont, pos+offset, t, HORIZONTAL_ALIGNMENT_CENTER, -1,  fsize, Global2d.colors.dial_num )

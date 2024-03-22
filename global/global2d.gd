@@ -28,7 +28,7 @@ var colors_dark = {
 	second = [Color.RED.lightened(0.5), Color.RED.lightened(0.5)],
 	center_circle1 = Color.GOLD,
 	center_circle2 = Color.YELLOW,
-	dial_num = [Color.GRAY, Color.WHITE],
+	dial_num = Color.WHITE.darkened(0.3),
 	dial_1 = Color.GREEN,
 }
 var colors_light = 	{
@@ -54,7 +54,7 @@ var colors_light = 	{
 	second = [Color.RED, Color.RED],
 	center_circle1 = Color.GOLDENROD,
 	center_circle2 = Color.DARK_GOLDENROD,
-	dial_num = [Color.GRAY, Color.BLACK],
+	dial_num = Color.BLACK.lightened(0.3),
 	dial_1 = Color.RED,
 }
 var colors = colors_dark
