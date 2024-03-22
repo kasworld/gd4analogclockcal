@@ -28,7 +28,7 @@ func draw_calendar()->void:
 		var co = Global2d.colors.weekday[wd]
 		if wd == today_dict["weekday"] :
 			co = Global2d.colors.today
-		var pos = Vector2(fw*wd,fh*week) - csize/2 +offset
+		var pos = Vector2(fw*wd,fh*week) - csize/2 +offset+Vector2(fh/10 ,0)
 		var text =  Global2d.weekdaystring[wd]
 		draw_string(Global2d.font, pos , text, HORIZONTAL_ALIGNMENT_CENTER, -1,  fh*0.9, co )
 
