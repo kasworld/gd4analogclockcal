@@ -12,11 +12,11 @@ func make_dial_lines(r :float)->void:
 	for i in range(0,360):
 		var rad = deg_to_rad(i+180)
 		var r1 :float
-		if i == 0:
-			r1 = r*0.9
-		elif i % 90 == 0:
-			r1 = r*0.92
-		elif i % 30 == 0 :
+		#if i == 0:
+			#r1 = r*0.9
+		#elif i % 90 == 0:
+			#r1 = r*0.92
+		if i % 30 == 0 :
 			r1 = r*0.94
 		elif i % 6 == 0 :
 			r1 = r*0.96
