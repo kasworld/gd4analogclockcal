@@ -23,9 +23,7 @@ var config = {
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	config = Config.load_or_save(file_name,config,"version" )
-
 	set_color_mode_by_time()
-
 	vp_rect = get_viewport_rect()
 
 	bgimage = Image.create(vp_rect.size.x,vp_rect.size.y,true,Image.FORMAT_RGBA8)
@@ -39,16 +37,14 @@ func _ready() -> void:
 	$Calendar2.init( Vector2( calw, calw) )
 	$Calendar2.position = calendar_pos_list[0]
 
-	var co :Color
-	$AnalogClock.init(config, vp_rect.size.y/2, 9 )
 	analogclock_pos_list.append_array(
 		[Vector2(vp_rect.size.y/2, vp_rect.size.y/2 ), Vector2(vp_rect.size.x - vp_rect.size.y/2, vp_rect.size.y/2 ) ]
 		)
+	$AnalogClock.init(config, vp_rect.size.y/2, 9 )
 	$AnalogClock.position = analogclock_pos_list[0]
 
-	co = Global2d.colors.paneloption
 	var optrect = Rect2( vp_rect.size.x * 0.1 ,vp_rect.size.y * 0.3 , vp_rect.size.x * 0.8 , vp_rect.size.y * 0.4 )
-	$PanelOption.init(file_name,config,editable_keys, optrect, co, Global2d.make_shadow_color(co))
+	$PanelOption.init(file_name,config,editable_keys, optrect)
 	$PanelOption.config_changed.connect(config_changed)
 	$PanelOption.config_reset_req.connect(panel_config_reset_req)
 	init_request_bg()

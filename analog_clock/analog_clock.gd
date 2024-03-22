@@ -1,11 +1,9 @@
 extends Node2D
 
 var clock_R :float
-
 var tz_shift :float
 var center_circle1 :Polygon2D
 var center_circle2 :Polygon2D
-
 var info_text :InfoText
 
 # Called when the node enters the scene tree for the first time.
@@ -14,7 +12,7 @@ func init(config :Dictionary, r :float, tz_s :float) -> void:
 	clock_R = r
 
 	$AnalogDial.init(r)
-	draw_hand()
+	make_hand()
 	center_circle1 = Global2d.new_circle_fill(Vector2(0,0), clock_R/25, Global2d.colors.center_circle1)
 	add_child(center_circle1)
 	center_circle2 = Global2d.new_circle_fill(Vector2(0,0), clock_R/30, Global2d.colors.center_circle2)
@@ -31,11 +29,11 @@ func init(config :Dictionary, r :float, tz_s :float) -> void:
 	info_text = InfoText.new()
 	add_child(info_text)
 	info_text.init_request(config.weather_url,config.dayinfo_url,config.todayinfo_url)
-	info_text.text_updated.connect(update_info_text)
+	info_text.text_updated.connect(_on_update_info_text)
 
 	update_color()
 
-func update_info_text(t :String)->void:
+func _on_update_info_text(t :String)->void:
 	$LabelInfo.text = t
 
 func update_req_url(cfg:Dictionary)->void:
@@ -49,7 +47,7 @@ var hands_lines = {
 	minute = null,
 	second = null,
 }
-func draw_hand()->void:
+func make_hand()->void:
 	var hands_param = {
 		hour1 =[1.0/25, 0.7],
 		hour2 =[1.0/100, 0.65],

@@ -18,7 +18,6 @@ var colors_dark = {
 	timelabel = Color.WHITE,
 	datelabel = Color.WHITE,
 	infolabel = Color.WHITE,
-	paneloption = Color.WHITE,
 	default_clear = Color.BLACK,
 
 	# analog clock
@@ -45,7 +44,6 @@ var colors_light = 	{
 	timelabel = Color.BLACK,
 	datelabel = Color.BLACK,
 	infolabel = Color.BLACK,
-	paneloption = Color.BLACK,
 	default_clear = Color.WHITE,
 	# analog clock
 	hour1 = Color.BLUE,
