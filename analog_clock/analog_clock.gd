@@ -22,11 +22,11 @@ func init(config :Dictionary, r :float, tz_s :float) -> void:
 
 	var co = Global2d.colors.timelabel
 	$LabelTime.position = Vector2(-r/3.0,-r/2)
-	$LabelTime.label_settings = Global2d.make_label_setting(r/4, co, co)
+	$LabelTime.label_settings = Global2d.make_label_setting(r/4, co)
 
 	co = Global2d.colors.infolabel
 	$LabelInfo.position = Vector2(-r/2.0,r/4)
-	$LabelInfo.label_settings = Global2d.make_label_setting(r/8, co, co)
+	$LabelInfo.label_settings = Global2d.make_label_setting(r/8, co)
 
 	info_text = InfoText.new()
 	add_child(info_text)
@@ -49,13 +49,6 @@ var hands_lines = {
 	minute = null,
 	second = null,
 }
-# dict to gradient
-var hands_gradients = {
-	hour1 = null,
-	hour2 = null,
-	minute = null,
-	second = null,
-}
 func draw_hand()->void:
 	var hands_param = {
 		hour1 =[1.0/25, 0.7],
@@ -63,38 +56,24 @@ func draw_hand()->void:
 		minute =[1.0/50, 0.9],
 		second =[1.0/100, 1.0],
 	}
-	for k in hands_gradients:
-		hands_gradients[k] = new_gradient(Global2d.colors[k])
-		hands_lines[k] = new_clock_hand(hands_gradients[k], hands_param[k][0],hands_param[k][1] )
+	for k in hands_param:
+		var w = hands_param[k][0]
+		var h = hands_param[k][1]
+		var cr = Line2D.new()
+		cr.default_color = Global2d.colors[k]
+		cr.width = w*clock_R
+		cr.points = [Vector2(0,-h*clock_R), Vector2(0,h*clock_R/8)]
+		cr.begin_cap_mode = Line2D.LINE_CAP_ROUND
+		cr.end_cap_mode = Line2D.LINE_CAP_ROUND
+		hands_lines[k] = cr
 		add_child(hands_lines[k])
 
 func update_color()->void:
 	$AnalogDial.update_color()
-	for k in hands_lines:
-		hands_gradients[k].colors = Global2d.colors[k]
 	center_circle1.color = Global2d.colors.center_circle1
 	center_circle2.color = Global2d.colors.center_circle2
-
-	var co = Global2d.colors.timelabel
-	Global2d.set_label_color($LabelTime, co, Global2d.make_shadow_color(co))
-
-	co = Global2d.colors.infolabel
-	Global2d.set_label_color($LabelInfo, co, Global2d.make_shadow_color(co))
-
-func new_gradient(co_list :Array)->Gradient:
-	var gr = Gradient.new()
-	gr.colors = co_list
-	return gr
-
-func new_clock_hand(gr :Gradient, w :float, h: float) -> Line2D:
-	var cr = Line2D.new()
-	cr.gradient = gr
-	cr.width = w*clock_R
-	cr.points = [Vector2(0,-h*clock_R), Vector2(0,h*clock_R/8)]
-	cr.begin_cap_mode = Line2D.LINE_CAP_ROUND
-	cr.end_cap_mode = Line2D.LINE_CAP_ROUND
-	cr.antialiased = true
-	return cr
+	$LabelTime.label_settings.font_color = Global2d.colors.timelabel
+	$LabelInfo.label_settings.font_color = Global2d.colors.infolabel
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:

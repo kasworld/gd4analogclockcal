@@ -22,10 +22,10 @@ var colors_dark = {
 	default_clear = Color.BLACK,
 
 	# analog clock
-	hour1 = [Color.BLUE.lightened(0.5), Color.BLUE.lightened(0.5)],
-	hour2 = [Color.BLUE, Color.BLUE],
-	minute = [Color.GREEN, Color.GREEN],
-	second = [Color.RED.lightened(0.5), Color.RED.lightened(0.5)],
+	hour1 = Color.BLUE.lightened(0.5),
+	hour2 = Color.BLUE,
+	minute = Color.GREEN,
+	second = Color.RED.lightened(0.5),
 	center_circle1 = Color.GOLD,
 	center_circle2 = Color.YELLOW,
 	dial_num = Color.WHITE.darkened(0.3),
@@ -48,10 +48,10 @@ var colors_light = 	{
 	paneloption = Color.BLACK,
 	default_clear = Color.WHITE,
 	# analog clock
-	hour1 = [Color.BLUE, Color.BLUE],
-	hour2 = [Color.BLUE.lightened(0.5), Color.BLUE.lightened(0.5)],
-	minute = [Color.GREEN.darkened(0.5), Color.GREEN.darkened(0.5)],
-	second = [Color.RED, Color.RED],
+	hour1 = Color.BLUE,
+	hour2 = Color.BLUE.lightened(0.5),
+	minute = Color.GREEN.darkened(0.5),
+	second = Color.RED,
 	center_circle1 = Color.GOLDENROD,
 	center_circle2 = Color.DARK_GOLDENROD,
 	dial_num = Color.BLACK.lightened(0.3),
@@ -77,18 +77,11 @@ func make_shadow_color(co :Color)->Color:
 	else :
 		return co.lightened(0.5)
 
-func set_label_color(lb :Label, co1 :Color, co2 :Color)->void:
-	lb.label_settings.font_color = co1
-	lb.label_settings.shadow_color = co2
-
-func make_label_setting(font_size :float , co1 :Color, co2 :Color)->LabelSettings:
+func make_label_setting(font_size :float , co1 :Color)->LabelSettings:
 	var label_settings = LabelSettings.new()
 	label_settings.font = font
 	label_settings.font_color = co1
 	label_settings.font_size = font_size
-	#label_settings.shadow_color = co2
-	#var offset = calc_font_offset_vector2(font_size)
-	#label_settings.shadow_offset = offset
 	return label_settings
 
 func calc_font_offset_vector2(font_size :float)->Vector2:
