@@ -28,7 +28,6 @@ Config="*res://global/config.gd"
 window/size/viewport_width=3840
 window/size/viewport_height=2160
 window/size/mode=3
-window/size/resizable=false
 window/stretch/mode="viewport"
 window/stretch/aspect="expand"
 
@@ -38,5 +37,4 @@ enabled=PackedStringArray()
 
 [rendering]
 
-renderer/rendering_method="gl_compatibility"
 textures/vram_compression/import_etc2_astc=true

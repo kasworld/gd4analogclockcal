@@ -11,7 +11,6 @@ var editable_keys = [
 	"todayinfo_url",
 	"background_url",
 	]
-
 var config = {
 	"version" : "gd4analogclockcal 7.0.0",
 	"weather_url" : "http://192.168.0.10/weather.txt",
@@ -173,7 +172,6 @@ var old_time_dict = Time.get_datetime_dict_from_system() # datetime dict
 var old_minute_dict = Time.get_datetime_dict_from_system() # datetime dict
 func _on_timer_day_night_timeout() -> void:
 	var time_now_dict = Time.get_datetime_dict_from_system()
-
 	if old_minute_dict["minute"] != time_now_dict["minute"]:
 		$AniMove2D.start_with_step(1)
 		old_minute_dict = time_now_dict
