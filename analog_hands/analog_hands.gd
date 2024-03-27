@@ -5,7 +5,15 @@ class_name AnalogHands
 var clock_R :float
 var tz_shift :float
 
-func init(r:float, tz_s :float)->void:
+var hands_param = {
+	# from, to , width : ratio of clock_R
+	hour1 = [-0.2,0.7,0.04],
+	hour2 = [-0.1,0.65,0.01],
+	minute = [-0.3,0.9,0.02],
+	second = [-0.4,1.0,0.01],
+}
+func init(r:float, tz_s :float, hp :Dictionary = hands_param)->void:
+	hands_param = hp
 	clock_R = r
 	tz_shift = tz_s
 	queue_redraw()
@@ -30,17 +38,12 @@ func _draw() -> void:
 		hour1 = -hour2rad(hour),
 		hour2 = -hour2rad(hour),
 	}
-	var hands_param = {
-		hour1 =[1.0/25, 0.7],
-		hour2 =[1.0/100, 0.65],
-		minute =[1.0/50, 0.9],
-		second =[1.0/100, 1.0],
-	}
 	for k in hands_param:
-		var w = hands_param[k][0]
-		var h = hands_param[k][1]
-		var p1 = make_pos_by_rad_r(hands_rot[k], -h*clock_R)
-		var p2 = make_pos_by_rad_r(hands_rot[k], h*clock_R/8)
+		var w = hands_param[k][2]
+		var from = hands_param[k][0]
+		var to = hands_param[k][1]
+		var p1 = make_pos_by_rad_r(hands_rot[k], from*clock_R)
+		var p2 = make_pos_by_rad_r(hands_rot[k], to*clock_R)
 		draw_line(p1,p2,Global2d.colors[k] ,w*clock_R  )
 
 	draw_circle(Vector2(0,0), clock_R/25, Global2d.colors.center_circle1)

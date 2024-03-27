@@ -7,7 +7,7 @@
 [node name="AnalogClock" type="Node2D"]
 script = ExtResource("1_bs3fy")
 
-[node name="AnalogDial" parent="." instance=ExtResource("2_qof2o")]
+[node name="AnalogDialHour" parent="." instance=ExtResource("2_qof2o")]
 
 [node name="LabelTime" type="Label" parent="."]
 anchors_preset = 8
@@ -32,3 +32,5 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="AnalogHands" parent="." instance=ExtResource("3_5uly1")]
+
+[node name="AnalogDialMinute" parent="." instance=ExtResource("2_qof2o")]

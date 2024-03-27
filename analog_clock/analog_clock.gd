@@ -4,7 +4,8 @@ var info_text :InfoText
 
 # Called when the node enters the scene tree for the first time.
 func init(config :Dictionary, r :float, tz_s :float) -> void:
-	$AnalogDial.init(r)
+	$AnalogDialHour.init(r*0.8)
+	$AnalogDialMinute.init(r, AnalogDial.DrawNumMode.Minute)
 	$AnalogHands.init(r,tz_s)
 
 	var co = Global2d.colors.timelabel
@@ -30,7 +31,8 @@ func update_req_url(cfg:Dictionary)->void:
 	info_text.force_update()
 
 func update_color()->void:
-	$AnalogDial.update_color()
+	$AnalogDialHour.update_color()
+	$AnalogDialMinute.update_color()
 	$AnalogHands.update_color()
 	$LabelTime.label_settings.font_color = Global2d.colors.timelabel
 	$LabelInfo.label_settings.font_color = Global2d.colors.infolabel
