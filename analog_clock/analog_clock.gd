@@ -5,13 +5,13 @@ var info_text :InfoText
 # Called when the node enters the scene tree for the first time.
 func init(config :Dictionary, r :float, tz_s :float) -> void:
 	$AnalogDialHour.init(r)
-	var hands_param = {
-		# from, to , width : ratio of clock_R
-		hour1 = [0.5,0.8,0.03],
-		hour2 = [0.55,0.75,0.01],
-		minute = [0.6,0.9,0.02],
-		second = [0.7,1.0,0.01],
-	}
+	var hands_param = [
+		# hands type, color key, from, to , width : ratio of clock_R
+		[AnalogHands.HandType.Hour, "hour1", 0.5,0.8,0.03],
+		[AnalogHands.HandType.Hour, "hour2", 0.55,0.75,0.01],
+		[AnalogHands.HandType.Minute, "minute", 0.6,0.9,0.02],
+		[AnalogHands.HandType.Second, "second", 0.7,1.0,0.01],
+	]
 	$AnalogHands.init(r,tz_s, hands_param, false)
 
 	var co = Global2d.colors.timelabel
