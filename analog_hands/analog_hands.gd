@@ -8,6 +8,7 @@ var tz_shift :float
 # use for calc hand angle
 enum HandType {Hour, Minute, Second}
 
+# default
 var hands_param = [
 	# hands type, color key, from, to , width : ratio of clock_R
 	[HandType.Hour, "hour1", -0.2,0.7,0.04],
@@ -16,6 +17,7 @@ var hands_param = [
 	[HandType.Second, "second", -0.4,1.0,0.01],
 ]
 var show_center :bool
+
 func init(r:float, tz_s :float, hp :Array = hands_param, shct :bool = true)->void:
 	hands_param = hp
 	show_center = shct
@@ -29,8 +31,24 @@ func update_color()->void:
 func _process(delta: float) -> void:
 	queue_redraw()
 
-func get_rad_for_hand(ms :float, hd :HandType)->float:
-	#var ms = Time.get_unix_time_from_system()
+var old_time_dict = {"second":0} # datetime dict
+func _draw() -> void:
+	var ms = Time.get_unix_time_from_system()
+	for v in hands_param:
+		var rad = -calc_rad_for_hand(ms, v[0]) +PI
+		var co = Global2d.colors[v[1]]
+		var p1 = make_pos_by_rad_r(rad, v[2]*clock_R)
+		var p2 = make_pos_by_rad_r(rad, v[3]*clock_R)
+		draw_line(p1, p2, co, v[4]*clock_R  )
+
+	if show_center:
+		draw_circle(Vector2(0,0), clock_R/25, Global2d.colors.center_circle1)
+		draw_circle(Vector2(0,0), clock_R/30, Global2d.colors.center_circle2)
+
+func make_pos_by_rad_r(rad:float, r :float)->Vector2:
+	return Vector2(sin(rad)*r, cos(rad)*r)
+
+func calc_rad_for_hand(ms :float, hd :HandType)->float:
 	var second = ms - int(ms/60)*60
 	ms = ms / 60
 	var minute = ms - int(ms/60)*60
@@ -44,26 +62,6 @@ func get_rad_for_hand(ms :float, hd :HandType)->float:
 		HandType.Second:
 			return second2rad(second)
 	return 0
-
-var old_time_dict = {"second":0} # datetime dict
-func _draw() -> void:
-	var ms = Time.get_unix_time_from_system()
-	for v in hands_param:
-		var w = v[4]
-		var from = v[2]
-		var to = v[3]
-		var rad = -get_rad_for_hand(ms, v[0]) +PI
-		var p1 = make_pos_by_rad_r(rad, from*clock_R)
-		var p2 = make_pos_by_rad_r(rad, to*clock_R)
-		var co = Global2d.colors[v[1]]
-		draw_line(p1,p2,co ,w*clock_R  )
-
-	if show_center:
-		draw_circle(Vector2(0,0), clock_R/25, Global2d.colors.center_circle1)
-		draw_circle(Vector2(0,0), clock_R/30, Global2d.colors.center_circle2)
-
-func make_pos_by_rad_r(rad:float, r :float)->Vector2:
-	return Vector2(sin(rad)*r, cos(rad)*r)
 
 func second2rad(sec :float) -> float:
 	return 2.0*PI/60.0*sec
