@@ -4,14 +4,13 @@ var info_text :InfoText
 
 # Called when the node enters the scene tree for the first time.
 func init(config :Dictionary, r :float, tz_s :float) -> void:
-	$AnalogDialHour.init(r*0.8)
-	$AnalogDialMinute.init(r, AnalogDial.DrawNumMode.Minute)
+	$AnalogDialHour.init(r)
 	var hands_param = {
 		# from, to , width : ratio of clock_R
-		hour1 = [0.6,0.8,0.03],
-		hour2 = [0.65,0.75,0.01],
-		minute = [0.8,1.0,0.02],
-		second = [0.8,1.0,0.01],
+		hour1 = [0.5,0.8,0.03],
+		hour2 = [0.55,0.75,0.01],
+		minute = [0.6,0.9,0.02],
+		second = [0.7,1.0,0.01],
 	}
 	$AnalogHands.init(r,tz_s, hands_param, false)
 
@@ -39,7 +38,6 @@ func update_req_url(cfg:Dictionary)->void:
 
 func update_color()->void:
 	$AnalogDialHour.update_color()
-	$AnalogDialMinute.update_color()
 	$AnalogHands.update_color()
 	$LabelTime.label_settings.font_color = Global2d.colors.timelabel
 	$LabelInfo.label_settings.font_color = Global2d.colors.infolabel

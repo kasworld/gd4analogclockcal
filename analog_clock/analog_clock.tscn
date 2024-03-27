@@ -32,5 +32,3 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="AnalogHands" parent="." instance=ExtResource("3_5uly1")]
-
-[node name="AnalogDialMinute" parent="." instance=ExtResource("2_qof2o")]
