@@ -16,11 +16,16 @@ var hands_param = [
 	[HandType.Minute, "minute", -0.3,0.9,0.02],
 	[HandType.Second, "second", -0.4,1.0,0.01],
 ]
-var show_center :bool
 
-func init(r:float, tz_s :float, hp :Array = hands_param, shct :bool = true)->void:
+var center_param = [
+	# color key, radius
+	["center_circle1", 0.04],
+	["center_circle2", 0.025],
+]
+
+func init(r:float, tz_s :float, hp :Array = hands_param, ctpm = center_param)->void:
 	hands_param = hp
-	show_center = shct
+	center_param = ctpm
 	clock_R = r
 	tz_shift = tz_s
 	queue_redraw()
@@ -41,9 +46,10 @@ func _draw() -> void:
 		var p2 = make_pos_by_rad_r(rad, v[3]*clock_R)
 		draw_line(p1, p2, co, v[4]*clock_R  )
 
-	if show_center:
-		draw_circle(Vector2(0,0), clock_R/25, Global2d.colors.center_circle1)
-		draw_circle(Vector2(0,0), clock_R/30, Global2d.colors.center_circle2)
+	for v in center_param:
+		var co = Global2d.colors[v[0]]
+		var r = clock_R * v[1]
+		draw_circle(Vector2(0,0), r, co)
 
 func make_pos_by_rad_r(rad:float, r :float)->Vector2:
 	return Vector2(sin(rad)*r, cos(rad)*r)
