@@ -12,8 +12,10 @@ var hands_param = {
 	minute = [-0.3,0.9,0.02],
 	second = [-0.4,1.0,0.01],
 }
-func init(r:float, tz_s :float, hp :Dictionary = hands_param)->void:
+var show_center :bool
+func init(r:float, tz_s :float, hp :Dictionary = hands_param, shct :bool = true)->void:
 	hands_param = hp
+	show_center = shct
 	clock_R = r
 	tz_shift = tz_s
 	queue_redraw()
@@ -42,12 +44,14 @@ func _draw() -> void:
 		var w = hands_param[k][2]
 		var from = hands_param[k][0]
 		var to = hands_param[k][1]
-		var p1 = make_pos_by_rad_r(hands_rot[k], from*clock_R)
-		var p2 = make_pos_by_rad_r(hands_rot[k], to*clock_R)
+		var rad = hands_rot[k] +PI
+		var p1 = make_pos_by_rad_r(rad, from*clock_R)
+		var p2 = make_pos_by_rad_r(rad, to*clock_R)
 		draw_line(p1,p2,Global2d.colors[k] ,w*clock_R  )
 
-	draw_circle(Vector2(0,0), clock_R/25, Global2d.colors.center_circle1)
-	draw_circle(Vector2(0,0), clock_R/30, Global2d.colors.center_circle2)
+	if show_center:
+		draw_circle(Vector2(0,0), clock_R/25, Global2d.colors.center_circle1)
+		draw_circle(Vector2(0,0), clock_R/30, Global2d.colors.center_circle2)
 
 func make_pos_by_rad_r(rad:float, r :float)->Vector2:
 	return Vector2(sin(rad)*r, cos(rad)*r)

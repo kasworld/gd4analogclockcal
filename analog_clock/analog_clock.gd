@@ -6,14 +6,21 @@ var info_text :InfoText
 func init(config :Dictionary, r :float, tz_s :float) -> void:
 	$AnalogDialHour.init(r*0.8)
 	$AnalogDialMinute.init(r, AnalogDial.DrawNumMode.Minute)
-	$AnalogHands.init(r,tz_s)
+	var hands_param = {
+		# from, to , width : ratio of clock_R
+		hour1 = [0.6,0.8,0.03],
+		hour2 = [0.65,0.75,0.01],
+		minute = [0.8,1.0,0.02],
+		second = [0.8,1.0,0.01],
+	}
+	$AnalogHands.init(r,tz_s, hands_param, false)
 
 	var co = Global2d.colors.timelabel
-	$LabelTime.position = Vector2(-r/3.0,-r/2)
+	$LabelTime.position = Vector2(-r/3.0,-r*0.3)
 	$LabelTime.label_settings = Global2d.make_label_setting(r/4, co)
 
 	co = Global2d.colors.infolabel
-	$LabelInfo.position = Vector2(-r/2.0,r/4)
+	$LabelInfo.position = Vector2(-r/2.0,r*0.1)
 	$LabelInfo.label_settings = Global2d.make_label_setting(r/8, co)
 
 	info_text = InfoText.new()
