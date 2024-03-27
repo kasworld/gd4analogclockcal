@@ -40,19 +40,18 @@ var old_time_dict = {"second":0} # datetime dict
 func _draw() -> void:
 	var ms = Time.get_unix_time_from_system()
 	for v in hands_param:
-		var rad = -calc_rad_for_hand(ms, v[0]) +PI
+		var rad = calc_rad_for_hand(ms, v[0]) +PI
 		var co = Global2d.colors[v[1]]
-		var p1 = make_pos_by_rad_r(rad, v[2]*clock_R)
-		var p2 = make_pos_by_rad_r(rad, v[3]*clock_R)
+		var p1 = Vector2(0, v[2]*clock_R)
+		var p2 = Vector2(0, v[3]*clock_R)
+		draw_set_transform(Vector2(0,0), rad)
 		draw_line(p1, p2, co, v[4]*clock_R  )
+	draw_set_transform(Vector2(0,0), 0)
 
 	for v in center_param:
 		var co = Global2d.colors[v[0]]
 		var r = clock_R * v[1]
 		draw_circle(Vector2(0,0), r, co)
-
-func make_pos_by_rad_r(rad:float, r :float)->Vector2:
-	return Vector2(sin(rad)*r, cos(rad)*r)
 
 func calc_rad_for_hand(ms :float, hd :HandType)->float:
 	var second = ms - int(ms/60)*60
