@@ -12,7 +12,14 @@ func init(config :Dictionary, r :float, tz_s :float) -> void:
 		[AnalogHands.HandType.Minute, "minute", 0.1,0.9,0.02],
 		[AnalogHands.HandType.Second, "second", 0.1,1.0,0.01],
 	]
-	$AnalogHands.init(r,tz_s, hands_param)
+	var center_param = [
+		# color key, radius
+		["hour1", 0.04],
+		["hour2", 0.03],
+		["minute", 0.02],
+		["second", 0.01],
+	]
+	$AnalogHands.init(r,tz_s, hands_param,center_param)
 
 	var co = Global2d.colors.timelabel
 	$LabelTime.position = Vector2(-r/3.0,-r*0.3)
