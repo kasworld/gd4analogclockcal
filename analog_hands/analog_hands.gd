@@ -35,16 +35,16 @@ func _draw() -> void:
 	ms = ms / 60
 	var hour = ms - int(ms/24)*24 + tz_shift
 	var hands_rot = {
-		second = -second2rad(second),
-		minute = -minute2rad(minute),
-		hour1 = -hour2rad(hour),
-		hour2 = -hour2rad(hour),
+		second = second2rad(second),
+		minute = minute2rad(minute),
+		hour1 = hour2rad(hour),
+		hour2 = hour2rad(hour),
 	}
 	for k in hands_param:
 		var w = hands_param[k][2]
 		var from = hands_param[k][0]
 		var to = hands_param[k][1]
-		var rad = hands_rot[k] +PI
+		var rad = -hands_rot[k] +PI
 		var p1 = make_pos_by_rad_r(rad, from*clock_R)
 		var p2 = make_pos_by_rad_r(rad, to*clock_R)
 		draw_line(p1,p2,Global2d.colors[k] ,w*clock_R  )
