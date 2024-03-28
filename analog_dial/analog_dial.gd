@@ -11,7 +11,7 @@ var nums_radius_rate :float
 enum DrawNumMode {Hour,Minute,Degree}
 var draw_num_mode :DrawNumMode
 
-func init(r:float, numrate:float = 0.9, ftrate :float = 0.1, lntk :float =0.002,  dnm :DrawNumMode = DrawNumMode.Hour)->void:
+func init(r:float, numrate:float = 0.9, ftrate :float = 0.1, lntk :float =0.004,  dnm :DrawNumMode = DrawNumMode.Hour)->void:
 	main_radius = r
 	nums_radius_rate = numrate
 	font_size_rate = ftrate

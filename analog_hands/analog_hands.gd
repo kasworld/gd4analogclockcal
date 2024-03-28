@@ -10,11 +10,11 @@ enum HandType {Hour, Minute, Second}
 
 # default
 var hands_param = [
-	# hands type, color key, from, to , width : ratio of clock_R
-	[HandType.Hour, "hour1", -0.2,0.7,0.04],
-	[HandType.Hour, "hour2", -0.1,0.65,0.01],
-	[HandType.Minute, "minute", -0.3,0.9,0.02],
-	[HandType.Second, "second", -0.4,1.0,0.01],
+	# hands type, color key,outline w :0 fill,  from, to , width : ratio of clock_R
+	[HandType.Hour, "hour1",3, -0.2,0.7,0.04],
+	[HandType.Hour, "hour2",3, -0.1,0.65,0.01],
+	[HandType.Minute, "minute",3, -0.3,0.9,0.02],
+	[HandType.Second, "second",3, -0.4,1.0,0.01],
 ]
 
 var center_param = [
@@ -42,14 +42,16 @@ func _draw() -> void:
 	for v in hands_param:
 		var rad = calc_rad_for_hand(ms, v[0]) +PI
 		var co = Global2d.colors[v[1]]
-		var w = v[4]*clock_R
-		#if w < 1 :
-			#w = -1
-		var p1 = Vector2(0, v[2]*clock_R)
-		var p2 = Vector2(0, v[3]*clock_R)
+		var outline = v[2]
+		var p1 = Vector2(0, v[3]*clock_R)
+		var p2 = Vector2(0, v[4]*clock_R)
+		var w = v[5]*clock_R
 		draw_set_transform(Vector2(0,0), rad)
 		var rt = Rect2(p1-Vector2(w/2,0), p2-p1 + Vector2(w,0))
-		draw_rect(rt,co,false,2)
+		if outline == 0:
+			draw_rect(rt,co,true)
+		else:
+			draw_rect(rt,co,false,outline)
 	draw_set_transform(Vector2(0,0), 0)
 
 	for v in center_param:

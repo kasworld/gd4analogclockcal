@@ -7,10 +7,10 @@ func init(config :Dictionary, r :float, tz_s :float) -> void:
 	$AnalogDialHour.init(r)
 	var hands_param = [
 		# hands type, color key, from, to , width : ratio of clock_R
-		[AnalogHands.HandType.Hour, "hour1", 0.1,0.8,0.03],
-		[AnalogHands.HandType.Hour, "hour2", 0.12,0.78,0.01],
-		[AnalogHands.HandType.Minute, "minute", 0.1,0.9,0.02],
-		[AnalogHands.HandType.Second, "second", 0.1,1.0,0.01],
+		[AnalogHands.HandType.Hour, "hour1",0, 0.1,0.8,0.03],
+		[AnalogHands.HandType.Hour, "hour2",0, 0.12,0.78,0.01],
+		[AnalogHands.HandType.Minute, "minute",0, 0.1,0.9,0.02],
+		[AnalogHands.HandType.Second, "second",0, 0.1,1.0,0.01],
 	]
 	var center_param = [
 		# color key, radius
