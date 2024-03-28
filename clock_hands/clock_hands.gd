@@ -1,6 +1,6 @@
 extends Node2D
 
-class_name AnalogHands
+class_name ClockHands
 
 var clock_R :float
 var tz_shift :float

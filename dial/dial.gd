@@ -1,6 +1,6 @@
 extends Node2D
 
-class_name AnalogDial
+class_name Dial
 
 enum NumberType {Hour,Minute,Degree}
 enum LineAlign {In,Mid,Out}
