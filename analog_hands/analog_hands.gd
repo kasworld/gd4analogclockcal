@@ -11,16 +11,16 @@ enum HandType {Hour, Minute, Second}
 # default
 var hands_param = [
 	# hands type, color key,outline w :0 fill,  from, to , width : ratio of clock_R
-	[HandType.Hour, "hour1",3, -0.2,0.7,0.04],
-	[HandType.Hour, "hour2",3, -0.1,0.65,0.01],
-	[HandType.Minute, "minute",3, -0.3,0.9,0.02],
-	[HandType.Second, "second",3, -0.4,1.0,0.01],
+	[HandType.Hour, "hour1",4, 0.04,0.7, 0.04],
+	[HandType.Hour, "hour2",4, 0.04,0.65, 0.01],
+	[HandType.Minute, "minute",4, 0.04,0.9, 0.02],
+	[HandType.Second, "second",4, 0.04,1.0, 0.01],
 ]
 
 var center_param = [
-	# color key, radius
-	["center_circle1", 0.04],
-	["center_circle2", 0.025],
+	# color key, radius , ourline w:0 fill
+	["center_circle1", 0.04, 4],
+	["center_circle2", 0.025, 4],
 ]
 
 func init(r:float, tz_s :float, hp :Array = hands_param, ctpm = center_param)->void:
@@ -57,7 +57,11 @@ func _draw() -> void:
 	for v in center_param:
 		var co = Global2d.colors[v[0]]
 		var r = clock_R * v[1]
-		draw_circle(Vector2(0,0), r, co)
+		var outline = v[2]
+		if outline == 0:
+			draw_circle(Vector2(0,0), r, co)
+		else:
+			draw_arc(Vector2(0,0),r, 0, 2*PI, r , co, outline)
 
 func calc_rad_for_hand(ms :float, hd :HandType)->float:
 	var second = ms - int(ms/60)*60

@@ -5,21 +5,22 @@ var info_text :InfoText
 # Called when the node enters the scene tree for the first time.
 func init(config :Dictionary, r :float, tz_s :float) -> void:
 	$AnalogDialHour.init(r)
-	var hands_param = [
-		# hands type, color key, from, to , width : ratio of clock_R
-		[AnalogHands.HandType.Hour, "hour1",0, 0.1,0.8,0.03],
-		[AnalogHands.HandType.Hour, "hour2",0, 0.12,0.78,0.01],
-		[AnalogHands.HandType.Minute, "minute",0, 0.1,0.9,0.02],
-		[AnalogHands.HandType.Second, "second",0, 0.1,1.0,0.01],
-	]
-	var center_param = [
-		# color key, radius
-		["hour1", 0.03/2],
-		#["hour2", 0.03],
-		["minute", 0.02/2],
-		["second", 0.01/2],
-	]
-	$AnalogHands.init(r,tz_s, hands_param,center_param)
+	#var hands_param = [
+		## hands type, color key, from, to , width : ratio of clock_R
+		#[AnalogHands.HandType.Hour, "hour1",0, 0.1,0.8,0.03],
+		#[AnalogHands.HandType.Hour, "hour2",0, 0.12,0.78,0.01],
+		#[AnalogHands.HandType.Minute, "minute",0, 0.1,0.9,0.02],
+		#[AnalogHands.HandType.Second, "second",0, 0.1,1.0,0.01],
+	#]
+	#var center_param = [
+		## color key, radius
+		#["hour1", 0.03/2],
+		##["hour2", 0.03],
+		#["minute", 0.02/2],
+		#["second", 0.01/2],
+	#]
+	#$AnalogHands.init(r,tz_s, hands_param,center_param)
+	$AnalogHands.init(r,tz_s)
 
 	var co = Global2d.colors.timelabel
 	$LabelTime.position = Vector2(-r/3.0,-r*0.3)
