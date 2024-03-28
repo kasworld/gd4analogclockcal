@@ -42,10 +42,14 @@ func _draw() -> void:
 	for v in hands_param:
 		var rad = calc_rad_for_hand(ms, v[0]) +PI
 		var co = Global2d.colors[v[1]]
+		var w = v[4]*clock_R
+		#if w < 1 :
+			#w = -1
 		var p1 = Vector2(0, v[2]*clock_R)
 		var p2 = Vector2(0, v[3]*clock_R)
 		draw_set_transform(Vector2(0,0), rad)
-		draw_line(p1, p2, co, v[4]*clock_R  )
+		var rt = Rect2(p1-Vector2(w/2,0), p2-p1 + Vector2(w,0))
+		draw_rect(rt,co,false,2)
 	draw_set_transform(Vector2(0,0), 0)
 
 	for v in center_param:

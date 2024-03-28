@@ -38,7 +38,10 @@ func update_color()->void:
 	queue_redraw()
 
 func _draw() -> void:
-	draw_multiline(dial_lines,Global2d.colors.dial_1, main_radius* line_thick_rate)
+	var w = main_radius* line_thick_rate
+	if w < 1 :
+		w = -1
+	draw_multiline(dial_lines,Global2d.colors.dial_1, w)
 	match draw_num_mode:
 		DrawNumMode.Hour:
 			for i in range(1,13):
