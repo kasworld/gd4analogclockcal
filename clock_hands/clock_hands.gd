@@ -11,10 +11,10 @@ enum HandType {Hour, Minute, Second}
 # default
 var hands_param = [
 	# hands type, color key,outline w :0 fill,  from, to , width : ratio of clock_R
-	[HandType.Hour, "hour1",4, 0.04,0.7, 0.04],
-	[HandType.Hour, "hour2",4, 0.04,0.65, 0.01],
-	[HandType.Minute, "minute",4, 0.04,0.9, 0.02],
-	[HandType.Second, "second",4, 0.04,1.0, 0.01],
+	[HandType.Hour, "hour1",8, 0.04,0.7, 0.04],
+	[HandType.Hour, "hour2",0, 0.04,0.68, 0.01],
+	[HandType.Minute, "minute",8, 0.04,0.9, 0.02],
+	[HandType.Second, "second",0, 0.04,1.0, 0.01],
 ]
 
 var center_param = [

@@ -8,28 +8,34 @@ enum NumberType {Hour,Minute,Degree}
 class LineParams:
 	var thick_rate :float
 	var align :LineAlign
+	var colorkey :String
 	func _init(
 		thick_rate :float = 0.004,
-		align :LineAlign = LineAlign.In
+		align :LineAlign = LineAlign.In,
+		colorkey = "dial_line",
 	) -> void:
 		self.thick_rate = thick_rate
 		self.align = align
+		self.colorkey = colorkey
 
 class NumberParams :
 	var radius_rate :float
 	var font_size_rate :float
 	var outline_w :int
 	var type :NumberType
+	var colorkey :String
 	func _init(
 		radius_rate :float = 0.9,
 		font_size_rate :float = 0.09,
 		outline_w :int = 4,
 		type :NumberType = NumberType.Hour,
+		colorkey = "dial_num",
 	)->void:
 		self.radius_rate = radius_rate
 		self.font_size_rate = font_size_rate
 		self.outline_w = outline_w
 		self.type = type
+		self.colorkey = colorkey
 
 var dial_lines :PackedVector2Array =[]
 
@@ -71,7 +77,7 @@ func _draw() -> void:
 	var w = main_radius* line_params.thick_rate
 	if w < 1 :
 		w = -1
-	draw_multiline(dial_lines,Global2d.colors.dial_1, w)
+	draw_multiline(dial_lines,Global2d.colors[line_params.colorkey], w)
 
 	var letter_size = number_params.font_size_rate *main_radius
 	var letter_pos_r = number_params.radius_rate *main_radius
@@ -93,10 +99,11 @@ func draw_letter(rad :float, r :float, fsize :float, i :int)->void:
 	var t = "%d" % i
 	var pos = make_pos_by_rad_r(rad, r)
 	var offset = Vector2(-fsize/3.5*t.length(),fsize/3)
+	var co = Global2d.colors[number_params.colorkey]
 	if number_params.outline_w == 0:
-		draw_string(Global2d.font, pos+offset, t, HORIZONTAL_ALIGNMENT_CENTER, -1, fsize, Global2d.colors.dial_num )
+		draw_string(Global2d.font, pos+offset, t, HORIZONTAL_ALIGNMENT_CENTER, -1, fsize, co )
 	else:
-		draw_string_outline(Global2d.font, pos+offset, t, HORIZONTAL_ALIGNMENT_CENTER, -1, fsize,number_params.outline_w, Global2d.colors.dial_num )
+		draw_string_outline(Global2d.font, pos+offset, t, HORIZONTAL_ALIGNMENT_CENTER, -1, fsize,number_params.outline_w, co )
 
 func draw_cross(p :Vector2, l:float, co :Color)->void:
 	draw_line(p + Vector2(-l/2,0),p + Vector2(l/2,0), co,-1 )
