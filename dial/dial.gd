@@ -45,7 +45,7 @@ func init(r:float, lparam = line_params, nparm = number_params)->void:
 
 func make_dial_lines(r :float)->void:
 	for i in range(0,360):
-		var rad = deg_to_rad(i+180)
+		var rad = deg_to_rad(-i+180)
 		var offset :float = 0
 		if i % 30 == 0 :
 			offset = r*0.06
@@ -72,20 +72,21 @@ func _draw() -> void:
 	if w < 1 :
 		w = -1
 	draw_multiline(dial_lines,Global2d.colors.dial_1, w)
+
 	var letter_size = number_params.font_size_rate *main_radius
 	var letter_pos_r = number_params.radius_rate *main_radius
 	match number_params.type:
 		NumberType.Hour:
 			for i in range(1,13):
-				var rad = deg_to_rad( -i*(360.0/12.0) -180)
+				var rad = deg_to_rad( -i*(360.0/12.0) +180)
 				draw_letter(rad,letter_pos_r, letter_size, i)
 		NumberType.Minute:
 			for i in range(0,60,5):
-				var rad = deg_to_rad( -i*(360.0/60.0) -180)
+				var rad = deg_to_rad( -i*(360.0/60.0) +180)
 				draw_letter(rad,letter_pos_r, letter_size, i)
 		NumberType.Degree:
 			for i in range(0,360,30):
-				var rad = deg_to_rad( -i*(360.0/360.0) -180)
+				var rad = deg_to_rad( -i*(360.0/360.0) +180)
 				draw_letter(rad,letter_pos_r, letter_size, i)
 
 func draw_letter(rad :float, r :float, fsize :float, i :int)->void:
