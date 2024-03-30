@@ -12,7 +12,7 @@ var editable_keys = [
 	"background_url",
 	]
 var config = {
-	"version" : "gd4analogclockcal 13.0.0",
+	"version" : "gd4analogclockcal 13.1.0",
 	"weather_url" : "http://192.168.0.10/weather.txt",
 	"dayinfo_url" : "http://192.168.0.10/dayinfo.txt",
 	"todayinfo_url" : "http://192.168.0.10/todayinfo.txt",
@@ -58,15 +58,8 @@ func animove_step():
 	if not $AniMove2D.enabled:
 		return
 	var ms = $AniMove2D.get_ms()
-	match $AniMove2D.state%2:
-		0:
-			$AniMove2D.move_by_ms($Calendar2, calendar_pos_list[0], calendar_pos_list[1], ms)
-			$AniMove2D.move_by_ms($AnalogClock, analogclock_pos_list[0], analogclock_pos_list[1], ms)
-		1:
-			$AniMove2D.move_by_ms($Calendar2, calendar_pos_list[1], calendar_pos_list[0], ms)
-			$AniMove2D.move_by_ms($AnalogClock, analogclock_pos_list[1], analogclock_pos_list[0], ms)
-		_:
-			print_debug("invalid state", $AniMove2D.state)
+	$AniMove2D.move_node2d($Calendar2, calendar_pos_list, $AniMove2D.state, ms)
+	$AniMove2D.move_node2d($AnalogClock, analogclock_pos_list, $AniMove2D.state, ms)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:

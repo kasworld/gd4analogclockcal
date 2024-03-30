@@ -40,6 +40,12 @@ func move_by_ms(o :Node2D, p1 :Vector2, p2 :Vector2, ms:float)->void:
 	o.position.x = calc_inter(p1.x ,p2.x , ms)
 	o.position.y = calc_inter(p1.y ,p2.y , ms)
 
+func move_node2d(o :Node2D, pos_list :Array, move_step:int, ms :float)->void:
+	var l = pos_list.size()
+	var p1 = pos_list[move_step%l]
+	var p2 = pos_list[(move_step+1)%l]
+	move_by_ms(o,p1,p2,ms)
+
 func get_ms()->float:
 	return Time.get_unix_time_from_system() - begin_tick
 
