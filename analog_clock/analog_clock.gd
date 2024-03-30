@@ -11,12 +11,12 @@ func init(config :Dictionary, r :float, tz_s :float) -> void:
 	$ClockHands.init(r,tz_s)
 
 	var co = Global2d.colors.timelabel
-	$LabelTime.position = Vector2(-r/3.0,-r*0.3)
-	$LabelTime.label_settings = Global2d.make_label_setting(r*0.35, co)
+	$LabelTime.position = Vector2(-r*0.9,-r*0.43)
+	$LabelTime.label_settings = Global2d.make_label_setting(r*0.42, co)
 
 	co = Global2d.colors.infolabel
-	$LabelInfo.position = Vector2(-r*0.6,r*0.05)
-	$LabelInfo.label_settings = Global2d.make_label_setting(r*0.15, co)
+	$LabelInfo.position = Vector2(-r*0.73,r*0.05)
+	$LabelInfo.label_settings = Global2d.make_label_setting(r*0.18, co)
 
 	info_text = InfoText.new()
 	add_child(info_text)
