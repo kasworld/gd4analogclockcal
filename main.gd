@@ -1,6 +1,6 @@
 extends Node2D
 
-var vp_rect :Rect2
+var vp_size :Vector2
 var calendar_pos_list :Array
 var analogclock_pos_list :Array
 
@@ -12,7 +12,7 @@ var editable_keys = [
 	"background_url",
 	]
 var config = {
-	"version" : "gd4analogclockcal 12.3.0",
+	"version" : "gd4analogclockcal 13.0.0",
 	"weather_url" : "http://192.168.0.10/weather.txt",
 	"dayinfo_url" : "http://192.168.0.10/dayinfo.txt",
 	"todayinfo_url" : "http://192.168.0.10/todayinfo.txt",
@@ -23,26 +23,22 @@ var config = {
 func _ready() -> void:
 	config = Config.load_or_save(file_name,config,"version" )
 	set_color_mode_by_time()
-	vp_rect = get_viewport_rect()
+	vp_size = get_viewport_rect().size
 
-	bgimage = Image.create(vp_rect.size.x,vp_rect.size.y,true,Image.FORMAT_RGBA8)
+	bgimage = Image.create(vp_size.x,vp_size.y,true,Image.FORMAT_RGBA8)
 
-	var calw = vp_rect.size.x-vp_rect.size.y
-	if calw > vp_rect.size.x /2 :
-		calw = vp_rect.size.y
-	calendar_pos_list.append_array(
-		[Vector2(vp_rect.size.x-calw/2, vp_rect.size.y/2 ), Vector2(calw/2, vp_rect.size.y/2 )]
-		)
-	$Calendar2.init( Vector2( calw, calw) )
+	var sect_width = min(vp_size.x/2,vp_size.y)
+	calendar_pos_list = [Vector2(sect_width/2,vp_size.y/2),Vector2(vp_size.x - sect_width/2,vp_size.y/2)]
+	analogclock_pos_list = calendar_pos_list.duplicate()
+	analogclock_pos_list.reverse()
+
+	$Calendar2.init( Vector2( sect_width, sect_width) )
 	$Calendar2.position = calendar_pos_list[0]
 
-	analogclock_pos_list.append_array(
-		[Vector2(vp_rect.size.y/2, vp_rect.size.y/2 ), Vector2(vp_rect.size.x - vp_rect.size.y/2, vp_rect.size.y/2 ) ]
-		)
-	$AnalogClock.init(config, vp_rect.size.y/2, 9 )
+	$AnalogClock.init(config, sect_width/2, 9 )
 	$AnalogClock.position = analogclock_pos_list[0]
 
-	var optrect = Rect2( vp_rect.size.x * 0.1 ,vp_rect.size.y * 0.3 , vp_rect.size.x * 0.8 , vp_rect.size.y * 0.4 )
+	var optrect = Rect2( vp_size.x * 0.1 ,vp_size.y * 0.3 , vp_size.x * 0.8 , vp_size.y * 0.4 )
 	$PanelOption.init(file_name,config,editable_keys, optrect)
 	$PanelOption.config_changed.connect(config_changed)
 	$PanelOption.config_reset_req.connect(panel_config_reset_req)
