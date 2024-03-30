@@ -26,11 +26,13 @@ func draw_calendar()->void:
 	for wd in Global2d.weekdaystring.size():
 		var week = 1
 		var co = Global2d.colors.weekday[wd]
+		var fsize = fh*0.9
 		if wd == today_dict["weekday"] :
 			co = Global2d.colors.today
+			fsize = fh *1.2
 		var pos = Vector2(fw*wd,fh*week) - csize/2 +offset+Vector2(fh/10 ,0)
 		var text =  Global2d.weekdaystring[wd]
-		draw_string(Global2d.font, pos , text, HORIZONTAL_ALIGNMENT_CENTER, -1,  fh*0.9, co )
+		draw_string(Global2d.font, pos , text, HORIZONTAL_ALIGNMENT_CENTER, -1,  fsize, co )
 
 	for week in range(2,8):
 		for wd in range(7):
@@ -38,12 +40,14 @@ func draw_calendar()->void:
 			var day_index_dict = Time.get_date_dict_from_unix_time(day_index)
 			var text = "%2d" % day_index_dict["day"]
 			var co = Global2d.colors.weekday[wd]
+			var fsize = fh*0.9
 			if day_index_dict["month"] != today_dict["month"]:
 				co = Global2d.make_shadow_color(co)
 			elif day_index_dict["day"] == today_dict["day"]:
 				co = Global2d.colors.today
+				fsize = fh*1.2
 			day_index += 24*60*60
-			draw_string(Global2d.font, pos , text, HORIZONTAL_ALIGNMENT_CENTER, -1,  fh*0.9, co )
+			draw_string(Global2d.font, pos , text, HORIZONTAL_ALIGNMENT_CENTER, -1,  fsize, co )
 
 func _draw() -> void:
 	draw_calendar()
