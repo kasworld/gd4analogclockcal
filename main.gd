@@ -58,8 +58,8 @@ func animove_step():
 	if not $AniMove2D.enabled:
 		return
 	var ms = $AniMove2D.get_ms()
-	$AniMove2D.move_node2d($Calendar2, calendar_pos_list, $AniMove2D.state, ms)
-	$AniMove2D.move_node2d($AnalogClock, analogclock_pos_list, $AniMove2D.state, ms)
+	$AniMove2D.move_node2d($Calendar2, calendar_pos_list, ms)
+	$AniMove2D.move_node2d($AnalogClock, analogclock_pos_list, ms)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:

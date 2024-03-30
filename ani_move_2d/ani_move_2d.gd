@@ -27,24 +27,17 @@ func stop()->void:
 	enabled = false
 	$Timer.stop()
 
-func calc_inter(v1 :float, v2 :float, t :float)->float:
+func calc_inter(v1 :Vector2, v2 :Vector2, t :float)->Vector2:
 	return (cos(t *PI / period)/2 +0.5) * (v1-v2) + v2
 
-func move_x_by_ms(o :Node2D, p1 :Vector2, p2 :Vector2, ms:float)->void:
-	o.position.x = calc_inter(p1.x ,p2.x , ms)
-
-func move_y_by_ms(o :Node2D, p1 :Vector2, p2 :Vector2, ms:float)->void:
-	o.position.y = calc_inter(p1.y ,p2.y , ms)
-
 func move_by_ms(o :Node2D, p1 :Vector2, p2 :Vector2, ms:float)->void:
-	o.position.x = calc_inter(p1.x ,p2.x , ms)
-	o.position.y = calc_inter(p1.y ,p2.y , ms)
+	o.position = calc_inter(p1,p2,ms)
 
-func move_node2d(o :Node2D, pos_list :Array, move_step:int, ms :float)->void:
+func move_node2d(o :Node2D, pos_list :Array, ms :float)->void:
 	var l = pos_list.size()
-	var p1 = pos_list[move_step%l]
-	var p2 = pos_list[(move_step+1)%l]
-	move_by_ms(o,p1,p2,ms)
+	var p1 = pos_list[state%l]
+	var p2 = pos_list[(state+1)%l]
+	o.position = calc_inter(p1,p2,ms)
 
 func get_ms()->float:
 	return Time.get_unix_time_from_system() - begin_tick
