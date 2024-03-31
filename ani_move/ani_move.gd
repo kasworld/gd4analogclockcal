@@ -27,13 +27,16 @@ func stop()->void:
 	enabled = false
 	$Timer.stop()
 
-func calc_inter(v1 :Vector2, v2 :Vector2, t :float)->Vector2:
+# v1,v2 : + - , * with float
+func calc_inter(v1 , v2 , t :float)->Vector2:
 	return (cos(t *PI / period)/2 +0.5) * (v1-v2) + v2
 
-func move_by_ms(o :Node2D, p1 :Vector2, p2 :Vector2, ms:float)->void:
+# o :position , p1,p2 : + - , * with float
+func move_by_ms(o , p1 , p2 , ms:float)->void:
 	o.position = calc_inter(p1,p2,ms)
 
-func move_node2d(o :Node2D, pos_list :Array, ms :float)->void:
+# o :position, pos_list[n] : + - , * with float
+func move_node2d(o , pos_list :Array, ms :float)->void:
 	var l = pos_list.size()
 	var p1 = pos_list[state%l]
 	var p2 = pos_list[(state+1)%l]

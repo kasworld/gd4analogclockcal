@@ -1,8 +1,8 @@
 [gd_scene load_steps=2 format=3 uid="uid://jnn68hq25txp"]
 
-[ext_resource type="Script" path="res://calendar2/calendar_2.gd" id="1_lfefr"]
+[ext_resource type="Script" path="res://calendar/calendar.gd" id="1_lfefr"]
 
-[node name="Calendar2" type="Node2D"]
+[node name="Calendar" type="Node2D"]
 script = ExtResource("1_lfefr")
 
 [node name="Timer" type="Timer" parent="."]

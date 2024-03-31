@@ -2,9 +2,9 @@
 
 [ext_resource type="Script" path="res://main.gd" id="1_q4spd"]
 [ext_resource type="PackedScene" uid="uid://66uu15vflcpu" path="res://analog_clock/analog_clock.tscn" id="5_lttaa"]
-[ext_resource type="PackedScene" uid="uid://bf1vkxi8i0lm1" path="res://ani_move_2d/ani_move_2d.tscn" id="6_8hgi2"]
+[ext_resource type="PackedScene" uid="uid://bf1vkxi8i0lm1" path="res://ani_move/ani_move.tscn" id="6_8hgi2"]
 [ext_resource type="PackedScene" uid="uid://ctqhdp0co2165" path="res://FPS/fps.tscn" id="6_s57kk"]
-[ext_resource type="PackedScene" uid="uid://jnn68hq25txp" path="res://calendar2/calendar_2.tscn" id="6_thwpy"]
+[ext_resource type="PackedScene" uid="uid://jnn68hq25txp" path="res://calendar/calendar.tscn" id="6_thwpy"]
 [ext_resource type="PackedScene" uid="uid://btysv8q6rp8ku" path="res://panel_option/panel_option.tscn" id="6_wscdf"]
 
 [node name="Main" type="Node2D"]
@@ -16,7 +16,7 @@ z_index = -1
 [node name="TimerDayNight" type="Timer" parent="."]
 autostart = true
 
-[node name="AniMove2D" parent="." instance=ExtResource("6_8hgi2")]
+[node name="AniMove" parent="." instance=ExtResource("6_8hgi2")]
 
 [node name="PanelOption" parent="." instance=ExtResource("6_wscdf")]
 z_index = 1
@@ -27,7 +27,7 @@ autostart = true
 
 [node name="AnalogClock" parent="." instance=ExtResource("5_lttaa")]
 
-[node name="Calendar2" parent="." instance=ExtResource("6_thwpy")]
+[node name="Calendar" parent="." instance=ExtResource("6_thwpy")]
 
 [node name="FPS" parent="." instance=ExtResource("6_s57kk")]
 visible = false

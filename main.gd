@@ -32,8 +32,8 @@ func _ready() -> void:
 	analogclock_pos_list = calendar_pos_list.duplicate()
 	analogclock_pos_list.reverse()
 
-	$Calendar2.init( Vector2( sect_width, sect_width) )
-	$Calendar2.position = calendar_pos_list[0]
+	$Calendar.init( Vector2( sect_width, sect_width) )
+	$Calendar.position = calendar_pos_list[0]
 
 	$AnalogClock.init(config, sect_width/2, 9 )
 	$AnalogClock.position = analogclock_pos_list[0]
@@ -45,21 +45,21 @@ func _ready() -> void:
 	init_request_bg()
 
 func reset_pos()->void:
-	$Calendar2.position = calendar_pos_list[0]
+	$Calendar.position = calendar_pos_list[0]
 	$AnalogClock.position = analogclock_pos_list[0]
-	$AniMove2D.stop()
+	$AniMove.stop()
 
 func animove_toggle()->void:
-	$AniMove2D.toggle()
-	if not $AniMove2D.enabled:
+	$AniMove.toggle()
+	if not $AniMove.enabled:
 		reset_pos()
 
 func animove_step():
-	if not $AniMove2D.enabled:
+	if not $AniMove.enabled:
 		return
-	var ms = $AniMove2D.get_ms()
-	$AniMove2D.move_node2d($Calendar2, calendar_pos_list, ms)
-	$AniMove2D.move_node2d($AnalogClock, analogclock_pos_list, ms)
+	var ms = $AniMove.get_ms()
+	$AniMove.move_node2d($Calendar, calendar_pos_list, ms)
+	$AniMove.move_node2d($AnalogClock, analogclock_pos_list, ms)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
@@ -89,7 +89,7 @@ func rot_by_accel()->void:
 
 func rotate_all(rad :float):
 	$AnalogClock.rotation = rad
-	$Calendar2.rotation = rad
+	$Calendar.rotation = rad
 
 # esc to exit
 func _unhandled_input(event: InputEvent) -> void:
@@ -148,12 +148,12 @@ func set_color_mode_by_time()->void:
 		Global2d.set_dark_mode(false)
 
 func update_color()->void:
-	$Calendar2.update_color()
+	$Calendar.update_color()
 	$AnalogClock.update_color()
 
 func update_color_with_mode(darkmode :bool)->void:
 	Global2d.set_dark_mode(darkmode)
-	$Calendar2.update_color()
+	$Calendar.update_color()
 	$AnalogClock.update_color()
 
 # change dark mode by time
@@ -162,7 +162,7 @@ var old_minute_dict = Time.get_datetime_dict_from_system() # datetime dict
 func _on_timer_day_night_timeout() -> void:
 	var time_now_dict = Time.get_datetime_dict_from_system()
 	if old_minute_dict["minute"] != time_now_dict["minute"]:
-		$AniMove2D.start_with_step(1)
+		$AniMove.start_with_step(1)
 		old_minute_dict = time_now_dict
 
 	if old_time_dict["hour"] != time_now_dict["hour"]:
