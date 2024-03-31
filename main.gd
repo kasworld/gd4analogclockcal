@@ -54,16 +54,16 @@ func animove_toggle()->void:
 	if not $AniMove.enabled:
 		reset_pos()
 
-func animove_step():
+func animove_do():
 	if not $AniMove.enabled:
 		return
 	var ms = $AniMove.get_ms()
-	$AniMove.move_node2d($Calendar, calendar_pos_list, ms)
-	$AniMove.move_node2d($AnalogClock, analogclock_pos_list, ms)
+	$AniMove.move_position($Calendar, calendar_pos_list, ms)
+	$AniMove.move_position($AnalogClock, analogclock_pos_list, ms)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
-	animove_step()
+	animove_do()
 	rot_by_accel()
 
 func _notification(what: int) -> void:
