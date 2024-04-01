@@ -48,7 +48,7 @@ func draw_calendar()->void:
 			elif day_index_dict["day"] == today_dict["day"]:
 				co = Global2d.colors.today
 				fsize = fh*1.2
-				today_adj = Vector2(-fsize*0.05 * text.length(), fsize*0.08)
+				today_adj = Vector2(-fsize*0.08 * text.length(), fsize*0.08)
 			var pos = Vector2(fw*wd,fh*week) - csize/2 +offset + today_adj
 			draw_string(Global2d.font, pos , text, HORIZONTAL_ALIGNMENT_CENTER, -1,  fsize, co )
 			day_index += 24*60*60
