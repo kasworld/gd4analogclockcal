@@ -6,59 +6,61 @@ enum BarAlign {None, In,Mid,Out}
 enum NumberType {None, Hour,Minute,Degree}
 
 class BarParams:
-	var thick_rate :float
+	var radius :float
+	var thick :float
 	var align :BarAlign
 	var colorkey :String
 	func _init(
-		thick_rate :float = 0.004,
+		radius :float = 10.0,
+		thick :float = 1.0,
 		align :BarAlign = BarAlign.In,
 		colorkey = "dial_line",
 	) -> void:
-		self.thick_rate = thick_rate
+		self.radius = radius
+		self.thick = thick
 		self.align = align
 		self.colorkey = colorkey
 
 class NumberParams :
-	var radius_rate :float
-	var font_size_rate :float
+	var radius :float
+	var font_size :float
 	var outline_w :int
 	var type :NumberType
 	var colorkey :String
 	func _init(
-		radius_rate :float = 0.9,
-		font_size_rate :float = 0.09,
+		radius :float = 10.0,
+		font_size :float = 1.0,
 		outline_w :int = 4,
 		type :NumberType = NumberType.Hour,
 		colorkey = "dial_num",
 	)->void:
-		self.radius_rate = radius_rate
-		self.font_size_rate = font_size_rate
+		self.radius = radius
+		self.font_size = font_size
 		self.outline_w = outline_w
 		self.type = type
 		self.colorkey = colorkey
 
 var dial_bars :PackedVector2Array =[]
-var main_radius :float
 var bar_params = BarParams.new()
 var number_params = NumberParams.new()
 
-func init(r:float, lparam = bar_params, nparm = number_params)->void:
-	main_radius = r
+func init(lparam = bar_params, nparm = number_params)->void:
 	bar_params = lparam
 	number_params = nparm
-	make_dial_bars(main_radius,bar_params.align)
+	make_dial_bars()
 
 func update_color()->void:
 	queue_redraw()
 
 func _draw() -> void:
-	var w = main_radius* bar_params.thick_rate
+	var w = bar_params.thick
 	if w < 1 :
 		w = -1
 	draw_multiline(dial_bars,Global2d.colors[bar_params.colorkey], w)
-	draw_num(number_params.font_size_rate *main_radius,number_params.radius_rate *main_radius, number_params.type)
+	draw_num( )
 
-func make_dial_bars(r :float, al :BarAlign)->void:
+func make_dial_bars()->void:
+	var r = bar_params.radius
 	for i in range(0,360):
 		var rad = deg_to_rad(-i+180)
 		var offset :float = 0
@@ -68,7 +70,7 @@ func make_dial_bars(r :float, al :BarAlign)->void:
 			offset = r*0.04
 		else :
 			offset = r*0.02
-		match al:
+		match bar_params.align:
 			BarAlign.In :
 				dial_bars.append_array([ make_pos_by_rad_r(rad,r-offset),make_pos_by_rad_r(rad,r) ])
 			BarAlign.Mid :
@@ -76,10 +78,10 @@ func make_dial_bars(r :float, al :BarAlign)->void:
 			BarAlign.Out :
 				dial_bars.append_array([ make_pos_by_rad_r(rad,r),make_pos_by_rad_r(rad,r+offset) ])
 
-func draw_num(lt_size :float, lt_pos_r:float, nt :NumberType)->void:
-	var letter_size = lt_size
-	var letter_pos_r = lt_pos_r
-	match nt:
+func draw_num()->void:
+	var letter_size = number_params.font_size
+	var letter_pos_r = number_params.radius
+	match number_params.type:
 		NumberType.Hour:
 			for i in range(1,13):
 				var rad = deg_to_rad( -i*(360.0/12.0) +180)

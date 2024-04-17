@@ -4,9 +4,9 @@ var info_text :InfoText
 
 # Called when the node enters the scene tree for the first time.
 func init(config :Dictionary, r :float, tz_s :float) -> void:
-	$DialHour.init(r,
-		Dial.BarParams.new( 0.004,Dial.BarAlign.In,"dial_line"),
-		Dial.NumberParams.new( 0.9,0.09,4,Dial.NumberType.Hour,"dial_num" ),
+	$DialHour.init(
+		Dial.BarParams.new(r, r*0.004,Dial.BarAlign.In,"dial_line"),
+		Dial.NumberParams.new( r*0.9,r*0.09,4,Dial.NumberType.Hour,"dial_num" ),
 		)
 	$ClockHands.init(r,tz_s)
 
