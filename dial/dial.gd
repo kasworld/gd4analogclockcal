@@ -2,16 +2,16 @@ extends Node2D
 
 class_name Dial
 
-enum LineAlign {In,Mid,Out}
+enum BarAlign {In,Mid,Out}
 enum NumberType {Hour,Minute,Degree}
 
-class LineParams:
+class BarParams:
 	var thick_rate :float
-	var align :LineAlign
+	var align :BarAlign
 	var colorkey :String
 	func _init(
 		thick_rate :float = 0.004,
-		align :LineAlign = LineAlign.In,
+		align :BarAlign = BarAlign.In,
 		colorkey = "dial_line",
 	) -> void:
 		self.thick_rate = thick_rate
@@ -37,19 +37,19 @@ class NumberParams :
 		self.type = type
 		self.colorkey = colorkey
 
-var dial_lines :PackedVector2Array =[]
+var dial_bars :PackedVector2Array =[]
 
 var main_radius :float
-var line_params = LineParams.new()
+var bar_params = BarParams.new()
 var number_params = NumberParams.new()
 
-func init(r:float, lparam = line_params, nparm = number_params)->void:
+func init(r:float, lparam = bar_params, nparm = number_params)->void:
 	main_radius = r
-	line_params = lparam
+	bar_params = lparam
 	number_params = nparm
-	make_dial_lines(main_radius)
+	make_dial_bars(main_radius)
 
-func make_dial_lines(r :float)->void:
+func make_dial_bars(r :float)->void:
 	for i in range(0,360):
 		var rad = deg_to_rad(-i+180)
 		var offset :float = 0
@@ -59,13 +59,13 @@ func make_dial_lines(r :float)->void:
 			offset = r*0.04
 		else :
 			offset = r*0.02
-		match line_params.align:
-			LineAlign.In :
-				dial_lines.append_array([ make_pos_by_rad_r(rad,r-offset),make_pos_by_rad_r(rad,r) ])
-			LineAlign.Mid :
-				dial_lines.append_array([ make_pos_by_rad_r(rad,r-offset/2),make_pos_by_rad_r(rad,r+offset/2) ])
-			LineAlign.Out :
-				dial_lines.append_array([ make_pos_by_rad_r(rad,r),make_pos_by_rad_r(rad,r+offset) ])
+		match bar_params.align:
+			BarAlign.In :
+				dial_bars.append_array([ make_pos_by_rad_r(rad,r-offset),make_pos_by_rad_r(rad,r) ])
+			BarAlign.Mid :
+				dial_bars.append_array([ make_pos_by_rad_r(rad,r-offset/2),make_pos_by_rad_r(rad,r+offset/2) ])
+			BarAlign.Out :
+				dial_bars.append_array([ make_pos_by_rad_r(rad,r),make_pos_by_rad_r(rad,r+offset) ])
 
 func make_pos_by_rad_r(rad:float, r :float)->Vector2:
 	return Vector2(sin(rad)*r, cos(rad)*r)
@@ -74,10 +74,10 @@ func update_color()->void:
 	queue_redraw()
 
 func _draw() -> void:
-	var w = main_radius* line_params.thick_rate
+	var w = main_radius* bar_params.thick_rate
 	if w < 1 :
 		w = -1
-	draw_multiline(dial_lines,Global2d.colors[line_params.colorkey], w)
+	draw_multiline(dial_bars,Global2d.colors[bar_params.colorkey], w)
 
 	var letter_size = number_params.font_size_rate *main_radius
 	var letter_pos_r = number_params.radius_rate *main_radius
