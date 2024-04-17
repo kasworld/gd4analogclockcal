@@ -1,13 +1,12 @@
-[gd_scene load_steps=4 format=3 uid="uid://66uu15vflcpu"]
+[gd_scene load_steps=5 format=3 uid="uid://66uu15vflcpu"]
 
 [ext_resource type="Script" path="res://analog_clock/analog_clock.gd" id="1_bs3fy"]
-[ext_resource type="PackedScene" uid="uid://dt2l1jpw00non" path="res://dial/dial.tscn" id="2_xyakn"]
 [ext_resource type="PackedScene" uid="uid://can8tho7xx755" path="res://clock_hands/clock_hands.tscn" id="3_5uly1"]
+[ext_resource type="PackedScene" uid="uid://dt2l1jpw00non" path="res://dial_num/dial_num.tscn" id="3_w3nxl"]
+[ext_resource type="PackedScene" uid="uid://gu0l2i0n11p0" path="res://dial_bar/dial_bar.tscn" id="4_3vv64"]
 
 [node name="AnalogClock" type="Node2D"]
 script = ExtResource("1_bs3fy")
-
-[node name="DialHour" parent="." instance=ExtResource("2_xyakn")]
 
 [node name="LabelTime" type="Label" parent="."]
 offset_right = 1.0
@@ -19,3 +18,7 @@ offset_bottom = 23.0
 horizontal_alignment = 1
 
 [node name="ClockHands" parent="." instance=ExtResource("3_5uly1")]
+
+[node name="DialNum" parent="." instance=ExtResource("3_w3nxl")]
+
+[node name="DialBar" parent="." instance=ExtResource("4_3vv64")]

@@ -4,10 +4,8 @@ var info_text :InfoText
 
 # Called when the node enters the scene tree for the first time.
 func init(config :Dictionary, r :float, tz_s :float) -> void:
-	$DialHour.init(
-		Dial.BarParams.new(r, r*0.004,Dial.BarAlign.In,"dial_line"),
-		Dial.NumberParams.new( r*0.9,r*0.09,4,Dial.NumberType.Hour,"dial_num" ),
-		)
+	$DialBar.init(r, r*0.004,DialBar.BarAlign.In,"dial_line")
+	$DialNum.init(r*0.9,r*0.09,4,DialNum.NumberType.Hour,"dial_num")
 	$ClockHands.init(r,tz_s)
 
 	var co = Global2d.colors.timelabel
@@ -33,7 +31,8 @@ func update_req_url(cfg:Dictionary)->void:
 	info_text.force_update()
 
 func update_color()->void:
-	$DialHour.update_color()
+	$DialNum.update_color()
+	$DialBar.update_color()
 	$ClockHands.update_color()
 	$LabelTime.label_settings.font_color = Global2d.colors.timelabel
 	$LabelInfo.label_settings.font_color = Global2d.colors.infolabel
