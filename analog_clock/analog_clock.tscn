@@ -11,11 +11,14 @@ script = ExtResource("1_bs3fy")
 [node name="LabelTime" type="Label" parent="."]
 offset_right = 1.0
 offset_bottom = 23.0
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="LabelInfo" type="Label" parent="."]
 offset_right = 1.0
 offset_bottom = 23.0
 horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="ClockHands" parent="." instance=ExtResource("3_5uly1")]
 
