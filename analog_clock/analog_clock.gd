@@ -10,12 +10,12 @@ func init(config :Dictionary, r :float, tz_s :float) -> void:
 
 	var co = Global2d.colors.timelabel
 	$LabelTime.position = Vector2(-r,-r/2)
-	$LabelTime.size = Vector2(r*2,r/1.7)
+	$LabelTime.size = Vector2(r*2,r*0.6)
 	$LabelTime.label_settings = Global2d.make_label_setting(r*0.42, co)
 
 	co = Global2d.colors.infolabel
 	$LabelInfo.position = Vector2(-r,0)
-	$LabelInfo.size = Vector2(r*2,r)
+	$LabelInfo.size = Vector2(r*2,r*0.9)
 	$LabelInfo.label_settings = Global2d.make_label_setting(r*0.18, co)
 
 	info_text = InfoText.new()
