@@ -64,4 +64,3 @@ func _on_timer_timeout() -> void:
 	if old_time_dict["day"] != time_now_dict["day"]:
 		old_time_dict = time_now_dict
 		queue_redraw()
-

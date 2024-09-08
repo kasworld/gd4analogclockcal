@@ -37,7 +37,7 @@ func make_dial_bars()->void:
 		var rad = deg_to_rad(-i+180)
 		var offset :float = 0
 		if i % 30 == 0 :
-			offset = r*0.06
+			offset = r*0.08
 		elif i % 6 == 0 :
 			offset = r*0.04
 		else :
