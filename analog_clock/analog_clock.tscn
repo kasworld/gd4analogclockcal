@@ -23,5 +23,6 @@ vertical_alignment = 1
 [node name="ClockHands" parent="." instance=ExtResource("3_5uly1")]
 
 [node name="DialNum" parent="." instance=ExtResource("3_w3nxl")]
+visible = false
 
 [node name="DialBar" parent="." instance=ExtResource("4_3vv64")]

@@ -27,8 +27,8 @@ var colors_dark = {
 	second = Color.RED.lightened(0.5),
 	center_circle1 = Color.GOLD,
 	center_circle2 = Color.YELLOW,
-	dial_num = Color.GREEN,
-	dial_line = Color.GREEN,
+	dial_num = Color.DARK_GOLDENROD,
+	dial_line = Color.DARK_GOLDENROD,
 }
 var colors_light = 	{
 	weekday = [
@@ -52,8 +52,8 @@ var colors_light = 	{
 	second = Color.RED,
 	center_circle1 = Color.GOLDENROD,
 	center_circle2 = Color.DARK_GOLDENROD,
-	dial_num = Color.RED,
-	dial_line = Color.RED,
+	dial_num = Color.GOLD,
+	dial_line = Color.GOLD,
 }
 var colors = colors_dark
 

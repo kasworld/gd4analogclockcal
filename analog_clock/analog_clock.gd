@@ -5,7 +5,7 @@ var info_text :InfoText
 # Called when the node enters the scene tree for the first time.
 func init(config :Dictionary, r :float, tz_s :float) -> void:
 	$DialBar.init(r, r*0.006,DialBar.BarAlign.In,"dial_line")
-	$DialNum.init(r*0.95,r*0.15,4,DialNum.NumberType.Hour,"dial_num")
+	$DialNum.init(r*0.95,r*0.15,0,DialNum.NumberType.Hour,"dial_num")
 	$ClockHands.init(r,tz_s)
 
 	var co = Global2d.colors.timelabel
@@ -50,6 +50,7 @@ func update_clock():
 	if old_time_dict["second"] != time_now_dict["second"]:
 		old_time_dict = time_now_dict
 		$LabelTime.text = "%02d:%02d:%02d" % [time_now_dict["hour"] , time_now_dict["minute"] ,time_now_dict["second"]  ]
+		#if  time_now_dict["second"] % 5 == 0:
 		num_bar =  not num_bar
 		$DialBar.visible = num_bar
 		$DialNum.visible = not num_bar
