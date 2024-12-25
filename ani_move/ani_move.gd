@@ -53,4 +53,3 @@ func move_position(o , pos_list :Array, ms :float)->void:
 
 func get_ms()->float:
 	return Time.get_unix_time_from_system() - begin_tick
-
