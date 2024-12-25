@@ -1,8 +1,6 @@
 extends Node2D
 
 var vp_size :Vector2
-var calendar_pos_list :Array
-var analogclock_pos_list :Array
 
 var file_name = "gd4analogclockcal_config.json"
 var editable_keys = [
@@ -28,15 +26,27 @@ func _ready() -> void:
 	bgimage = Image.create(vp_size.x,vp_size.y,true,Image.FORMAT_RGBA8)
 
 	var sect_width = min(vp_size.x/2,vp_size.y)
-	calendar_pos_list = [Vector2(sect_width/2,vp_size.y/2),Vector2(vp_size.x - sect_width/2,vp_size.y/2)]
-	analogclock_pos_list = calendar_pos_list.duplicate()
-	analogclock_pos_list.reverse()
+	var calendar_pos = Vector2(sect_width/2,vp_size.y/2)
+	var analogclock_pos = Vector2(vp_size.x - sect_width/2,vp_size.y/2)
+
+	$AnimationPlayer.get_animation("RESET").track_set_key_value(0,0, analogclock_pos)
+	$AnimationPlayer.get_animation("RESET").track_set_key_value(1,0, calendar_pos)
+
+	$AnimationPlayer.get_animation("Move1").track_set_key_value(0,0, analogclock_pos)
+	$AnimationPlayer.get_animation("Move1").track_set_key_value(0,1, calendar_pos)
+	$AnimationPlayer.get_animation("Move1").track_set_key_value(1,0, calendar_pos)
+	$AnimationPlayer.get_animation("Move1").track_set_key_value(1,1, analogclock_pos)
+
+	$AnimationPlayer.get_animation("Move2").track_set_key_value(0,0, calendar_pos)
+	$AnimationPlayer.get_animation("Move2").track_set_key_value(0,1, analogclock_pos)
+	$AnimationPlayer.get_animation("Move2").track_set_key_value(1,0, analogclock_pos)
+	$AnimationPlayer.get_animation("Move2").track_set_key_value(1,1, calendar_pos)
 
 	$Calendar.init( Vector2( sect_width, sect_width) )
-	$Calendar.position = calendar_pos_list[0]
+	$Calendar.position = calendar_pos
 
 	$AnalogClock.init(config, sect_width/2, 9 )
-	$AnalogClock.position = analogclock_pos_list[0]
+	$AnalogClock.position = analogclock_pos
 
 	var optrect = Rect2( vp_size.x * 0.1 ,vp_size.y * 0.3 , vp_size.x * 0.8 , vp_size.y * 0.4 )
 	$PanelOption.init(file_name,config,editable_keys, optrect)
@@ -45,25 +55,19 @@ func _ready() -> void:
 	init_request_bg()
 
 func reset_pos()->void:
-	$Calendar.position = calendar_pos_list[0]
-	$AnalogClock.position = analogclock_pos_list[0]
-	$AniMove.stop()
+	$AnimationPlayer.play("RESET")
 
-func animove_toggle()->void:
-	$AniMove.toggle()
-	if not $AniMove.enabled:
-		reset_pos()
-
-func animove_do():
-	if not $AniMove.enabled:
-		return
-	var ms = $AniMove.get_ms()
-	$AniMove.move_position($Calendar, calendar_pos_list, ms)
-	$AniMove.move_position($AnalogClock, analogclock_pos_list, ms)
+var move_order := 0
+func start_move_animation():
+	if move_order == 0 :
+		$AnimationPlayer.play("Move1")
+		move_order = 1
+	else :
+		$AnimationPlayer.play("Move2")
+		move_order = 0
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
-	animove_do()
 	rot_by_accel()
 
 func _notification(what: int) -> void:
@@ -98,6 +102,8 @@ func _unhandled_input(event: InputEvent) -> void:
 			get_tree().quit()
 		elif event.keycode == KEY_ENTER:
 			_on_button_option_pressed()
+		elif event.keycode == KEY_Z:
+			start_move_animation()
 		else:
 			update_color_with_mode(not Global2d.dark_mode)
 
@@ -162,7 +168,7 @@ var old_minute_dict = Time.get_datetime_dict_from_system() # datetime dict
 func _on_timer_day_night_timeout() -> void:
 	var time_now_dict = Time.get_datetime_dict_from_system()
 	if old_minute_dict["minute"] != time_now_dict["minute"]:
-		$AniMove.start_with_step(1)
+		start_move_animation()
 		old_minute_dict = time_now_dict
 
 	if old_time_dict["hour"] != time_now_dict["hour"]:
