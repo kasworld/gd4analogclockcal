@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://66uu15vflcpu"]
 
-[ext_resource type="Script" path="res://analog_clock/analog_clock.gd" id="1_bs3fy"]
+[ext_resource type="Script" uid="uid://dv0b2rud5g7su" path="res://analog_clock/analog_clock.gd" id="1_bs3fy"]
 [ext_resource type="PackedScene" uid="uid://can8tho7xx755" path="res://clock_hands/clock_hands.tscn" id="3_5uly1"]
 [ext_resource type="PackedScene" uid="uid://dt2l1jpw00non" path="res://dial_num/dial_num.tscn" id="3_w3nxl"]
 [ext_resource type="PackedScene" uid="uid://gu0l2i0n11p0" path="res://dial_bar/dial_bar.tscn" id="4_3vv64"]
