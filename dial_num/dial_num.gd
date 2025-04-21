@@ -11,17 +11,17 @@ var type :NumberType
 var colorkey :String
 
 func init(
-		radius :float = 10.0,
-		font_size :float = 1.0,
-		outline_w :int = 4,
-		type :NumberType = NumberType.Hour,
-		colorkey = "dial_num",
+		aradius :float = 10.0,
+		afont_size :float = 1.0,
+		aoutline_w :int = 4,
+		atype :NumberType = NumberType.Hour,
+		acolorkey = "dial_num",
 	)->void:
-	self.radius = radius
-	self.font_size = font_size
-	self.outline_w = outline_w
-	self.type = type
-	self.colorkey = colorkey
+	radius = aradius
+	font_size = afont_size
+	outline_w = aoutline_w
+	type = atype
+	colorkey = acolorkey
 
 func update_color()->void:
 	queue_redraw()

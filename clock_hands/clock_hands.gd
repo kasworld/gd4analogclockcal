@@ -33,7 +33,7 @@ func init(r:float, tz_s :float, hp :Array = hands_param, ctpm = center_param)->v
 func update_color()->void:
 	queue_redraw()
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	queue_redraw()
 
 var old_time_dict = {"second":0} # datetime dict

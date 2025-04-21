@@ -11,15 +11,15 @@ var colorkey :String
 var dial_bars :PackedVector2Array =[]
 
 func init(
-		radius :float = 10.0,
-		thick :float = 1.0,
-		align :BarAlign = BarAlign.In,
-		colorkey = "dial_line",
+		aradius :float = 10.0,
+		athick :float = 1.0,
+		aalign :BarAlign = BarAlign.In,
+		acolorkey = "dial_line",
 	)->void:
-	self.radius = radius
-	self.thick = thick
-	self.align = align
-	self.colorkey = colorkey
+	radius = aradius
+	thick = athick
+	align = aalign
+	colorkey = acolorkey
 	make_dial_bars()
 
 func update_color()->void:

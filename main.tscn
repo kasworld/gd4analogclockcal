@@ -99,6 +99,7 @@ script = ExtResource("1_q4spd")
 
 [node name="BackgroundSprite" type="Sprite2D" parent="."]
 z_index = -1
+centered = false
 
 [node name="TimerDayNight" type="Timer" parent="."]
 autostart = true
