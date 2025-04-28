@@ -19,6 +19,8 @@ var config = {
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	var tt = SunRiseSet.new()
+	tt.test()
 	config = Config.load_or_save(file_name,config,"version" )
 	set_color_mode_by_time()
 	vp_size = get_viewport_rect().size
