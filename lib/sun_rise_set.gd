@@ -1,12 +1,8 @@
 class_name SunRiseSet
 
-var HH = 0
-var MM = 1
 
-var SUN_DIAMETER = 0.53
-var AIR_REF = (34.0/60.0)
 
-func is_leap_year(year):
+func is_leap_year(year :int) -> bool:
 	if year % 4 == 0 and year % 100 == 0 and year % 400 != 0:
 		return false
 	elif year % 4 == 0 and year % 100 != 0:
@@ -16,20 +12,21 @@ func is_leap_year(year):
 	else:
 		return false
 
-func get_julian_day(year, month, day):
-	var tmp = -7.0 * (float(year) + (float(month) + 9.0) / 12.0) / \
-		4.0 + 275.0 * float(month) / 9.0 + float(day)
-	tmp += float(year * 367)
-	return (tmp - 730531.5 + 12.0 / 24.0)
+func get_julian_day(year :int, month :int, day :int) -> float:
+	var tmp = -7.0 * ( year + (month + 9.0) / 12.0) / 4.0 + 275.0 * month / 9.0 + day
+	tmp += year * 367.0
+	return tmp - 730531.5 + 12.0 / 24.0
 
-func get_range_radian(x):
-	var b = float(x / (2*PI))
-	var a = float((2*PI) * (b - int(b)))
+func get_range_radian(x :float) -> float:
+	var b = x / (2*PI)
+	var a = 2*PI * (b - int(b))
 	if a < 0:
-		a = (2*PI) + a
+		a = 2*PI + a
 	return a
 
-func get_ha(lat, decl):
+const SUN_DIAMETER = 0.53
+const AIR_REF = (34.0/60.0)
+func get_ha(lat :float, decl :float) -> float:
 	var dfo = PI/180.0 * (0.5 * SUN_DIAMETER + AIR_REF)
 	if lat < 0.0:
 		dfo = -dfo
@@ -39,25 +36,29 @@ func get_ha(lat, decl):
 	fo = asin(fo) + PI / 2.0
 	return fo
 
-func get_sun_longitude(days):
-	var longitude = get_range_radian(
-		280.461 * PI / 180.0 + 0.9856474 * PI/180.0 * days)
+func get_sun_longitude(days :float) -> Dictionary:
+	var longitude = get_range_radian(280.461 * PI / 180.0 + 0.9856474 * PI/180.0 * days)
 	var g = get_range_radian(357.528 * PI/180.0 + 0.9856003 * PI/180.0 * days)
-	return [get_range_radian(longitude + 1.915 * PI/180.0 * sin(g) + 0.02 * PI/180.0 * sin(2*g)), longitude]
+	return {
+		"gamma" :get_range_radian(longitude + 1.915 * PI/180.0 * sin(g) + 0.02 * PI/180.0 * sin(2*g)), 
+		"mean_longitude" : longitude,
+		}
 
-func convert_dtime_to_rtime(dhour):
+func convert_dtime_to_rtime(dhour :float) -> Dictionary:
 	var hour = int(dhour)
 	var minute = int((dhour - hour) * 60)
-	return [hour, minute]
+	return {
+		"hour" : hour, 
+		"minute" : minute,
+		}
 
-func calculate_sunset_sunrise(latitude, longitude, timezone):
-	#var today = datetime.today()
+func calculate_sunset_sunrise(latitude :float, longitude :float, timezone :float):
 	var today = Time.get_datetime_dict_from_system()
 	var days = get_julian_day(today.year, today.month, today.day)
 	
 	var tmp = get_sun_longitude(days)
-	var gamma = tmp[0]
-	var mean_longitude = tmp[1] 
+	var gamma = tmp.gamma
+	var mean_longitude = tmp.mean_longitude
 	var obliq = 23.439 * PI/180.0 - 0.0000004 * PI/180.0 * days
 
 	var alpha = atan2(cos(obliq)*sin(gamma), cos(gamma))
@@ -79,34 +80,27 @@ func calculate_sunset_sunrise(latitude, longitude, timezone):
 	if sunset > 24.0:
 		sunset -= 24.0
 
-	var sunrise_time = [0, 0]
-	var sunset_time = [0, 0]
-
-	tmp = convert_dtime_to_rtime(sunrise)
-	sunrise_time[HH] = tmp[0]
-	sunrise_time[MM] = tmp[1]
-	tmp = convert_dtime_to_rtime(sunset)
-	sunset_time[HH] = tmp[0]
-	sunset_time[MM] = tmp[1]
+	var sunrise_time = convert_dtime_to_rtime(sunrise)
+	var sunset_time = convert_dtime_to_rtime(sunset)
 
 	var ret_sunrise = ""
 	var ret_sunset = ""
 
-	if sunrise_time[HH] < 10:
+	if sunrise_time.hour < 10:
 		ret_sunrise += "0"
-	ret_sunrise += str(sunrise_time[HH])
+	ret_sunrise += str(sunrise_time.hour)
 	ret_sunrise += ":"
-	if sunrise_time[MM] < 10:
+	if sunrise_time.minute < 10:
 		ret_sunrise += "0"
-	ret_sunrise += str(sunrise_time[MM]-1)
+	ret_sunrise += str(sunrise_time.minute-1)
 
-	if sunset_time[HH] < 10:
+	if sunset_time.hour < 10:
 		ret_sunset += "0"
-	ret_sunset += str(sunset_time[HH])
+	ret_sunset += str(sunset_time.hour)
 	ret_sunset += ":"
-	if sunset_time[MM] < 10:
+	if sunset_time.minute < 10:
 		ret_sunset += "0"
-	ret_sunset += str(sunset_time[MM]+1)
+	ret_sunset += str(sunset_time.minute+1)
 
 	return [ret_sunrise, ret_sunset]
 
