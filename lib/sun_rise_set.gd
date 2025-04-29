@@ -83,26 +83,10 @@ func calculate_sunset_sunrise(latitude :float, longitude :float, timezone :float
 	var sunrise_time = convert_dtime_to_rtime(sunrise)
 	var sunset_time = convert_dtime_to_rtime(sunset)
 
-	var ret_sunrise = ""
-	var ret_sunset = ""
-
-	if sunrise_time.hour < 10:
-		ret_sunrise += "0"
-	ret_sunrise += str(sunrise_time.hour)
-	ret_sunrise += ":"
-	if sunrise_time.minute < 10:
-		ret_sunrise += "0"
-	ret_sunrise += str(sunrise_time.minute-1)
-
-	if sunset_time.hour < 10:
-		ret_sunset += "0"
-	ret_sunset += str(sunset_time.hour)
-	ret_sunset += ":"
-	if sunset_time.minute < 10:
-		ret_sunset += "0"
-	ret_sunset += str(sunset_time.minute+1)
-
-	return [ret_sunrise, ret_sunset]
+	return [ 
+		"%02d:%02d" % [ sunrise_time.hour, sunrise_time.minute-1 ],
+		"%02d:%02d" % [ sunset_time.hour, sunset_time.minute+1 ],
+		 ]
 
 func test():
 	var s = Time.get_unix_time_from_system()
