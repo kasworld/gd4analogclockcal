@@ -18,20 +18,20 @@ static func get_range_radian(x :float) -> float:
 const SUN_DIAMETER = 0.53
 const AIR_REF = (34.0/60.0)
 static func get_ha(lat :float, decl :float) -> float:
-	var dfo = PI/180.0 * (0.5 * SUN_DIAMETER + AIR_REF)
+	var dfo = deg_to_rad(0.5 * SUN_DIAMETER + AIR_REF)
 	if lat < 0.0:
 		dfo = -dfo
-	var fo = tan(decl + dfo) * tan(lat * PI / 180.0)
+	var fo = tan(decl + dfo) * tan(deg_to_rad(lat))
 	if fo > 1.0:
 		fo = 1.0
 	fo = asin(fo) + PI / 2.0
 	return fo
 
 static func get_sun_longitude(days :float) -> Dictionary:
-	var longitude = get_range_radian(280.461 * PI / 180.0 + 0.9856474 * PI/180.0 * days)
-	var g = get_range_radian(357.528 * PI/180.0 + 0.9856003 * PI/180.0 * days)
+	var longitude = get_range_radian( deg_to_rad( 280.461 + 0.9856474*days) )
+	var g = get_range_radian( deg_to_rad( 357.528 + 0.9856003*days) )
 	return {
-		"gamma" :get_range_radian(longitude + 1.915 * PI/180.0 * sin(g) + 0.02 * PI/180.0 * sin(2*g)), 
+		"gamma" :get_range_radian(longitude + deg_to_rad( 1.915*sin(g) + 0.02*sin(2*g) ) ), 
 		"mean_longitude" : longitude,
 		}
 
@@ -50,7 +50,7 @@ static func calculate_sunset_sunrise(latitude :float, longitude :float, timezone
 	var tmp = get_sun_longitude(days)
 	var gamma = tmp.gamma
 	var mean_longitude = tmp.mean_longitude
-	var obliq = 23.439 * PI/180.0 - 0.0000004 * PI/180.0 * days
+	var obliq = deg_to_rad( 23.439 - 0.0000004*days )
 
 	var alpha = atan2(cos(obliq)*sin(gamma), cos(gamma))
 	var delta = asin(sin(obliq)*sin(gamma))
