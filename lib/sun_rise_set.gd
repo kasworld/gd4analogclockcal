@@ -1,23 +1,14 @@
 class_name SunRiseSet
 
+static func is_leap_year(year :int) -> bool:
+	return (year % 4 == 0 and year % 100 != 0) or (year % 400 == 0)
 
-
-func is_leap_year(year :int) -> bool:
-	if year % 4 == 0 and year % 100 == 0 and year % 400 != 0:
-		return false
-	elif year % 4 == 0 and year % 100 != 0:
-		return true
-	elif year % 4 == 0 and year % 100 == 0 and year % 400 == 0:
-		return true
-	else:
-		return false
-
-func get_julian_day(year :int, month :int, day :int) -> float:
+static func get_julian_day(year :int, month :int, day :int) -> float:
 	var tmp = -7.0 * ( year + (month + 9.0) / 12.0) / 4.0 + 275.0 * month / 9.0 + day
 	tmp += year * 367.0
 	return tmp - 730531.5 + 12.0 / 24.0
 
-func get_range_radian(x :float) -> float:
+static func get_range_radian(x :float) -> float:
 	var b = x / (2*PI)
 	var a = 2*PI * (b - int(b))
 	if a < 0:
@@ -26,7 +17,7 @@ func get_range_radian(x :float) -> float:
 
 const SUN_DIAMETER = 0.53
 const AIR_REF = (34.0/60.0)
-func get_ha(lat :float, decl :float) -> float:
+static func get_ha(lat :float, decl :float) -> float:
 	var dfo = PI/180.0 * (0.5 * SUN_DIAMETER + AIR_REF)
 	if lat < 0.0:
 		dfo = -dfo
@@ -36,7 +27,7 @@ func get_ha(lat :float, decl :float) -> float:
 	fo = asin(fo) + PI / 2.0
 	return fo
 
-func get_sun_longitude(days :float) -> Dictionary:
+static func get_sun_longitude(days :float) -> Dictionary:
 	var longitude = get_range_radian(280.461 * PI / 180.0 + 0.9856474 * PI/180.0 * days)
 	var g = get_range_radian(357.528 * PI/180.0 + 0.9856003 * PI/180.0 * days)
 	return {
@@ -44,7 +35,7 @@ func get_sun_longitude(days :float) -> Dictionary:
 		"mean_longitude" : longitude,
 		}
 
-func convert_dtime_to_rtime(dhour :float) -> Dictionary:
+static func convert_dtime_to_rtime(dhour :float) -> Dictionary:
 	var hour = int(dhour)
 	var minute = int((dhour - hour) * 60)
 	return {
@@ -52,7 +43,7 @@ func convert_dtime_to_rtime(dhour :float) -> Dictionary:
 		"minute" : minute,
 		}
 
-func calculate_sunset_sunrise(latitude :float, longitude :float, timezone :float):
+static func calculate_sunset_sunrise(latitude :float, longitude :float, timezone :float):
 	var today = Time.get_datetime_dict_from_system()
 	var days = get_julian_day(today.year, today.month, today.day)
 	
@@ -88,7 +79,7 @@ func calculate_sunset_sunrise(latitude :float, longitude :float, timezone :float
 		"%02d:%02d" % [ sunset_time.hour, sunset_time.minute+1 ],
 		 ]
 
-func test():
+static func test():
 	var s = Time.get_unix_time_from_system()
 	var tmp = calculate_sunset_sunrise(37.5642135, 127.0016985, 9)
 	var sunrise = tmp[0]
