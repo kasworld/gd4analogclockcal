@@ -1,98 +1,14 @@
-[gd_scene load_steps=10 format=3 uid="uid://btxtva4j47rfm"]
+[gd_scene load_steps=6 format=3 uid="uid://btxtva4j47rfm"]
 
 [ext_resource type="Script" uid="uid://c4k65vhwt2ga6" path="res://main.gd" id="1_q4spd"]
 [ext_resource type="PackedScene" uid="uid://66uu15vflcpu" path="res://analog_clock/analog_clock.tscn" id="5_lttaa"]
-[ext_resource type="PackedScene" uid="uid://ctqhdp0co2165" path="res://FPS/fps.tscn" id="6_s57kk"]
 [ext_resource type="PackedScene" uid="uid://jnn68hq25txp" path="res://calendar/calendar.tscn" id="6_thwpy"]
-[ext_resource type="PackedScene" uid="uid://btysv8q6rp8ku" path="res://panel_option/panel_option.tscn" id="6_wscdf"]
 
-[sub_resource type="Animation" id="Animation_cva3p"]
-resource_name = "Move1"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("AnalogClock:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector2(0, 0), Vector2(0, 0)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Calendar:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector2(0, 0), Vector2(0, 0)]
-}
+[sub_resource type="Theme" id="Theme_lquwl"]
+default_font_size = 48
 
-[sub_resource type="Animation" id="Animation_65m4u"]
-resource_name = "Move2"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("AnalogClock:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector2(0, 0), Vector2(0, 0)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Calendar:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector2(0, 0), Vector2(0, 0)]
-}
-
-[sub_resource type="Animation" id="Animation_3fbqk"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Calendar:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(0, 0)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("AnalogClock:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(0, 0)]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_4plb1"]
-_data = {
-&"Move1": SubResource("Animation_cva3p"),
-&"Move2": SubResource("Animation_65m4u"),
-&"RESET": SubResource("Animation_3fbqk")
-}
+[sub_resource type="Theme" id="Theme_7mycd"]
+default_font_size = 48
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_q4spd")
@@ -104,10 +20,7 @@ centered = false
 [node name="TimerDayNight" type="Timer" parent="."]
 autostart = true
 
-[node name="PanelOption" parent="." instance=ExtResource("6_wscdf")]
-z_index = 1
-
-[node name="AutoHideOptionPanel" type="Timer" parent="."]
+[node name="Timer패널숨기기" type="Timer" parent="."]
 wait_time = 3.0
 one_shot = true
 autostart = true
@@ -116,15 +29,24 @@ autostart = true
 
 [node name="Calendar" parent="." instance=ExtResource("6_thwpy")]
 
-[node name="FPS" parent="." instance=ExtResource("6_s57kk")]
-visible = false
-size_flags_horizontal = 3
-size_flags_vertical = 3
+[node name="왼쪽패널" type="VBoxContainer" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+theme = SubResource("Theme_lquwl")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-&"": SubResource("AnimationLibrary_4plb1")
-}
+[node name="LabelVersion" type="Label" parent="왼쪽패널"]
+layout_mode = 2
+
+[node name="LabelConfig" type="Label" parent="왼쪽패널"]
+layout_mode = 2
+
+[node name="오른쪽패널" type="VBoxContainer" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+theme = SubResource("Theme_7mycd")
+
+[node name="LabelPerformance" type="Label" parent="오른쪽패널"]
+layout_mode = 2
 
 [connection signal="timeout" from="TimerDayNight" to="." method="_on_timer_day_night_timeout"]
-[connection signal="timeout" from="AutoHideOptionPanel" to="." method="_on_auto_hide_option_panel_timeout"]
+[connection signal="timeout" from="Timer패널숨기기" to="." method="_on_timer패널숨기기_timeout"]

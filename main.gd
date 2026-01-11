@@ -1,75 +1,72 @@
 extends Node2D
 
-var vp_size :Vector2
-
-var file_name = "gd4analogclockcal_config.json"
-var editable_keys = [
-	"weather_url",
-	"dayinfo_url",
-	"todayinfo_url",
-	"background_url",
-	]
 var config = {
-	"version" : "gd4analogclockcal 14.1.0",
-	"weather_url" : "http://192.168.0.10/weather.txt",
-	"dayinfo_url" : "http://192.168.0.10/dayinfo.txt",
-	"todayinfo_url" : "http://192.168.0.10/todayinfo.txt",
-	"background_url" : "http://192.168.0.10/background.png",
+	"base_url" : "http://192.168.0.10/",
+	"weather_file" : "weather.txt",
+	"dayinfo_file" : "dayinfo.txt",
+	"todayinfo_file" : "todayinfo.txt",
+	"background_file" : "background.png",
 }
+
+var main_animation := Animation2D.new()
+var anipos_list := []
+func reset_pos()->void:
+	$AnalogClock.position = anipos_list[0]
+	$Calendar.position = anipos_list[1]
+func start_move_animation():
+	main_animation.start_move("clock",$AnalogClock, anipos_list[0], anipos_list[1], 1)
+	main_animation.start_move("clock",$Calendar, anipos_list[1], anipos_list[0], 1)
+	anipos_list = [anipos_list[1], anipos_list[0]]
+
+func on_viewport_size_changed() -> void:
+	var vp_size := get_viewport().get_visible_rect().size
+	var 짧은길이 :float = min(vp_size.x, vp_size.y)
+	var panel_size := Vector2(vp_size.x/2 - 짧은길이/2, vp_size.y)
+	$"왼쪽패널".size = panel_size
+	$"왼쪽패널".custom_minimum_size = panel_size
+	$오른쪽패널.size = panel_size
+	$"오른쪽패널".custom_minimum_size = panel_size
+	$오른쪽패널.position = Vector2(vp_size.x/2 + 짧은길이/2, 0)
+
+	$"왼쪽패널/LabelVersion".text = "%s %s" % [
+			ProjectSettings.get_setting("application/config/name"),
+			ProjectSettings.get_setting("application/config/version"),
+			]
+	var msg := ""
+	for k in config:
+		msg += "%s : %s\n" % [k, config[k] ]
+	$"왼쪽패널/LabelConfig".text = msg
+
+func label_demo() -> void:
+	if $"오른쪽패널/LabelPerformance".visible:
+		$"오른쪽패널/LabelPerformance".text = """%d FPS (%.2f mspf)""" % [
+		Engine.get_frames_per_second(),1000.0 / Engine.get_frames_per_second(),
+		]
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	on_viewport_size_changed()
+	get_viewport().size_changed.connect(on_viewport_size_changed)
+	_on_button_패널보이기_pressed()
+
 	SunRiseSet.test()
-	config = Config.load_or_save(file_name,config,"version" )
 	set_color_mode_by_time()
-	vp_size = get_viewport_rect().size
+	var vp_size = get_viewport_rect().size
 
 	bgimage = Image.create(vp_size.x,vp_size.y,true,Image.FORMAT_RGBA8)
 
 	var sect_width = min(vp_size.x/2,vp_size.y)
-	var calendar_pos = Vector2(sect_width/2,vp_size.y/2)
-	var analogclock_pos = Vector2(vp_size.x - sect_width/2,vp_size.y/2)
-
-	$AnimationPlayer.get_animation("RESET").track_set_key_value(0,0, analogclock_pos)
-	$AnimationPlayer.get_animation("RESET").track_set_key_value(1,0, calendar_pos)
-
-	$AnimationPlayer.get_animation("Move1").track_set_key_value(0,0, analogclock_pos)
-	$AnimationPlayer.get_animation("Move1").track_set_key_value(0,1, calendar_pos)
-	$AnimationPlayer.get_animation("Move1").track_set_key_value(1,0, calendar_pos)
-	$AnimationPlayer.get_animation("Move1").track_set_key_value(1,1, analogclock_pos)
-
-	$AnimationPlayer.get_animation("Move2").track_set_key_value(0,0, calendar_pos)
-	$AnimationPlayer.get_animation("Move2").track_set_key_value(0,1, analogclock_pos)
-	$AnimationPlayer.get_animation("Move2").track_set_key_value(1,0, analogclock_pos)
-	$AnimationPlayer.get_animation("Move2").track_set_key_value(1,1, calendar_pos)
-
+	anipos_list = [Vector2(sect_width/2,vp_size.y/2), Vector2(vp_size.x - sect_width/2,vp_size.y/2)]
 	$Calendar.init( Vector2( sect_width, sect_width) )
-	$Calendar.position = calendar_pos
-
 	$AnalogClock.init(config, sect_width/2, 9 )
-	$AnalogClock.position = analogclock_pos
-
-	var optrect = Rect2( vp_size.x * 0.1 ,vp_size.y * 0.3 , vp_size.x * 0.8 , vp_size.y * 0.4 )
-	$PanelOption.init(file_name,config,editable_keys, optrect)
-	$PanelOption.config_changed.connect(config_changed)
-	$PanelOption.config_reset_req.connect(panel_config_reset_req)
+	reset_pos()
 	init_request_bg()
-
-func reset_pos()->void:
-	$AnimationPlayer.play("RESET")
-
-var move_order := 0
-func start_move_animation():
-	if move_order == 0 :
-		$AnimationPlayer.play("Move1")
-		move_order = 1
-	else :
-		$AnimationPlayer.play("Move2")
-		move_order = 0
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
+	label_demo()
 	rot_by_accel()
+	main_animation.handle_animation()
 
 func _notification(what: int) -> void:
 	# app resume on android
@@ -96,41 +93,43 @@ func rotate_all(rad :float):
 	$AnalogClock.rotation = rad
 	$Calendar.rotation = rad
 
+var key2fn = {
+	KEY_ESCAPE:_on_button_esc_pressed,
+	KEY_ENTER : _on_button_패널보이기_pressed,
+	KEY_SPACE : _on_button_패널보이기_pressed,
+	KEY_Z : start_move_animation,
+}
+func _on_button_esc_pressed() -> void:
+	get_tree().quit()
+
+func _on_button_패널보이기_pressed() -> void:
+	패널보이기(true)
+	$"Timer패널숨기기".start(3)
+
+func _on_timer패널숨기기_timeout() -> void:
+	패널보이기(false)
+
+func 패널보이기(b :bool) -> void:
+	$"왼쪽패널".visible = b
+	$"오른쪽패널".visible = b
+
 # esc to exit
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed:
-		if event.keycode == KEY_ESCAPE:
-			get_tree().quit()
-		elif event.keycode == KEY_ENTER:
-			_on_button_option_pressed()
-		elif event.keycode == KEY_Z:
-			start_move_animation()
+		var fn = key2fn.get(event.keycode)
+		if fn != null:
+			fn.call()
 		else:
 			update_color_with_mode(not Global2d.dark_mode)
 
 	elif event is InputEventMouseButton and event.is_pressed():
 		update_color_with_mode(not Global2d.dark_mode)
 
-func _on_button_option_pressed() -> void:
-	$PanelOption.visible = not $PanelOption.visible
-
-func _on_auto_hide_option_panel_timeout() -> void:
-	$PanelOption.hide()
-
-func panel_config_reset_req()->void:
-	$PanelOption.config_to_control(file_name,config,editable_keys)
-
-func config_changed(cfg :Dictionary):
-	#update config
-	for k in cfg:
-		config[k]=cfg[k]
-	bg_request.url_to_get = config["background_url"]
-	bg_request.force_update()
 
 var bg_request :MyHTTPRequest
 func init_request_bg()->void:
 	bg_request = MyHTTPRequest.new(
-		config["background_url"],
+		config.base_url + config.background_file,
 		60, bgimage_success, bgimage_fail,
 	)
 	add_child(bg_request)

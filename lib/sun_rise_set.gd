@@ -31,7 +31,7 @@ static func get_sun_longitude(days :float) -> Dictionary:
 	var longitude = get_range_radian( deg_to_rad( 280.461 + 0.9856474*days) )
 	var g = get_range_radian( deg_to_rad( 357.528 + 0.9856003*days) )
 	return {
-		"gamma" :get_range_radian(longitude + deg_to_rad( 1.915*sin(g) + 0.02*sin(2*g) ) ), 
+		"gamma" :get_range_radian(longitude + deg_to_rad( 1.915*sin(g) + 0.02*sin(2*g) ) ),
 		"mean_longitude" : longitude,
 		}
 
@@ -39,14 +39,14 @@ static func convert_dtime_to_rtime(dhour :float) -> Dictionary:
 	var hour = int(dhour)
 	var minute = int((dhour - hour) * 60)
 	return {
-		"hour" : hour, 
+		"hour" : hour,
 		"minute" : minute,
 		}
 
 static func calculate_sunset_sunrise(latitude :float, longitude :float, timezone :float):
 	var today = Time.get_datetime_dict_from_system()
 	var days = get_julian_day(today.year, today.month, today.day)
-	
+
 	var tmp = get_sun_longitude(days)
 	var gamma = tmp.gamma
 	var mean_longitude = tmp.mean_longitude
@@ -74,7 +74,7 @@ static func calculate_sunset_sunrise(latitude :float, longitude :float, timezone
 	var sunrise_time = convert_dtime_to_rtime(sunrise)
 	var sunset_time = convert_dtime_to_rtime(sunset)
 
-	return [ 
+	return [
 		"%02d:%02d" % [ sunrise_time.hour, sunrise_time.minute-1 ],
 		"%02d:%02d" % [ sunset_time.hour, sunset_time.minute+1 ],
 		 ]
