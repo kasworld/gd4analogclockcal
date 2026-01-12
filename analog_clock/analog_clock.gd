@@ -43,17 +43,20 @@ func update_color()->void:
 	$LabelInfo.label_settings.font_color = Global2d.colors.infolabel
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta: float) -> void:
-	update_clock()
+#func _process(_delta: float) -> void:
+	#update_clock()
 
-var num_bar :bool
-var old_time_dict = {"second":0} # datetime dict
-func update_clock():
-	var time_now_dict := Time.get_datetime_dict_from_system()
-	if old_time_dict["second"] != time_now_dict["second"]:
-		old_time_dict = time_now_dict
-		$LabelTime.text = "%02d:%02d:%02d" % [time_now_dict["hour"] , time_now_dict["minute"] ,time_now_dict["second"]  ]
-		#if  time_now_dict["second"] % 5 == 0:
-		num_bar =  not num_bar
-		$DialBar.visible = num_bar
-		$DialNum.visible = not num_bar
+func toggle_dial_num_bar() -> void:
+	$DialBar.visible = not $DialBar.visible
+	$DialNum.visible = not $DialBar.visible
+
+func update_label_time(time_now_dict :Dictionary) -> void:
+	$LabelTime.text = "%02d:%02d:%02d" % [time_now_dict["hour"] , time_now_dict["minute"] ,time_now_dict["second"]  ]
+
+#var old_time_dict = {"second":0} # datetime dict
+#func update_clock():
+	#var time_now_dict := Time.get_datetime_dict_from_system()
+	#if old_time_dict["second"] != time_now_dict["second"]:
+		#old_time_dict = time_now_dict
+		#update_label_time(time_now_dict)
+		#toggle_dial_num_bar()
