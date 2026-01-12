@@ -26,15 +26,15 @@ func update_color()->void:
 	queue_redraw()
 
 func _draw() -> void:
-	var w = thick
+	var w := thick
 	if w < 1 :
 		w = -1
 	draw_multiline(dial_bars,Global2d.colors[colorkey], w)
 
 func make_dial_bars()->void:
-	var r = radius
+	var r := radius
 	for i in range(0,360):
-		var rad = deg_to_rad(-i+180)
+		var rad := deg_to_rad(-i+180)
 		var offset :float = 0
 		if i % 30 == 0 :
 			offset = r*0.08

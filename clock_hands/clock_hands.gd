@@ -9,7 +9,7 @@ var tz_shift :float
 enum HandType {Hour, Minute, Second}
 
 # default
-var hands_param = [
+var hands_param := [
 	# hands type, color key,outline w :0 fill,  from, to , width : ratio of clock_R
 	[HandType.Hour, "hour1",8, 0.04,0.7, 0.04],
 	[HandType.Hour, "hour2",0, 0.04,0.68, 0.01],
@@ -17,7 +17,7 @@ var hands_param = [
 	[HandType.Second, "second",0, 0.04,1.0, 0.01],
 ]
 
-var center_param = [
+var center_param := [
 	# color key, radius , ourline w:0 fill
 	["center_circle1", 0.04, 4],
 	["center_circle2", 0.025, 4],
@@ -36,18 +36,18 @@ func update_color()->void:
 func _process(_delta: float) -> void:
 	queue_redraw()
 
-var old_time_dict = {"second":0} # datetime dict
+var old_time_dict := {"second":0} # datetime dict
 func _draw() -> void:
-	var ms = Time.get_unix_time_from_system()
+	var ms := Time.get_unix_time_from_system()
 	for v in hands_param:
-		var rad = calc_rad_for_hand(ms, v[0]) +PI
-		var co = Global2d.colors[v[1]]
-		var outline = v[2]
-		var p1 = Vector2(0, v[3]*clock_R)
-		var p2 = Vector2(0, v[4]*clock_R)
-		var w = v[5]*clock_R
+		var rad := calc_rad_for_hand(ms, v[0]) +PI
+		var co :Color = Global2d.colors[v[1]]
+		var outline :float = v[2]
+		var p1 := Vector2(0, v[3]*clock_R)
+		var p2 := Vector2(0, v[4]*clock_R)
+		var w :float = v[5]*clock_R
 		draw_set_transform(Vector2(0,0), rad)
-		var rt = Rect2(p1-Vector2(w/2,0), p2-p1 + Vector2(w,0))
+		var rt := Rect2(p1-Vector2(w/2,0), p2-p1 + Vector2(w,0))
 		if outline == 0:
 			draw_rect(rt,co,true)
 		else:
@@ -55,20 +55,20 @@ func _draw() -> void:
 	draw_set_transform(Vector2(0,0), 0)
 
 	for v in center_param:
-		var co = Global2d.colors[v[0]]
-		var r = clock_R * v[1]
-		var outline = v[2]
+		var co :Color = Global2d.colors[v[0]]
+		var r :float = clock_R * v[1]
+		var outline :float = v[2]
 		if outline == 0:
 			draw_circle(Vector2(0,0), r, co)
 		else:
 			draw_arc(Vector2(0,0),r, 0, 2*PI, r , co, outline)
 
 func calc_rad_for_hand(ms :float, hd :HandType)->float:
-	var second = ms - int(ms/60)*60
+	var second := ms - int(ms/60)*60
 	ms = ms / 60
-	var minute = ms - int(ms/60)*60
+	var minute := ms - int(ms/60)*60
 	ms = ms / 60
-	var hour = ms - int(ms/24)*24 + tz_shift
+	var hour := ms - int(ms/24)*24 + tz_shift
 	match hd:
 		HandType.Hour:
 			return hour2rad(hour)

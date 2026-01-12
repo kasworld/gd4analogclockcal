@@ -51,11 +51,11 @@ func _ready() -> void:
 
 	#SunRiseSet.test()
 	set_color_mode_by_time()
-	var vp_size = get_viewport_rect().size
+	var vp_size := get_viewport_rect().size
 
 	bgimage = Image.create(vp_size.x,vp_size.y,true,Image.FORMAT_RGBA8)
 
-	var sect_width = min(vp_size.x/2,vp_size.y)
+	var sect_width :float = min(vp_size.x/2,vp_size.y)
 	anipos_list = [Vector2(sect_width/2,vp_size.y/2), Vector2(vp_size.x - sect_width/2,vp_size.y/2)]
 	$Calendar.init( Vector2( sect_width, sect_width) )
 	$AnalogClock.init(config, sect_width/2, 9 )
@@ -63,14 +63,14 @@ func _ready() -> void:
 	init_request_bg()
 
 # change dark mode by time
-var old_time_dict = Time.get_datetime_dict_from_system() # datetime dict
-var old_minute_dict = Time.get_datetime_dict_from_system() # datetime dict
+var old_time_dict := Time.get_datetime_dict_from_system() # datetime dict
+var old_minute_dict := Time.get_datetime_dict_from_system() # datetime dict
 func _process(_delta: float) -> void:
 	label_demo()
 	rot_by_accel()
 	main_animation.handle_animation()
 
-	var time_now_dict = Time.get_datetime_dict_from_system()
+	var time_now_dict := Time.get_datetime_dict_from_system()
 	if old_minute_dict["minute"] != time_now_dict["minute"]:
 		start_move_animation()
 		old_minute_dict = time_now_dict
@@ -154,11 +154,11 @@ func init_request_bg()->void:
 
 var bgimage :Image
 func bgimage_success(body)->void:
-	var image_error = bgimage.load_png_from_buffer(body)
+	var image_error := bgimage.load_png_from_buffer(body)
 	if image_error != OK:
 		print("An error occurred while trying to display the image.")
 	else:
-		var bgTexture = ImageTexture.create_from_image(bgimage)
+		var bgTexture := ImageTexture.create_from_image(bgimage)
 		bgTexture.set_size_override(get_viewport_rect().size)
 		$BackgroundSprite.texture = bgTexture
 func bgimage_fail()->void:
