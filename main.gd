@@ -8,7 +8,7 @@ var config = {
 	"background_file" : "background.png",
 }
 
-var main_animation := Animation2D.new()
+var main_animation := SimpleAnimation.new()
 var anipos_list := []
 func reset_pos()->void:
 	$AnalogClock.position = anipos_list[0]
@@ -49,7 +49,7 @@ func _ready() -> void:
 	get_viewport().size_changed.connect(on_viewport_size_changed)
 	_on_button_패널보이기_pressed()
 
-	SunRiseSet.test()
+	#SunRiseSet.test()
 	set_color_mode_by_time()
 	var vp_size = get_viewport_rect().size
 
@@ -62,11 +62,29 @@ func _ready() -> void:
 	reset_pos()
 	init_request_bg()
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
+# change dark mode by time
+var old_time_dict = Time.get_datetime_dict_from_system() # datetime dict
+var old_minute_dict = Time.get_datetime_dict_from_system() # datetime dict
 func _process(_delta: float) -> void:
 	label_demo()
 	rot_by_accel()
 	main_animation.handle_animation()
+
+	var time_now_dict = Time.get_datetime_dict_from_system()
+	if old_minute_dict["minute"] != time_now_dict["minute"]:
+		start_move_animation()
+		old_minute_dict = time_now_dict
+	if old_time_dict["hour"] != time_now_dict["hour"]:
+		old_time_dict = time_now_dict
+		match time_now_dict["hour"]:
+			6:
+				update_color_with_mode(false)
+			18:
+				update_color_with_mode(true)
+			_:
+#				update_color(not Global2d.dark_mode)
+				pass
+
 
 func _notification(what: int) -> void:
 	# app resume on android
@@ -161,23 +179,3 @@ func update_color_with_mode(darkmode :bool)->void:
 	Global2d.set_dark_mode(darkmode)
 	$Calendar.update_color()
 	$AnalogClock.update_color()
-
-# change dark mode by time
-var old_time_dict = Time.get_datetime_dict_from_system() # datetime dict
-var old_minute_dict = Time.get_datetime_dict_from_system() # datetime dict
-func _on_timer_day_night_timeout() -> void:
-	var time_now_dict = Time.get_datetime_dict_from_system()
-	if old_minute_dict["minute"] != time_now_dict["minute"]:
-		start_move_animation()
-		old_minute_dict = time_now_dict
-
-	if old_time_dict["hour"] != time_now_dict["hour"]:
-		old_time_dict = time_now_dict
-		match time_now_dict["hour"]:
-			6:
-				update_color_with_mode(false)
-			18:
-				update_color_with_mode(true)
-			_:
-#				update_color(not Global2d.dark_mode)
-				pass

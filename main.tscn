@@ -17,9 +17,6 @@ script = ExtResource("1_q4spd")
 z_index = -1
 centered = false
 
-[node name="TimerDayNight" type="Timer" parent="."]
-autostart = true
-
 [node name="Timer패널숨기기" type="Timer" parent="."]
 wait_time = 3.0
 one_shot = true
@@ -48,5 +45,4 @@ theme = SubResource("Theme_7mycd")
 [node name="LabelPerformance" type="Label" parent="오른쪽패널"]
 layout_mode = 2
 
-[connection signal="timeout" from="TimerDayNight" to="." method="_on_timer_day_night_timeout"]
 [connection signal="timeout" from="Timer패널숨기기" to="." method="_on_timer패널숨기기_timeout"]
