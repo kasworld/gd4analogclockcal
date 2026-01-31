@@ -57,7 +57,7 @@ var colors_light := {
 }
 var colors := colors_dark
 
-var font := preload("res://HakgyoansimBareondotumR.ttf")
+var font := preload("res://font/HakgyoansimBareondotumR.ttf")
 
 # common functions
 var dark_mode := true
