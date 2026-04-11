@@ -102,6 +102,8 @@ func update_color() -> void:
 func init(config :Dictionary, r :float, tz_s :float) -> void:
 	dial_line_radius = r
 	dial_line_thick = r*0.006
+	if dial_line_thick < 1:
+		dial_line_thick = -1
 	dial_line_align = BarAlign.In
 	dial_line_colorkey = "dial_line"
 	make_dial_bars()
@@ -154,24 +156,19 @@ func _draw() -> void:
 	if show_num_or_bar:
 		draw_num()
 	else:
-		var w := dial_line_thick
-		if w < 1 :
-			w = -1
-		draw_multiline(dial_bars,Global2d.colors[dial_line_colorkey], w)
+		draw_multiline(dial_bars, Global2d.colors[dial_line_colorkey], dial_line_thick)
 
 func draw_num() -> void:
-	var letter_size := font_size
-	var letter_pos_r := dial_num_radius
 	var numlist := [12,1,2,3,4,5,6,7,8,9,10,11]
+	var co :Color = Global2d.colors[dial_num_colorkey]
 	for i in numlist.size():
 		var rad := deg_to_rad( i*(360.0/numlist.size())) -PI/2
-		draw_letter(rad, letter_pos_r, letter_size, numlist[i])
+		draw_letter(rad, dial_num_radius, font_size, numlist[i], co)
 
-func draw_letter(rad :float, r :float, fsize :float, i :int) -> void:
+func draw_letter(rad :float, r :float, fsize :float, i :int, co :Color) -> void:
 	var t := "%d" % i
 	var pos := make_pos_by_rad_r(rad, r)
-	var offset := Vector2(-fsize/3.5*t.length(),fsize/3)
-	var co :Color = Global2d.colors[dial_num_colorkey]
+	var offset := Vector2(-fsize/3.5*t.length(), fsize/3)
 	if outline_w == 0:
 		draw_string(Global2d.font, pos+offset, t, HORIZONTAL_ALIGNMENT_CENTER, -1, fsize as int, co )
 	else:
