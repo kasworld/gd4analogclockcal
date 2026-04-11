@@ -15,12 +15,47 @@ var hands_param := [
 	[HandType.Minute, "minute",8, 0.04,0.9, 0.02],
 	[HandType.Second, "second",0, 0.04,1.0, 0.01],
 ]
+func draw_hands(time_sec :float) -> void:
+	var hands_rad := calc_rad_for_hand(time_sec)
+	for v in hands_param:
+		var rad := hands_rad[v[0]] +PI
+		var co :Color = Global2d.colors[v[1]]
+		var outline :float = v[2]
+		var p1 := Vector2(0, v[3]*clock_radius)
+		var p2 := Vector2(0, v[4]*clock_radius)
+		var w :float = v[5]*clock_radius
+		draw_set_transform(Vector2(0,0), rad)
+		var rt := Rect2(p1-Vector2(w/2,0), p2-p1 + Vector2(w,0))
+		if outline == 0:
+			draw_rect(rt,co,true)
+		else:
+			draw_rect(rt,co,false,outline)
+	draw_set_transform(Vector2(0,0), 0)
+
+func calc_rad_for_hand(ms :float) -> Array[float]:
+	var second := ms - int(ms/60)*60
+	ms = ms / 60
+	var minute := ms - int(ms/60)*60
+	ms = ms / 60
+	var hour := ms - int(ms/24)*24 + tz_shift
+	return [PI/6.0*hour, PI/30.0*minute, PI/30.0*second]
+
 
 var center_param := [
 	# color key, radius , ourline w:0 fill
 	["center_circle1", 0.04, 4],
 	["center_circle2", 0.025, 4],
 ]
+func draw_center() -> void:
+	for v in center_param:
+		var co :Color = Global2d.colors[v[0]]
+		var r :float = clock_radius * v[1]
+		var outline :float = v[2]
+		if outline == 0:
+			draw_circle(Vector2(0,0), r, co)
+		else:
+			draw_arc(Vector2(0,0), r, 0, 2*PI, r as int, co, outline)
+
 
 enum BarAlign {None, In,Mid,Out}
 
@@ -91,59 +126,19 @@ func update_label_time(time_now_dict :Dictionary) -> void:
 func _process(_delta: float) -> void:
 	queue_redraw()
 
-var old_time_dict := {"second":0} # datetime dict
 func _draw() -> void:
 	var ms := Time.get_unix_time_from_system()
-	for v in hands_param:
-		var rad := calc_rad_for_hand(ms, v[0]) +PI
-		var co :Color = Global2d.colors[v[1]]
-		var outline :float = v[2]
-		var p1 := Vector2(0, v[3]*clock_radius)
-		var p2 := Vector2(0, v[4]*clock_radius)
-		var w :float = v[5]*clock_radius
-		draw_set_transform(Vector2(0,0), rad)
-		var rt := Rect2(p1-Vector2(w/2,0), p2-p1 + Vector2(w,0))
-		if outline == 0:
-			draw_rect(rt,co,true)
-		else:
-			draw_rect(rt,co,false,outline)
-	draw_set_transform(Vector2(0,0), 0)
-
-	for v in center_param:
-		var co :Color = Global2d.colors[v[0]]
-		var r :float = clock_radius * v[1]
-		var outline :float = v[2]
-		if outline == 0:
-			draw_circle(Vector2(0,0), r, co)
-		else:
-			draw_arc(Vector2(0,0), r, 0, 2*PI, r as int, co, outline)
-
+	draw_hands(ms)
+	draw_center()
 	if show_num_or_bar:
-		# draw dial num
 		draw_num()
 	else:
-		# draw dial line
 		var w := dial_line_thick
 		if w < 1 :
 			w = -1
 		draw_multiline(dial_bars,Global2d.colors[dial_line_colorkey], w)
 
-func calc_rad_for_hand(ms :float, hd :HandType)->float:
-	var second := ms - int(ms/60)*60
-	ms = ms / 60
-	var minute := ms - int(ms/60)*60
-	ms = ms / 60
-	var hour := ms - int(ms/24)*24 + tz_shift
-	match hd:
-		HandType.Hour:
-			return PI/6.0*hour
-		HandType.Minute:
-			return PI/30.0*minute
-		HandType.Second:
-			return PI/30.0*second
-	return 0
-
-func make_dial_bars()->void:
+func make_dial_bars() -> void:
 	var r := dial_line_radius
 	for i in range(0,360):
 		var rad := deg_to_rad(-i+180)
@@ -162,7 +157,7 @@ func make_dial_bars()->void:
 			BarAlign.Out :
 				dial_bars.append_array([ make_pos_by_rad_r(rad,r),make_pos_by_rad_r(rad,r+offset) ])
 
-func make_pos_by_rad_r(rad:float, r :float)->Vector2:
+func make_pos_by_rad_r(rad:float, r :float) -> Vector2:
 	return Vector2(sin(rad)*r, cos(rad)*r)
 
 func draw_num() -> void:
