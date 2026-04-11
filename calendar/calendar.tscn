@@ -1,11 +1,11 @@
-[gd_scene load_steps=2 format=3 uid="uid://jnn68hq25txp"]
+[gd_scene format=3 uid="uid://jnn68hq25txp"]
 
 [ext_resource type="Script" uid="uid://bh1ilk8wpy62t" path="res://calendar/calendar.gd" id="1_lfefr"]
 
-[node name="Calendar" type="Node2D"]
+[node name="Calendar" type="Node2D" unique_id=1065431719]
 script = ExtResource("1_lfefr")
 
-[node name="Timer" type="Timer" parent="."]
+[node name="Timer" type="Timer" parent="." unique_id=129788781]
 autostart = true
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
