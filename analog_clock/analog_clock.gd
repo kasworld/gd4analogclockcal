@@ -28,14 +28,14 @@ func init(config :Dictionary, r :float, tz_s :float) -> void:
 
 	update_color()
 
-func _on_update_info_text(t :String)->void:
+func _on_update_info_text(t :String) -> void:
 	$LabelInfo.text = t
 
-func update_req_url(cfg:Dictionary)->void:
+func update_req_url(cfg:Dictionary) -> void:
 	info_text.update_urls(cfg.weather_url,cfg.dayinfo_url,cfg.todayinfo_url)
 	info_text.force_update()
 
-func update_color()->void:
+func update_color() -> void:
 	$DialNum.update_color()
 	$DialBar.update_color()
 	$ClockHands.update_color()
