@@ -75,7 +75,6 @@ func _process(_delta: float) -> void:
 	if old_sec != time_now_dict["second"]:
 		old_sec = time_now_dict["second"]
 		$AnalogClock.update_label_time(time_now_dict)
-		$AnalogClock.toggle_dial_num_bar()
 	if old_minute != time_now_dict["minute"]:
 		old_minute = time_now_dict["minute"]
 		start_move_animation()

@@ -1,12 +1,63 @@
 extends Node2D
 
 var info_text :InfoText
+var clock_R :float
+var tz_shift :float
 
-# Called when the node enters the scene tree for the first time.
+# use for calc hand angle
+enum HandType {Hour, Minute, Second}
+
+# default
+var hands_param := [
+	# hands type, color key,outline w :0 fill,  from, to , width : ratio of clock_R
+	[HandType.Hour, "hour1",8, 0.04,0.7, 0.04],
+	[HandType.Hour, "hour2",0, 0.04,0.68, 0.01],
+	[HandType.Minute, "minute",8, 0.04,0.9, 0.02],
+	[HandType.Second, "second",0, 0.04,1.0, 0.01],
+]
+
+var center_param := [
+	# color key, radius , ourline w:0 fill
+	["center_circle1", 0.04, 4],
+	["center_circle2", 0.025, 4],
+]
+
+enum BarAlign {None, In,Mid,Out}
+
+var dial_line_radius :float
+var dial_line_thick :float
+var dial_line_align :BarAlign
+var dial_line_colorkey :String
+var dial_bars :PackedVector2Array =[]
+
+enum NumberType {None, Hour,Minute,Degree}
+
+var dial_num_radius :float
+var font_size :float
+var outline_w :int
+var dial_num_type :NumberType
+var dial_num_colorkey :String
+
+func update_color() -> void:
+	queue_redraw()
+	$LabelTime.label_settings.font_color = Global2d.colors.timelabel
+	$LabelInfo.label_settings.font_color = Global2d.colors.infolabel
+
 func init(config :Dictionary, r :float, tz_s :float) -> void:
-	$DialBar.init(r, r*0.006,DialBar.BarAlign.In,"dial_line")
-	$DialNum.init(r*0.95,r*0.15,0,DialNum.NumberType.Hour,"dial_num")
-	$ClockHands.init(r,tz_s)
+	dial_line_radius = r
+	dial_line_thick = r*0.006
+	dial_line_align = BarAlign.In
+	dial_line_colorkey = "dial_line"
+	make_dial_bars()
+
+	dial_num_radius = r
+	font_size = r*0.15
+	outline_w = 0
+	dial_num_type = NumberType.Hour
+	dial_num_colorkey = "dial_num"
+
+	clock_R = r
+	tz_shift = tz_s
 
 	var co :Color = Global2d.colors.timelabel
 	$LabelTime.position = Vector2(-r,-r)
@@ -35,28 +86,122 @@ func update_req_url(cfg:Dictionary) -> void:
 	info_text.update_urls(cfg.weather_url,cfg.dayinfo_url,cfg.todayinfo_url)
 	info_text.force_update()
 
-func update_color() -> void:
-	$DialNum.update_color()
-	$DialBar.update_color()
-	$ClockHands.update_color()
-	$LabelTime.label_settings.font_color = Global2d.colors.timelabel
-	$LabelInfo.label_settings.font_color = Global2d.colors.infolabel
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(_delta: float) -> void:
-	#update_clock()
-
-func toggle_dial_num_bar() -> void:
-	$DialBar.visible = not $DialBar.visible
-	$DialNum.visible = not $DialBar.visible
-
 func update_label_time(time_now_dict :Dictionary) -> void:
 	$LabelTime.text = "%02d:%02d:%02d" % [time_now_dict["hour"] , time_now_dict["minute"] ,time_now_dict["second"]  ]
 
-#var old_time_dict = {"second":0} # datetime dict
-#func update_clock():
-	#var time_now_dict := Time.get_datetime_dict_from_system()
-	#if old_time_dict["second"] != time_now_dict["second"]:
-		#old_time_dict = time_now_dict
-		#update_label_time(time_now_dict)
-		#toggle_dial_num_bar()
+func _process(_delta: float) -> void:
+	queue_redraw()
+
+var old_time_dict := {"second":0} # datetime dict
+func _draw() -> void:
+	var ms := Time.get_unix_time_from_system()
+	for v in hands_param:
+		var rad := calc_rad_for_hand(ms, v[0]) +PI
+		var co :Color = Global2d.colors[v[1]]
+		var outline :float = v[2]
+		var p1 := Vector2(0, v[3]*clock_R)
+		var p2 := Vector2(0, v[4]*clock_R)
+		var w :float = v[5]*clock_R
+		draw_set_transform(Vector2(0,0), rad)
+		var rt := Rect2(p1-Vector2(w/2,0), p2-p1 + Vector2(w,0))
+		if outline == 0:
+			draw_rect(rt,co,true)
+		else:
+			draw_rect(rt,co,false,outline)
+	draw_set_transform(Vector2(0,0), 0)
+
+	for v in center_param:
+		var co :Color = Global2d.colors[v[0]]
+		var r :float = clock_R * v[1]
+		var outline :float = v[2]
+		if outline == 0:
+			draw_circle(Vector2(0,0), r, co)
+		else:
+			draw_arc(Vector2(0,0), r, 0, 2*PI, r as int, co, outline)
+
+	# draw dial line
+	var w := dial_line_thick
+	if w < 1 :
+		w = -1
+	draw_multiline(dial_bars,Global2d.colors[dial_line_colorkey], w)
+
+	# draw dial num
+	draw_num( )
+
+
+func calc_rad_for_hand(ms :float, hd :HandType)->float:
+	var second := ms - int(ms/60)*60
+	ms = ms / 60
+	var minute := ms - int(ms/60)*60
+	ms = ms / 60
+	var hour := ms - int(ms/24)*24 + tz_shift
+	match hd:
+		HandType.Hour:
+			return hour2rad(hour)
+		HandType.Minute:
+			return minute2rad(minute)
+		HandType.Second:
+			return second2rad(second)
+	return 0
+
+func second2rad(sec :float) -> float:
+	return 2.0*PI/60.0*sec
+
+func minute2rad(m :float) -> float:
+	return 2.0*PI/60.0*m
+
+func hour2rad(hour :float) -> float:
+	return 2.0*PI/12.0*hour
+
+func make_dial_bars()->void:
+	var r := dial_line_radius
+	for i in range(0,360):
+		var rad := deg_to_rad(-i+180)
+		var offset :float = 0
+		if i % 30 == 0 :
+			offset = r*0.08
+		elif i % 6 == 0 :
+			offset = r*0.04
+		else :
+			offset = r*0.02
+		match dial_line_align:
+			BarAlign.In :
+				dial_bars.append_array([ make_pos_by_rad_r(rad,r-offset),make_pos_by_rad_r(rad,r) ])
+			BarAlign.Mid :
+				dial_bars.append_array([ make_pos_by_rad_r(rad,r-offset/2),make_pos_by_rad_r(rad,r+offset/2) ])
+			BarAlign.Out :
+				dial_bars.append_array([ make_pos_by_rad_r(rad,r),make_pos_by_rad_r(rad,r+offset) ])
+
+func make_pos_by_rad_r(rad:float, r :float)->Vector2:
+	return Vector2(sin(rad)*r, cos(rad)*r)
+
+func draw_num() -> void:
+	var letter_size := font_size
+	var letter_pos_r := dial_num_radius
+	match dial_num_type:
+		NumberType.Hour:
+			for i in range(1,13):
+				var rad := deg_to_rad( -i*(360.0/12.0) +180)
+				draw_letter(rad,letter_pos_r, letter_size, i)
+		NumberType.Minute:
+			for i in range(0,60,5):
+				var rad := deg_to_rad( -i*(360.0/60.0) +180)
+				draw_letter(rad,letter_pos_r, letter_size, i)
+		NumberType.Degree:
+			for i in range(0,360,30):
+				var rad := deg_to_rad( -i*(360.0/360.0) +180)
+				draw_letter(rad,letter_pos_r, letter_size, i)
+
+func draw_letter(rad :float, r :float, fsize :float, i :int) -> void:
+	var t := "%d" % i
+	var pos := make_pos_by_rad_r(rad, r)
+	var offset := Vector2(-fsize/3.5*t.length(),fsize/3)
+	var co :Color = Global2d.colors[dial_num_colorkey]
+	if outline_w == 0:
+		draw_string(Global2d.font, pos+offset, t, HORIZONTAL_ALIGNMENT_CENTER, -1, fsize as int, co )
+	else:
+		draw_string_outline(Global2d.font, pos+offset, t, HORIZONTAL_ALIGNMENT_CENTER, -1, fsize as int, outline_w, co )
+
+func draw_cross(p :Vector2, l:float, co :Color) -> void:
+	draw_line(p + Vector2(-l/2,0),p + Vector2(l/2,0), co,-1 )
+	draw_line(p + Vector2(0,-l/2),p + Vector2(0,l/2), co,-1 )
