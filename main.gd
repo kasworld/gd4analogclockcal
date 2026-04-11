@@ -10,7 +10,7 @@ var config = {
 
 var main_animation := SimpleAnimation.new()
 var anipos_list := []
-func reset_pos()->void:
+func reset_pos() -> void:
 	$AnalogClock.position = anipos_list[0]
 	$Calendar.position = anipos_list[1]
 func start_move_animation():
@@ -37,7 +37,7 @@ func on_viewport_size_changed() -> void:
 		msg += "%s : %s\n" % [k, config[k] ]
 	$"왼쪽패널/LabelConfig".text = msg
 
-func label_demo() -> void:
+func update_label() -> void:
 	if $"오른쪽패널/LabelPerformance".visible:
 		$"오른쪽패널/LabelPerformance".text = """%d FPS (%.2f mspf)""" % [
 		Engine.get_frames_per_second(),1000.0 / Engine.get_frames_per_second(),
@@ -67,7 +67,7 @@ var old_hour := -1
 var old_minute := -1
 var old_sec := -1
 func _process(_delta: float) -> void:
-	label_demo()
+	update_label()
 	rot_by_accel()
 	main_animation.handle_animation()
 
@@ -97,7 +97,7 @@ func _notification(what: int) -> void:
 		update_color()
 
 var oldvt = Vector2(0,-100)
-func rot_by_accel()->void:
+func rot_by_accel() -> void:
 	var vt = Input.get_accelerometer()
 	if  vt != Vector3.ZERO :
 		oldvt = (Vector2(vt.x,vt.y) + oldvt).normalized() *100
@@ -149,7 +149,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 var bg_request :MyHTTPRequest
-func init_request_bg()->void:
+func init_request_bg() -> void:
 	bg_request = MyHTTPRequest.new(
 		config.base_url + config.background_file,
 		60, bgimage_success, bgimage_fail,
@@ -157,7 +157,7 @@ func init_request_bg()->void:
 	add_child(bg_request)
 
 var bgimage :Image
-func bgimage_success(body)->void:
+func bgimage_success(body) -> void:
 	var image_error := bgimage.load_png_from_buffer(body)
 	if image_error != OK:
 		print("An error occurred while trying to display the image.")
@@ -165,21 +165,21 @@ func bgimage_success(body)->void:
 		var bgTexture := ImageTexture.create_from_image(bgimage)
 		bgTexture.set_size_override(get_viewport_rect().size)
 		$BackgroundSprite.texture = bgTexture
-func bgimage_fail()->void:
+func bgimage_fail() -> void:
 	$BackgroundSprite.texture = null
 
-func set_color_mode_by_time()->void:
+func set_color_mode_by_time() -> void:
 	var now = Time.get_datetime_dict_from_system()
 	if now["hour"] < 6 or now["hour"] >= 18 :
 		Global2d.set_dark_mode(true)
 	else :
 		Global2d.set_dark_mode(false)
 
-func update_color()->void:
+func update_color() -> void:
 	$Calendar.update_color()
 	$AnalogClock.update_color()
 
-func update_color_with_mode(darkmode :bool)->void:
+func update_color_with_mode(darkmode :bool) -> void:
 	Global2d.set_dark_mode(darkmode)
 	$Calendar.update_color()
 	$AnalogClock.update_color()
