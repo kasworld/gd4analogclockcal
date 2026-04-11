@@ -61,7 +61,7 @@ func _draw() -> void:
 		if outline == 0:
 			draw_circle(Vector2(0,0), r, co)
 		else:
-			draw_arc(Vector2(0,0),r, 0, 2*PI, r , co, outline)
+			draw_arc(Vector2(0,0), r, 0, 2*PI, r  as int, co, outline)
 
 func calc_rad_for_hand(ms :float, hd :HandType)->float:
 	var second := ms - int(ms/60)*60

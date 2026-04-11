@@ -75,19 +75,19 @@ func make_shadow_color(co :Color) -> Color:
 	else :
 		return co.lightened(0.5)
 
-func make_label_setting(font_size :float , co1 :Color) -> LabelSettings:
+func make_label_setting(font_size :int , co1 :Color) -> LabelSettings:
 	var label_settings := LabelSettings.new()
 	label_settings.font = font
 	label_settings.font_color = co1
 	label_settings.font_size = font_size
 	return label_settings
 
-func calc_font_offset_vector2(font_size :float) -> Vector2:
+func calc_font_offset_vector2(font_size :int) -> Vector2:
 	var offset := log(font_size)
 	offset = clampf(offset, 1, 6)
 	return Vector2(offset,offset)
 
-func set_label_font_size(lb :Label, font_size :float) -> void:
+func set_label_font_size(lb :Label, font_size :int) -> void:
 	lb.label_settings.font_size = font_size
 	var offset := calc_font_offset_vector2(font_size)
 	lb.label_settings.shadow_offset = offset

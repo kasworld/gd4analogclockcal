@@ -52,9 +52,9 @@ func draw_letter(rad :float, r :float, fsize :float, i :int) -> void:
 	var offset := Vector2(-fsize/3.5*t.length(),fsize/3)
 	var co :Color = Global2d.colors[colorkey]
 	if outline_w == 0:
-		draw_string(Global2d.font, pos+offset, t, HORIZONTAL_ALIGNMENT_CENTER, -1, fsize, co )
+		draw_string(Global2d.font, pos+offset, t, HORIZONTAL_ALIGNMENT_CENTER, -1, fsize as int, co )
 	else:
-		draw_string_outline(Global2d.font, pos+offset, t, HORIZONTAL_ALIGNMENT_CENTER, -1, fsize,outline_w, co )
+		draw_string_outline(Global2d.font, pos+offset, t, HORIZONTAL_ALIGNMENT_CENTER, -1, fsize as int, outline_w, co )
 
 func draw_cross(p :Vector2, l:float, co :Color) -> void:
 	draw_line(p + Vector2(-l/2,0),p + Vector2(l/2,0), co,-1 )

@@ -53,7 +53,7 @@ func _ready() -> void:
 	set_color_mode_by_time()
 	var vp_size := get_viewport_rect().size
 
-	bgimage = Image.create(vp_size.x,vp_size.y,true,Image.FORMAT_RGBA8)
+	bgimage = Image.create(vp_size.x as int, vp_size.y as int, true, Image.FORMAT_RGBA8)
 
 	var sect_width :float = min(vp_size.x/2,vp_size.y)
 	anipos_list = [Vector2(sect_width/2,vp_size.y/2), Vector2(vp_size.x - sect_width/2,vp_size.y/2)]

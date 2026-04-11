@@ -21,7 +21,7 @@ func draw_calendar()->void:
 	var offset := Vector2(0,fh*0.7)
 
 	var text_ym := "%4d년 %2d월" % [today_dict["year"] , today_dict["month"]]
-	draw_string(Global2d.font, Vector2(-csize.x/3,-csize.y/2) +offset, text_ym, HORIZONTAL_ALIGNMENT_CENTER, -1,  fh, Global2d.colors.datelabel )
+	draw_string(Global2d.font, Vector2(-csize.x/3,-csize.y/2) +offset, text_ym, HORIZONTAL_ALIGNMENT_CENTER, -1, fh as int, Global2d.colors.datelabel )
 
 	for wd in Global2d.weekdaystring.size():
 		var week := 1
@@ -34,7 +34,7 @@ func draw_calendar()->void:
 			fsize = fh *1.2
 			today_adj = Vector2(-fsize*0.1, fsize*0.08)
 		var pos := Vector2(fw*wd,fh*week) - csize/2 +offset+Vector2(fh/10 ,0) + today_adj
-		draw_string(Global2d.font, pos , text, HORIZONTAL_ALIGNMENT_CENTER, -1,  fsize, co )
+		draw_string(Global2d.font, pos , text, HORIZONTAL_ALIGNMENT_CENTER, -1, fsize as int, co )
 
 	for week in range(2,8):
 		for wd in range(7):
@@ -50,7 +50,7 @@ func draw_calendar()->void:
 				fsize = fh*1.2
 				today_adj = Vector2(-fsize*0.08 * text.length(), fsize*0.08)
 			var pos := Vector2(fw*wd,fh*week) - csize/2 +offset + today_adj
-			draw_string(Global2d.font, pos , text, HORIZONTAL_ALIGNMENT_CENTER, -1,  fsize, co )
+			draw_string(Global2d.font, pos , text, HORIZONTAL_ALIGNMENT_CENTER, -1, fsize as int, co )
 			day_index += 24*60*60
 
 func _draw() -> void:
