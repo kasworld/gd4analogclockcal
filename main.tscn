@@ -27,6 +27,7 @@ autostart = true
 [node name="Calendar" parent="." unique_id=319979428 instance=ExtResource("6_thwpy")]
 
 [node name="왼쪽패널" type="VBoxContainer" parent="." unique_id=1339140418]
+modulate = Color(0.53275, 0.51307285, 0.5306116, 1)
 offset_right = 40.0
 offset_bottom = 40.0
 theme = SubResource("Theme_lquwl")
@@ -38,11 +39,13 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="오른쪽패널" type="VBoxContainer" parent="." unique_id=1674362529]
+modulate = Color(0.49354547, 0.49354553, 0.49354553, 1)
 offset_right = 40.0
 offset_bottom = 40.0
 theme = SubResource("Theme_7mycd")
 
 [node name="LabelPerformance" type="Label" parent="오른쪽패널" unique_id=1553418342]
 layout_mode = 2
+horizontal_alignment = 2
 
 [connection signal="timeout" from="Timer패널숨기기" to="." method="_on_timer패널숨기기_timeout"]
