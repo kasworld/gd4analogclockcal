@@ -30,12 +30,9 @@ var dial_line_align :BarAlign
 var dial_line_colorkey :String
 var dial_bars :PackedVector2Array =[]
 
-enum NumberType {None, Hour,Minute,Degree}
-
 var dial_num_radius :float
 var font_size :float
 var outline_w :int
-var dial_num_type :NumberType
 var dial_num_colorkey :String
 
 ## true show num
@@ -56,7 +53,6 @@ func init(config :Dictionary, r :float, tz_s :float) -> void:
 	dial_num_radius = r *0.95
 	font_size = r*0.15
 	outline_w = 0
-	dial_num_type = NumberType.Hour
 	dial_num_colorkey = "dial_num"
 
 	clock_radius = r
@@ -140,21 +136,12 @@ func calc_rad_for_hand(ms :float, hd :HandType)->float:
 	var hour := ms - int(ms/24)*24 + tz_shift
 	match hd:
 		HandType.Hour:
-			return hour2rad(hour)
+			return PI/6.0*hour
 		HandType.Minute:
-			return minute2rad(minute)
+			return PI/30.0*minute
 		HandType.Second:
-			return second2rad(second)
+			return PI/30.0*second
 	return 0
-
-func second2rad(sec :float) -> float:
-	return 2.0*PI/60.0*sec
-
-func minute2rad(m :float) -> float:
-	return 2.0*PI/60.0*m
-
-func hour2rad(hour :float) -> float:
-	return 2.0*PI/12.0*hour
 
 func make_dial_bars()->void:
 	var r := dial_line_radius
@@ -181,19 +168,10 @@ func make_pos_by_rad_r(rad:float, r :float)->Vector2:
 func draw_num() -> void:
 	var letter_size := font_size
 	var letter_pos_r := dial_num_radius
-	match dial_num_type:
-		NumberType.Hour:
-			for i in range(1,13):
-				var rad := deg_to_rad( -i*(360.0/12.0) +180)
-				draw_letter(rad,letter_pos_r, letter_size, i)
-		NumberType.Minute:
-			for i in range(0,60,5):
-				var rad := deg_to_rad( -i*(360.0/60.0) +180)
-				draw_letter(rad,letter_pos_r, letter_size, i)
-		NumberType.Degree:
-			for i in range(0,360,30):
-				var rad := deg_to_rad( -i*(360.0/360.0) +180)
-				draw_letter(rad,letter_pos_r, letter_size, i)
+	var numlist := [12,1,2,3,4,5,6,7,8,9,10,11]
+	for i in numlist.size():
+		var rad := deg_to_rad( (-i)*(360.0/numlist.size()) +180)
+		draw_letter(rad, letter_pos_r, letter_size, numlist[i])
 
 func draw_letter(rad :float, r :float, fsize :float, i :int) -> void:
 	var t := "%d" % i
@@ -204,7 +182,3 @@ func draw_letter(rad :float, r :float, fsize :float, i :int) -> void:
 		draw_string(Global2d.font, pos+offset, t, HORIZONTAL_ALIGNMENT_CENTER, -1, fsize as int, co )
 	else:
 		draw_string_outline(Global2d.font, pos+offset, t, HORIZONTAL_ALIGNMENT_CENTER, -1, fsize as int, outline_w, co )
-
-func draw_cross(p :Vector2, l:float, co :Color) -> void:
-	draw_line(p + Vector2(-l/2,0),p + Vector2(l/2,0), co,-1 )
-	draw_line(p + Vector2(0,-l/2),p + Vector2(0,l/2), co,-1 )
