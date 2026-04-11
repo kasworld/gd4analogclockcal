@@ -1,7 +1,7 @@
 extends Node2D
 
 var info_text :InfoText
-var clock_R :float
+var clock_radius :float
 var tz_shift :float
 
 # use for calc hand angle
@@ -9,7 +9,7 @@ enum HandType {Hour, Minute, Second}
 
 # default
 var hands_param := [
-	# hands type, color key,outline w :0 fill,  from, to , width : ratio of clock_R
+	# hands type, color key,outline w :0 fill,  from, to , width : ratio of clock_radius
 	[HandType.Hour, "hour1",8, 0.04,0.7, 0.04],
 	[HandType.Hour, "hour2",0, 0.04,0.68, 0.01],
 	[HandType.Minute, "minute",8, 0.04,0.9, 0.02],
@@ -38,6 +38,9 @@ var outline_w :int
 var dial_num_type :NumberType
 var dial_num_colorkey :String
 
+## true show num
+var show_num_or_bar :bool
+
 func update_color() -> void:
 	queue_redraw()
 	$LabelTime.label_settings.font_color = Global2d.colors.timelabel
@@ -50,13 +53,13 @@ func init(config :Dictionary, r :float, tz_s :float) -> void:
 	dial_line_colorkey = "dial_line"
 	make_dial_bars()
 
-	dial_num_radius = r
+	dial_num_radius = r *0.95
 	font_size = r*0.15
 	outline_w = 0
 	dial_num_type = NumberType.Hour
 	dial_num_colorkey = "dial_num"
 
-	clock_R = r
+	clock_radius = r
 	tz_shift = tz_s
 
 	var co :Color = Global2d.colors.timelabel
@@ -99,9 +102,9 @@ func _draw() -> void:
 		var rad := calc_rad_for_hand(ms, v[0]) +PI
 		var co :Color = Global2d.colors[v[1]]
 		var outline :float = v[2]
-		var p1 := Vector2(0, v[3]*clock_R)
-		var p2 := Vector2(0, v[4]*clock_R)
-		var w :float = v[5]*clock_R
+		var p1 := Vector2(0, v[3]*clock_radius)
+		var p2 := Vector2(0, v[4]*clock_radius)
+		var w :float = v[5]*clock_radius
 		draw_set_transform(Vector2(0,0), rad)
 		var rt := Rect2(p1-Vector2(w/2,0), p2-p1 + Vector2(w,0))
 		if outline == 0:
@@ -112,22 +115,22 @@ func _draw() -> void:
 
 	for v in center_param:
 		var co :Color = Global2d.colors[v[0]]
-		var r :float = clock_R * v[1]
+		var r :float = clock_radius * v[1]
 		var outline :float = v[2]
 		if outline == 0:
 			draw_circle(Vector2(0,0), r, co)
 		else:
 			draw_arc(Vector2(0,0), r, 0, 2*PI, r as int, co, outline)
 
-	# draw dial line
-	var w := dial_line_thick
-	if w < 1 :
-		w = -1
-	draw_multiline(dial_bars,Global2d.colors[dial_line_colorkey], w)
-
-	# draw dial num
-	draw_num( )
-
+	if show_num_or_bar:
+		# draw dial num
+		draw_num()
+	else:
+		# draw dial line
+		var w := dial_line_thick
+		if w < 1 :
+			w = -1
+		draw_multiline(dial_bars,Global2d.colors[dial_line_colorkey], w)
 
 func calc_rad_for_hand(ms :float, hd :HandType)->float:
 	var second := ms - int(ms/60)*60
