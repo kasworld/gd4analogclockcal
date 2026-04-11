@@ -57,7 +57,28 @@ func draw_center() -> void:
 			draw_arc(Vector2(0,0), r, 0, 2*PI, r as int, co, outline)
 
 
-enum BarAlign {None, In,Mid,Out}
+enum BarAlign {In,Mid,Out}
+func make_dial_bars() -> void:
+	var r := dial_line_radius
+	for i in range(0,360):
+		var rad := deg_to_rad(i) -PI/2
+		var offset :float = 0
+		if i % 30 == 0 :
+			offset = r*0.08
+		elif i % 6 == 0 :
+			offset = r*0.04
+		else :
+			offset = r*0.02
+		match dial_line_align:
+			BarAlign.In :
+				dial_bars.append_array([ make_pos_by_rad_r(rad,r-offset), make_pos_by_rad_r(rad,r) ])
+			BarAlign.Mid :
+				dial_bars.append_array([ make_pos_by_rad_r(rad,r-offset/2), make_pos_by_rad_r(rad,r+offset/2) ])
+			BarAlign.Out :
+				dial_bars.append_array([ make_pos_by_rad_r(rad,r), make_pos_by_rad_r(rad,r+offset) ])
+
+func make_pos_by_rad_r(rad:float, r :float) -> Vector2:
+	return Vector2(cos(rad)*r, sin(rad)*r)
 
 var dial_line_radius :float
 var dial_line_thick :float
@@ -138,34 +159,12 @@ func _draw() -> void:
 			w = -1
 		draw_multiline(dial_bars,Global2d.colors[dial_line_colorkey], w)
 
-func make_dial_bars() -> void:
-	var r := dial_line_radius
-	for i in range(0,360):
-		var rad := deg_to_rad(-i+180)
-		var offset :float = 0
-		if i % 30 == 0 :
-			offset = r*0.08
-		elif i % 6 == 0 :
-			offset = r*0.04
-		else :
-			offset = r*0.02
-		match dial_line_align:
-			BarAlign.In :
-				dial_bars.append_array([ make_pos_by_rad_r(rad,r-offset),make_pos_by_rad_r(rad,r) ])
-			BarAlign.Mid :
-				dial_bars.append_array([ make_pos_by_rad_r(rad,r-offset/2),make_pos_by_rad_r(rad,r+offset/2) ])
-			BarAlign.Out :
-				dial_bars.append_array([ make_pos_by_rad_r(rad,r),make_pos_by_rad_r(rad,r+offset) ])
-
-func make_pos_by_rad_r(rad:float, r :float) -> Vector2:
-	return Vector2(sin(rad)*r, cos(rad)*r)
-
 func draw_num() -> void:
 	var letter_size := font_size
 	var letter_pos_r := dial_num_radius
 	var numlist := [12,1,2,3,4,5,6,7,8,9,10,11]
 	for i in numlist.size():
-		var rad := deg_to_rad( (-i)*(360.0/numlist.size()) +180)
+		var rad := deg_to_rad( i*(360.0/numlist.size())) -PI/2
 		draw_letter(rad, letter_pos_r, letter_size, numlist[i])
 
 func draw_letter(rad :float, r :float, fsize :float, i :int) -> void:
