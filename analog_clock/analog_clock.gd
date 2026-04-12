@@ -58,7 +58,7 @@ func draw_center() -> void:
 
 
 enum BarAlign {In,Mid,Out}
-func make_dial_bars() -> void:
+func make_dial_lines() -> void:
 	var r := dial_line_radius
 	for i in range(0,360):
 		var rad := deg_to_rad(i) -PI/2
@@ -71,11 +71,11 @@ func make_dial_bars() -> void:
 			offset = r*0.02
 		match dial_line_align:
 			BarAlign.In :
-				dial_bars.append_array([ make_pos_by_rad_r(rad,r-offset), make_pos_by_rad_r(rad,r) ])
+				dial_lines.append_array([ make_pos_by_rad_r(rad,r-offset), make_pos_by_rad_r(rad,r) ])
 			BarAlign.Mid :
-				dial_bars.append_array([ make_pos_by_rad_r(rad,r-offset/2), make_pos_by_rad_r(rad,r+offset/2) ])
+				dial_lines.append_array([ make_pos_by_rad_r(rad,r-offset/2), make_pos_by_rad_r(rad,r+offset/2) ])
 			BarAlign.Out :
-				dial_bars.append_array([ make_pos_by_rad_r(rad,r), make_pos_by_rad_r(rad,r+offset) ])
+				dial_lines.append_array([ make_pos_by_rad_r(rad,r), make_pos_by_rad_r(rad,r+offset) ])
 
 func make_pos_by_rad_r(rad:float, r :float) -> Vector2:
 	return Vector2(cos(rad)*r, sin(rad)*r)
@@ -84,12 +84,12 @@ var dial_line_radius :float
 var dial_line_thick :float
 var dial_line_align :BarAlign
 var dial_line_colorkey :String
-var dial_bars :PackedVector2Array =[]
+var dial_lines :PackedVector2Array =[]
 
-var dial_num_radius :float
-var font_size :float
-var outline_w :int
-var dial_num_colorkey :String
+var dial_text_radius :float
+var dial_text_font_size :float
+var dial_text_outline_w :int
+var dial_text_colorkey :String
 
 ## true show num
 var show_num_or_bar :bool
@@ -106,12 +106,12 @@ func init(config :Dictionary, r :float, tz_s :float) -> void:
 		dial_line_thick = -1
 	dial_line_align = BarAlign.In
 	dial_line_colorkey = "dial_line"
-	make_dial_bars()
+	make_dial_lines()
 
-	dial_num_radius = r *0.95
-	font_size = r*0.15
-	outline_w = 0
-	dial_num_colorkey = "dial_num"
+	dial_text_radius = r *0.95
+	dial_text_font_size = r*0.15
+	dial_text_outline_w = 0
+	dial_text_colorkey = "dial_num"
 
 	clock_radius = r
 	tz_shift = tz_s
@@ -154,23 +154,24 @@ func _draw() -> void:
 	draw_hands(ms)
 	draw_center()
 	if show_num_or_bar:
-		draw_num()
+		draw_dial_text(hour_list)
 	else:
-		draw_multiline(dial_bars, Global2d.colors[dial_line_colorkey], dial_line_thick)
+		draw_multiline(dial_lines, Global2d.colors[dial_line_colorkey], dial_line_thick)
 
-func draw_num() -> void:
-	var numlist := [12,1,2,3,4,5,6,7,8,9,10,11]
-	var co :Color = Global2d.colors[dial_num_colorkey]
-	var unit_rad := 2*PI/numlist.size()
-	for i in numlist.size():
+const hour_list := [12,1,2,3,4,5,6,7,8,9,10,11]
+#  ["열둘", "하나", "둘" , "셋", "넷", "다섯", "여섯", "일곱", "여덟", "아홉", "열", "열하나"]
+const minute_list := [0,5,10,15,20,25,30,35,40,45,50,55]
+func draw_dial_text(dial_text_list :Array) -> void:
+	var co :Color = Global2d.colors[dial_text_colorkey]
+	var unit_rad := 2*PI/dial_text_list.size()
+	for i in dial_text_list.size():
 		var rad := i*unit_rad -PI/2
-		draw_letter(rad, dial_num_radius, font_size, numlist[i], co)
+		var pos := make_pos_by_rad_r(rad, dial_text_radius)
+		draw_letter(pos, dial_text_font_size, "%s" % dial_text_list[i], co)
 
-func draw_letter(rad :float, r :float, fsize :float, i :int, co :Color) -> void:
-	var t := "%d" % i
-	var pos := make_pos_by_rad_r(rad, r)
-	var offset := Vector2(-fsize/3.5*t.length(), fsize/3)
-	if outline_w == 0:
-		draw_string(Global2d.font, pos+offset, t, HORIZONTAL_ALIGNMENT_CENTER, -1, fsize as int, co )
+func draw_letter(pos :Vector2, fsize :float, txt :String, co :Color) -> void:
+	pos += Vector2(-fsize/3.5 * txt.length(), fsize/3)
+	if dial_text_outline_w == 0:
+		draw_string(Global2d.font, pos, txt, HORIZONTAL_ALIGNMENT_CENTER, -1, fsize as int, co )
 	else:
-		draw_string_outline(Global2d.font, pos+offset, t, HORIZONTAL_ALIGNMENT_CENTER, -1, fsize as int, outline_w, co )
+		draw_string_outline(Global2d.font, pos, txt, HORIZONTAL_ALIGNMENT_CENTER, -1, fsize as int, dial_text_outline_w, co )
