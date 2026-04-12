@@ -58,17 +58,20 @@ func draw_center() -> void:
 
 
 enum BarAlign {In,Mid,Out}
-func make_dial_lines() -> void:
-	var r := dial_line_radius
+## offset_setting : [ [ modint, r rate ]... ]
+const offset_setting := [
+		[30, 0.08],
+		[5,  0.04],
+		[1,  0.02],
+	]
+func make_dial_lines(r :float) -> void:
 	for i in range(0,360):
 		var rad := deg_to_rad(i) -PI/2
 		var offset :float = 0
-		if i % 30 == 0 :
-			offset = r*0.08
-		elif i % 6 == 0 :
-			offset = r*0.04
-		else :
-			offset = r*0.02
+		for os in offset_setting:
+			if i % os[0] == 0:
+				offset = r * os[1]
+				break
 		match dial_line_align:
 			BarAlign.In :
 				dial_lines.append_array([ make_pos_by_rad_r(rad,r-offset), make_pos_by_rad_r(rad,r) ])
@@ -106,7 +109,7 @@ func init(config :Dictionary, r :float, tz_s :float) -> void:
 		dial_line_thick = -1
 	dial_line_align = BarAlign.In
 	dial_line_colorkey = "dial_line"
-	make_dial_lines()
+	make_dial_lines(dial_line_radius)
 
 	dial_text_radius = r *0.95
 	dial_text_font_size = r*0.15
