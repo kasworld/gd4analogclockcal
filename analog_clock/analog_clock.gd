@@ -161,8 +161,9 @@ func _draw() -> void:
 func draw_num() -> void:
 	var numlist := [12,1,2,3,4,5,6,7,8,9,10,11]
 	var co :Color = Global2d.colors[dial_num_colorkey]
+	var unit_rad := 2*PI/numlist.size()
 	for i in numlist.size():
-		var rad := deg_to_rad( i*(360.0/numlist.size())) -PI/2
+		var rad := i*unit_rad -PI/2
 		draw_letter(rad, dial_num_radius, font_size, numlist[i], co)
 
 func draw_letter(rad :float, r :float, fsize :float, i :int, co :Color) -> void:
