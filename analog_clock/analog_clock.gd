@@ -5,15 +5,14 @@ var clock_radius :float
 var tz_shift :float
 
 # use for calc hand angle
-enum HandType {Hour, Minute, Second}
+enum Hand {Hour, Minute, Second}
 
-# default
+## hands type, color key,outline w :0 fill,  from, to , width : ratio of clock_radius
 var hands_param := [
-	# hands type, color key,outline w :0 fill,  from, to , width : ratio of clock_radius
-	[HandType.Hour, "hour1",8, 0.04,0.7, 0.04],
-	[HandType.Hour, "hour2",0, 0.04,0.68, 0.01],
-	[HandType.Minute, "minute",8, 0.04,0.9, 0.02],
-	[HandType.Second, "second",0, 0.04,1.0, 0.01],
+	[Hand.Hour, "hour1", 8, 0.04, 0.7, 0.04],
+	[Hand.Hour, "hour2", 0, 0.04, 0.68, 0.01],
+	[Hand.Minute, "minute", 8, 0.04, 0.9, 0.02],
+	[Hand.Second, "second", 0, 0.04, 1.0, 0.01],
 ]
 func draw_hands(time_sec :float) -> void:
 	var hands_rad := calc_rad_for_hand(time_sec)
@@ -32,6 +31,7 @@ func draw_hands(time_sec :float) -> void:
 			draw_rect(rt,co,false,outline)
 	draw_set_transform(Vector2(0,0), 0)
 
+## return [hour, minute, second] rad
 func calc_rad_for_hand(ms :float) -> Array[float]:
 	var second := ms - int(ms/60)*60
 	ms = ms / 60
@@ -41,8 +41,8 @@ func calc_rad_for_hand(ms :float) -> Array[float]:
 	return [PI/6.0*hour, PI/30.0*minute, PI/30.0*second]
 
 
+## color key, radius , ourline w:0 fill
 var center_param := [
-	# color key, radius , ourline w:0 fill
 	["center_circle1", 0.04, 4],
 	["center_circle2", 0.025, 4],
 ]
@@ -60,11 +60,11 @@ func draw_center() -> void:
 enum BarAlign {In,Mid,Out}
 ## offset_setting : [ [ modint, r rate ]... ]
 const offset_setting := [
-		[30, 0.08],
-		[5,  0.04],
-		[1,  0.02],
-	]
-func make_dial_lines(r :float) -> void:
+	[30, 0.08],
+	[5,  0.04],
+	[1,  0.02],
+]
+func make_dial_lines(r :float, align :BarAlign) -> void:
 	for i in range(0,360):
 		var rad := deg_to_rad(i) -PI/2
 		var offset :float = 0
@@ -72,7 +72,7 @@ func make_dial_lines(r :float) -> void:
 			if i % os[0] == 0:
 				offset = r * os[1]
 				break
-		match dial_line_align:
+		match align:
 			BarAlign.In :
 				dial_lines.append_array([ make_pos_by_rad_r(rad,r-offset), make_pos_by_rad_r(rad,r) ])
 			BarAlign.Mid :
@@ -83,9 +83,7 @@ func make_dial_lines(r :float) -> void:
 func make_pos_by_rad_r(rad:float, r :float) -> Vector2:
 	return Vector2(cos(rad)*r, sin(rad)*r)
 
-var dial_line_radius :float
 var dial_line_thick :float
-var dial_line_align :BarAlign
 var dial_line_colorkey :String
 var dial_lines :PackedVector2Array =[]
 
@@ -103,31 +101,30 @@ func update_color() -> void:
 	$LabelInfo.label_settings.font_color = Global2d.colors.infolabel
 
 func init(config :Dictionary, r :float, tz_s :float) -> void:
-	dial_line_radius = r
-	dial_line_thick = r*0.006
-	if dial_line_thick < 1:
-		dial_line_thick = -1
-	dial_line_align = BarAlign.In
-	dial_line_colorkey = "dial_line"
-	make_dial_lines(dial_line_radius)
-
-	dial_text_radius = r *0.95
-	dial_text_font_size = r*0.15
-	dial_text_outline_w = 0
-	dial_text_colorkey = "dial_num"
-
 	clock_radius = r
 	tz_shift = tz_s
 
+	dial_line_thick = clock_radius*0.006
+	if dial_line_thick < 1:
+		dial_line_thick = -1
+	dial_line_colorkey = "dial_line"
+	make_dial_lines(clock_radius, BarAlign.In)
+
+	dial_text_radius = clock_radius *0.95
+	dial_text_font_size = clock_radius*0.15
+	dial_text_outline_w = 0
+	dial_text_colorkey = "dial_num"
+
+
 	var co :Color = Global2d.colors.timelabel
-	$LabelTime.position = Vector2(-r,-r)
-	$LabelTime.size = Vector2(r*2,r*1.0)
-	$LabelTime.label_settings = Global2d.make_label_setting(r*0.45 as int, co)
+	$LabelTime.position = Vector2(-clock_radius,-clock_radius)
+	$LabelTime.size = Vector2(clock_radius*2,clock_radius*1.0)
+	$LabelTime.label_settings = Global2d.make_label_setting(clock_radius*0.45 as int, co)
 
 	co = Global2d.colors.infolabel
-	$LabelInfo.position = Vector2(-r,0)
-	$LabelInfo.size = Vector2(r*2,r*1.0)
-	$LabelInfo.label_settings = Global2d.make_label_setting(r*0.2 as int, co)
+	$LabelInfo.position = Vector2(-clock_radius,0)
+	$LabelInfo.size = Vector2(clock_radius*2,clock_radius*1.0)
+	$LabelInfo.label_settings = Global2d.make_label_setting(clock_radius*0.2 as int, co)
 
 	info_text = InfoText.new()
 	add_child(info_text)
