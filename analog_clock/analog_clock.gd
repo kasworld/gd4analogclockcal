@@ -115,16 +115,13 @@ func init(config :Dictionary, r :float, tz_s :float) -> void:
 	dial_text_outline_w = 0
 	dial_text_colorkey = "dial_num"
 
-
-	var co :Color = Global2d.colors.timelabel
 	$LabelTime.position = Vector2(-clock_radius,-clock_radius)
 	$LabelTime.size = Vector2(clock_radius*2,clock_radius*1.0)
-	$LabelTime.label_settings = Global2d.make_label_setting(clock_radius*0.45 as int, co)
+	$LabelTime.label_settings = Global2d.make_label_setting(clock_radius*0.45 as int, Global2d.colors.timelabel)
 
-	co = Global2d.colors.infolabel
 	$LabelInfo.position = Vector2(-clock_radius,0)
 	$LabelInfo.size = Vector2(clock_radius*2,clock_radius*1.0)
-	$LabelInfo.label_settings = Global2d.make_label_setting(clock_radius*0.2 as int, co)
+	$LabelInfo.label_settings = Global2d.make_label_setting(clock_radius*0.2 as int, Global2d.colors.infolabel)
 
 	info_text = InfoText.new()
 	add_child(info_text)
@@ -139,7 +136,7 @@ func init(config :Dictionary, r :float, tz_s :float) -> void:
 func _on_update_info_text(t :String) -> void:
 	$LabelInfo.text = t
 
-func update_req_url(cfg:Dictionary) -> void:
+func update_req_url(cfg :Dictionary) -> void:
 	info_text.update_urls(cfg.weather_url,cfg.dayinfo_url,cfg.todayinfo_url)
 	info_text.force_update()
 
