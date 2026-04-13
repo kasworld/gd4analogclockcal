@@ -28,44 +28,40 @@ static func calc_rad_for_hand(ms :float) -> Array[float]:
 var info_text :InfoText
 var clock_radius :float
 
-## calc_rad_for_hand type, color key,outline w :0 fill,  from, to , width : ratio of clock_radius
+## calc_rad_for_hand type, color key, fill, outline_w,  from, to , width : ratio of clock_radius
 const hands_param := [
-	[0, "hour1", 8, 0.04, 0.7, 0.04],
-	[0, "hour2", 0, 0.04, 0.68, 0.01],
-	[1, "minute", 8, 0.04, 0.9, 0.02],
-	[2, "second", 0, 0.04, 1.0, 0.01],
+	[0, "hour1", false, 8, 0.04, 0.7, 0.04],
+	[0, "hour2", true, -1, 0.04, 0.68, 0.01],
+	[1, "minute", false, 8, 0.04, 0.9, 0.02],
+	[2, "second", true, -1, 0.04, 1.0, 0.01],
 ]
 func draw_hands(time_sec :float) -> void:
 	var hands_rad := calc_rad_for_hand(time_sec)
 	for v in hands_param:
 		var rad := hands_rad[v[0]] +PI
 		var co :Color = Global2d.colors[v[1]]
-		var outline :float = v[2]
-		var p1 := Vector2(0, v[3]*clock_radius)
-		var p2 := Vector2(0, v[4]*clock_radius)
-		var w :float = v[5]*clock_radius
+		var fill :bool = v[2]
+		var outline_w :float = v[3]
+		var p1 := Vector2(0, v[4]*clock_radius)
+		var p2 := Vector2(0, v[5]*clock_radius)
+		var w :float = v[6]*clock_radius
 		draw_set_transform(Vector2(0,0), rad)
 		var rt := Rect2(p1-Vector2(w/2,0), p2-p1 + Vector2(w,0))
-		if outline == 0:
-			draw_rect(rt,co,true)
-		else:
-			draw_rect(rt,co,false,outline)
+		draw_rect(rt, co, fill, outline_w, true)
 	draw_set_transform(Vector2(0,0), 0)
 
-## color key, radius , ourline w:0 fill
+## color key, radius , fill, outline width
 const center_param := [
-	["center_circle1", 0.04, 4],
-	["center_circle2", 0.025, 4],
+	["center_circle1", 0.04, false, 4],
+	["center_circle2", 0.025, true, -1],
 ]
 func draw_center() -> void:
 	for v in center_param:
 		var co :Color = Global2d.colors[v[0]]
 		var r :float = clock_radius * v[1]
-		var outline :float = v[2]
-		if outline == 0:
-			draw_circle(Vector2(0,0), r, co)
-		else:
-			draw_arc(Vector2(0,0), r, 0, 2*PI, r as int, co, outline)
+		var fill :bool = v[2]
+		var outline_width :float = v[3]
+		draw_circle(Vector2(0,0), r, co, fill, outline_width, true)
 
 enum BarAlign {In,Mid,Out}
 ## offset_setting : [ [ modint, r rate ]... ]

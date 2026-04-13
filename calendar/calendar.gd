@@ -1,5 +1,5 @@
 extends Node2D
-class_name Calendar2
+class_name Calendar
 
 ## with time zone applied
 static func get_localtime_from_system() -> float:
