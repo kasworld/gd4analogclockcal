@@ -1,6 +1,10 @@
 extends Node2D
-
 class_name Calendar2
+
+## with time zone applied
+static func get_localtime_from_system() -> float:
+	var tz := Time.get_time_zone_from_system()
+	return Time.get_unix_time_from_system() +tz["bias"]*60
 
 var csize :Vector2
 func init(cs :Vector2) -> void:
@@ -9,12 +13,6 @@ func init(cs :Vector2) -> void:
 
 func update_color() -> void:
 	queue_redraw()
-
-## with time zone applied
-static func get_localtime_from_system() -> int:
-	var tz := Time.get_time_zone_from_system()
-	var today :int = int(Time.get_unix_time_from_system()) +tz["bias"]*60
-	return today
 
 func draw_calendar(unix_time :int) -> void:
 	var fw := csize.x/7
@@ -56,8 +54,7 @@ func draw_calendar(unix_time :int) -> void:
 			day_index += 24*60*60
 
 func _draw() -> void:
-	var today := get_localtime_from_system()
-	draw_calendar(today)
+	draw_calendar(get_localtime_from_system() as int)
 
 var old_time_dict := {"day":0} # datetime dict
 func _on_timer_timeout() -> void:

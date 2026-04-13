@@ -1,8 +1,32 @@
 extends Node2D
+class_name AnalogClock
+
+## with time zone applied
+static func get_localtime_from_system() -> float:
+	var tz := Time.get_time_zone_from_system()
+	return Time.get_unix_time_from_system() +tz["bias"]*60
+
+static func make_label_setting(font_size :int , co1 :Color) -> LabelSettings:
+	var label_settings := LabelSettings.new()
+	label_settings.font = Global2d.font
+	label_settings.font_color = co1
+	label_settings.font_size = font_size
+	return label_settings
+
+static func make_pos_by_rad_r(rad:float, r :float) -> Vector2:
+	return Vector2(cos(rad)*r, sin(rad)*r)
+
+## return [hour, minute, second] rad
+static func calc_rad_for_hand(ms :float) -> Array[float]:
+	var second := ms - int(ms/60)*60
+	ms = ms / 60
+	var minute := ms - int(ms/60)*60
+	ms = ms / 60
+	var hour := ms - int(ms/24)*24
+	return [PI/6.0*hour, PI/30.0*minute, PI/30.0*second]
 
 var info_text :InfoText
 var clock_radius :float
-var tz_shift :float
 
 ## calc_rad_for_hand type, color key,outline w :0 fill,  from, to , width : ratio of clock_radius
 const hands_param := [
@@ -28,16 +52,6 @@ func draw_hands(time_sec :float) -> void:
 			draw_rect(rt,co,false,outline)
 	draw_set_transform(Vector2(0,0), 0)
 
-## return [hour, minute, second] rad
-func calc_rad_for_hand(ms :float) -> Array[float]:
-	var second := ms - int(ms/60)*60
-	ms = ms / 60
-	var minute := ms - int(ms/60)*60
-	ms = ms / 60
-	var hour := ms - int(ms/24)*24 + tz_shift
-	return [PI/6.0*hour, PI/30.0*minute, PI/30.0*second]
-
-
 ## color key, radius , ourline w:0 fill
 const center_param := [
 	["center_circle1", 0.04, 4],
@@ -52,7 +66,6 @@ func draw_center() -> void:
 			draw_circle(Vector2(0,0), r, co)
 		else:
 			draw_arc(Vector2(0,0), r, 0, 2*PI, r as int, co, outline)
-
 
 enum BarAlign {In,Mid,Out}
 ## offset_setting : [ [ modint, r rate ]... ]
@@ -77,8 +90,6 @@ func make_dial_lines(r :float, align :BarAlign) -> void:
 			BarAlign.Out :
 				dial_lines.append_array([ make_pos_by_rad_r(rad,r), make_pos_by_rad_r(rad,r+offset) ])
 
-func make_pos_by_rad_r(rad:float, r :float) -> Vector2:
-	return Vector2(cos(rad)*r, sin(rad)*r)
 
 var dial_line_thick :float
 var dial_line_colorkey :String
@@ -97,9 +108,8 @@ func update_color() -> void:
 	$LabelTime.label_settings.font_color = Global2d.colors.timelabel
 	$LabelInfo.label_settings.font_color = Global2d.colors.infolabel
 
-func init(config :Dictionary, r :float, tz_s :float) -> void:
+func init(config :Dictionary, r :float) -> void:
 	clock_radius = r
-	tz_shift = tz_s
 
 	dial_line_thick = clock_radius*0.006
 	if dial_line_thick < 1:
@@ -114,11 +124,11 @@ func init(config :Dictionary, r :float, tz_s :float) -> void:
 
 	$LabelTime.position = Vector2(-clock_radius,-clock_radius)
 	$LabelTime.size = Vector2(clock_radius*2,clock_radius*1.0)
-	$LabelTime.label_settings = Global2d.make_label_setting(clock_radius*0.45 as int, Global2d.colors.timelabel)
+	$LabelTime.label_settings = make_label_setting(clock_radius*0.45 as int, Global2d.colors.timelabel)
 
 	$LabelInfo.position = Vector2(-clock_radius,0)
 	$LabelInfo.size = Vector2(clock_radius*2,clock_radius*1.0)
-	$LabelInfo.label_settings = Global2d.make_label_setting(clock_radius*0.2 as int, Global2d.colors.infolabel)
+	$LabelInfo.label_settings = make_label_setting(clock_radius*0.2 as int, Global2d.colors.infolabel)
 
 	info_text = InfoText.new()
 	add_child(info_text)
@@ -144,7 +154,7 @@ func _process(_delta: float) -> void:
 	queue_redraw()
 
 func _draw() -> void:
-	var ms := Time.get_unix_time_from_system()
+	var ms := get_localtime_from_system()
 	draw_hands(ms)
 	draw_center()
 	if show_num_or_bar:

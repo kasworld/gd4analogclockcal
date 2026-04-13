@@ -58,7 +58,7 @@ func _ready() -> void:
 	var sect_width :float = min(vp_size.x/2,vp_size.y)
 	anipos_list = [Vector2(sect_width/2,vp_size.y/2), Vector2(vp_size.x - sect_width/2,vp_size.y/2)]
 	$Calendar.init( Vector2( sect_width, sect_width) )
-	$AnalogClock.init(config, sect_width/2, 9 )
+	$AnalogClock.init(config, sect_width/2)
 	reset_pos()
 	init_request_bg()
 
