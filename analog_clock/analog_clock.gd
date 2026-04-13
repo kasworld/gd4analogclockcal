@@ -4,15 +4,12 @@ var info_text :InfoText
 var clock_radius :float
 var tz_shift :float
 
-# use for calc hand angle
-enum Hand {Hour, Minute, Second}
-
-## hands type, color key,outline w :0 fill,  from, to , width : ratio of clock_radius
-var hands_param := [
-	[Hand.Hour, "hour1", 8, 0.04, 0.7, 0.04],
-	[Hand.Hour, "hour2", 0, 0.04, 0.68, 0.01],
-	[Hand.Minute, "minute", 8, 0.04, 0.9, 0.02],
-	[Hand.Second, "second", 0, 0.04, 1.0, 0.01],
+## calc_rad_for_hand type, color key,outline w :0 fill,  from, to , width : ratio of clock_radius
+const hands_param := [
+	[0, "hour1", 8, 0.04, 0.7, 0.04],
+	[0, "hour2", 0, 0.04, 0.68, 0.01],
+	[1, "minute", 8, 0.04, 0.9, 0.02],
+	[2, "second", 0, 0.04, 1.0, 0.01],
 ]
 func draw_hands(time_sec :float) -> void:
 	var hands_rad := calc_rad_for_hand(time_sec)
@@ -42,7 +39,7 @@ func calc_rad_for_hand(ms :float) -> Array[float]:
 
 
 ## color key, radius , ourline w:0 fill
-var center_param := [
+const center_param := [
 	["center_circle1", 0.04, 4],
 	["center_circle2", 0.025, 4],
 ]
@@ -151,24 +148,21 @@ func _draw() -> void:
 	draw_hands(ms)
 	draw_center()
 	if show_num_or_bar:
-		draw_dial_text(hour_list)
+		draw_dial_text(hour_list, dial_text_font_size, dial_text_outline_w)
 	else:
 		draw_multiline(dial_lines, Global2d.colors[dial_line_colorkey], dial_line_thick)
 
 const hour_list := [12,1,2,3,4,5,6,7,8,9,10,11]
 #  ["열둘", "하나", "둘" , "셋", "넷", "다섯", "여섯", "일곱", "여덟", "아홉", "열", "열하나"]
 const minute_list := [0,5,10,15,20,25,30,35,40,45,50,55]
-func draw_dial_text(dial_text_list :Array) -> void:
+func draw_dial_text(dial_text_list :Array, fsize :float, outline_w :int) -> void:
 	var co :Color = Global2d.colors[dial_text_colorkey]
 	var unit_rad := 2*PI/dial_text_list.size()
 	for i in dial_text_list.size():
+		var txt := "%s" % dial_text_list[i]
 		var rad := i*unit_rad -PI/2
-		var pos := make_pos_by_rad_r(rad, dial_text_radius)
-		draw_letter(pos, dial_text_font_size, "%s" % dial_text_list[i], co)
-
-func draw_letter(pos :Vector2, fsize :float, txt :String, co :Color) -> void:
-	pos += Vector2(-fsize/3.5 * txt.length(), fsize/3)
-	if dial_text_outline_w == 0:
-		draw_string(Global2d.font, pos, txt, HORIZONTAL_ALIGNMENT_CENTER, -1, fsize as int, co )
-	else:
-		draw_string_outline(Global2d.font, pos, txt, HORIZONTAL_ALIGNMENT_CENTER, -1, fsize as int, dial_text_outline_w, co )
+		var pos := make_pos_by_rad_r(rad, dial_text_radius) + Vector2(-fsize/3.5 * txt.length(), fsize/3)
+		if outline_w == 0:
+			draw_string(Global2d.font, pos, txt, HORIZONTAL_ALIGNMENT_CENTER, -1, fsize as int, co )
+		else:
+			draw_string_outline(Global2d.font, pos, txt, HORIZONTAL_ALIGNMENT_CENTER, -1, fsize as int, dial_text_outline_w, co )
