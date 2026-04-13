@@ -71,6 +71,7 @@ const offset_setting := [
 	[1,  0.02],
 ]
 func make_dial_lines(r :float, align :BarAlign) -> void:
+	dial_lines = []
 	for i in range(0,360):
 		var rad := deg_to_rad(i) -PI/2
 		var offset :float = 0
@@ -89,7 +90,7 @@ func make_dial_lines(r :float, align :BarAlign) -> void:
 
 var dial_line_thick :float
 var dial_line_colorkey :String
-var dial_lines :PackedVector2Array =[]
+var dial_lines :PackedVector2Array
 
 var dial_text_radius :float
 var dial_text_font_size :float

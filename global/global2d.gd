@@ -63,14 +63,8 @@ var font := preload("res://font/HakgyoansimBareondotumR.ttf")
 var dark_mode := true
 func set_dark_mode(b :bool) -> void:
 	dark_mode = b
-	if dark_mode :
-		colors = colors_dark
-	else :
-		colors = colors_light
+	colors = colors_dark if dark_mode else colors_light
 	RenderingServer.set_default_clear_color(colors.default_clear)
 
 func make_shadow_color(co :Color) -> Color:
-	if dark_mode:
-		return co.darkened(0.5)
-	else :
-		return co.lightened(0.5)
+	return co.darkened(0.5) if dark_mode else co.lightened(0.5)

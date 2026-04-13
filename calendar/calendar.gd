@@ -58,7 +58,7 @@ func _draw() -> void:
 
 var old_time_dict := {"day":0} # datetime dict
 func _on_timer_timeout() -> void:
-	var time_now_dict := Time.get_datetime_dict_from_system()
+	var time_now_dict := Time.get_date_dict_from_system()
 	# date changed, update datelabel, calendar
 	if old_time_dict["day"] != time_now_dict["day"]:
 		old_time_dict = time_now_dict
